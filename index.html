@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>بوابة موظفي اليمامة</title>
+
 <style>
 *{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
 body{margin:0;min-height:100vh;background:linear-gradient(135deg,#102b46,#17645d);padding:25px}
@@ -15,16 +16,16 @@ label{display:block;font-weight:bold;color:#263c4e;margin-bottom:9px}
 input,textarea,select{width:100%;padding:15px;border:1px solid #dce4e9;border-radius:10px;font-size:15px;margin-bottom:20px;outline:none}
 input:focus,textarea:focus,select:focus{border-color:#17645d}
 button{border:0;border-radius:10px;padding:15px 20px;background:#17645d;color:white;font-size:16px;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.6}
+button:disabled{opacity:.6;cursor:not-allowed}
 .primary{width:100%}
-#message{display:none;margin-top:15px;padding:13px;background:#eef5f3;border-radius:10px;text-align:center;color:#17645d}
+#message,#managerMessage{display:none;margin-top:15px;padding:13px;background:#eef5f3;border-radius:10px;text-align:center;color:#17645d}
 .hidden{display:none!important}
 .header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;border-bottom:1px solid #eee;padding-bottom:20px;margin-bottom:25px}
 .header h1{text-align:right;font-size:23px}
 .logout{background:#f1f3f5;color:#354b5e;padding:10px 15px;font-size:13px}
 .services{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .service{border:1px solid #e5ecef;border-radius:16px;padding:25px 15px;text-align:center;cursor:pointer;background:#fff;transition:.2s}
-.service:hover{border-color:#17645d;transform:translateY(-3px);box-shadow:0 8px 20px #0000}
+.service:hover{border-color:#17645d;transform:translateY(-3px);box-shadow:0 8px 20px #0001}
 .service .icon{font-size:35px;margin-bottom:12px}
 .service h2{font-size:19px;color:#17354d;margin:8px}
 .service p{font-size:13px;color:#82909a;margin:0}
@@ -32,12 +33,21 @@ button:disabled{opacity:.6}
 .back{background:#eef3f1;color:#17645d;margin-bottom:20px}
 .form-title{color:#17354d}
 .footer{text-align:center;color:#9aa6ae;font-size:12px;margin-top:30px}
-@media(max-width:550px){body{padding:12px}.container{padding:22px 17px;margin:15px auto}.services{grid-template-columns:1fr}.service:last-child{grid-column:auto}}
+.manager-card{background:#f5f8f7;border:1px solid #e5ecef;border-radius:15px;padding:25px;margin-top:20px}
+.manager-card h2{color:#17354d;margin-top:0}
+@media(max-width:550px){
+body{padding:12px}
+.container{padding:22px 17px;margin:15px auto}
+.services{grid-template-columns:1fr}
+.service:last-child{grid-column:auto}
+}
 </style>
 </head>
+
 <body>
 <main class="container">
 
+<!-- دخول الموظفين -->
 <section id="loginPage">
 <div class="logo">Y</div>
 <h1>بوابة موظفي اليمامة</h1>
@@ -50,11 +60,39 @@ button:disabled{opacity:.6}
 <label for="phone">رقم الجوال</label>
 <input id="phone" type="tel" placeholder="05xxxxxxxx" required>
 
-<button class="primary" id="loginButton" type="submit">تسجيل الدخول</button>
+<button class="primary" id="loginButton" type="submit">تسجيل دخول الموظفين</button>
 <div id="message" role="status" aria-live="polite"></div>
 </form>
+
+<button type="button" class="primary" id="showManagerLogin"
+style="margin-top:12px;background:#17354d">
+دخول المدراء
+</button>
 </section>
 
+<!-- دخول المدراء -->
+<section id="managerLoginPage" class="hidden">
+<div class="logo">Y</div>
+<h1>دخول المدراء</h1>
+<p class="description">يرجى إدخال بيانات حساب المدير.</p>
+
+<form id="managerLoginForm">
+<label for="managerUsername">اسم المستخدم</label>
+<input id="managerUsername" type="text" placeholder="أدخل اسم المستخدم" required>
+
+<label for="managerPassword">كلمة المرور</label>
+<input id="managerPassword" type="password" placeholder="أدخل كلمة المرور" required>
+
+<button class="primary" id="managerLoginButton" type="submit">تسجيل الدخول</button>
+<div id="managerMessage" role="status" aria-live="polite"></div>
+</form>
+
+<button type="button" class="back" id="backToEmployee">
+العودة لدخول الموظفين
+</button>
+</section>
+
+<!-- خدمات الموظفين -->
 <section id="servicesPage" class="hidden">
 <div class="header">
 <div>
@@ -70,11 +108,13 @@ button:disabled{opacity:.6}
 <h2>الشكاوى</h2>
 <p>تقديم شكوى للإدارة</p>
 </div>
+
 <div class="service" data-type="report">
 <div class="icon">📢</div>
 <h2>البلاغات</h2>
 <p>تقديم بلاغ للإدارة</p>
 </div>
+
 <div class="service" data-type="request">
 <div class="icon">📋</div>
 <h2>الطلبات</h2>
@@ -86,15 +126,35 @@ button:disabled{opacity:.6}
 <button class="back" id="backButton">← العودة للخدمات</button>
 <h2 class="form-title" id="serviceTitle"></h2>
 <p class="description">هذه واجهة أولية لتجهيز نموذج الخدمة.</p>
+
 <label for="subject">عنوان الموضوع</label>
 <input id="subject" type="text" placeholder="اكتب عنوان الموضوع">
+
 <label for="details">التفاصيل</label>
 <textarea id="details" rows="5" placeholder="اكتب تفاصيل الخدمة هنا"></textarea>
 <div id="formMessage"></div>
 </div>
 </section>
 
-<div class="footer">بوابة الموظفين © اليمامة</div>
+<!-- لوحة المدراء -->
+<section id="managerDashboard" class="hidden">
+<div class="header">
+<div>
+<h1>لوحة تحكم المدراء</h1>
+<p class="description" id="managerWelcome" style="margin:5px 0"></p>
+</div>
+<button class="logout" id="managerLogout">تسجيل الخروج</button>
+</div>
+
+<div class="manager-card">
+<h2>مرحباً بك في لوحة الإدارة</h2>
+<p style="color:#788795;line-height:1.9">
+تم تسجيل دخولك بنجاح. هذه لوحة الإدارة الأولية، وسيتم تجهيز عرض الشكاوى والبلاغات والطلبات والرد عليها في الخطوات القادمة.
+</p>
+</div>
+</section>
+
+<div class="footer">بوابة الموظفين ©️ اليمامة</div>
 </main>
 
 <script>
@@ -102,23 +162,44 @@ const SUPABASE_URL = "https://lpnogejpefsprjggeceo.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_S6tLSatDIEgbhPvB7uBTTw_oadYhvAa";
 
 const loginPage = document.getElementById("loginPage");
+const managerLoginPage = document.getElementById("managerLoginPage");
 const servicesPage = document.getElementById("servicesPage");
+const managerDashboard = document.getElementById("managerDashboard");
 const servicesList = document.getElementById("servicesList");
 const serviceForm = document.getElementById("serviceForm");
 const message = document.getElementById("message");
+const managerMessage = document.getElementById("managerMessage");
 
-document.getElementById("loginForm").addEventListener("submit", async function(e){
+let managerSession = null;
+
+// إظهار صفحة دخول المدراء
+document.getElementById("showManagerLogin").addEventListener("click",()=>{
+loginPage.classList.add("hidden");
+managerLoginPage.classList.remove("hidden");
+});
+
+// العودة إلى دخول الموظفين
+document.getElementById("backToEmployee").addEventListener("click",()=>{
+managerLoginPage.classList.add("hidden");
+loginPage.classList.remove("hidden");
+managerMessage.style.display="none";
+document.getElementById("managerLoginForm").reset();
+});
+
+// تسجيل دخول الموظف
+document.getElementById("loginForm").addEventListener("submit",async function(e){
 e.preventDefault();
-const employeeNumber = document.getElementById("employee").value.trim();
-const phoneNumber = document.getElementById("phone").value.trim();
-const button = document.getElementById("loginButton");
 
-message.style.display = "block";
-message.textContent = "جاري التحقق...";
-button.disabled = true;
+const employeeNumber=document.getElementById("employee").value.trim();
+const phoneNumber=document.getElementById("phone").value.trim();
+const button=document.getElementById("loginButton");
+
+message.style.display="block";
+message.textContent="جاري التحقق...";
+button.disabled=true;
 
 try{
-const response = await fetch(`${SUPABASE_URL}/functions/v1/employee-auth`,{
+const response=await fetch(`${SUPABASE_URL}/functions/v1/employee-auth`,{
 method:"POST",
 headers:{
 "Content-Type":"application/json",
@@ -131,47 +212,109 @@ phone_number:phoneNumber
 })
 });
 
-const result = await response.json();
+const result=await response.json();
 
 if(response.ok && result.success){
 loginPage.classList.add("hidden");
 servicesPage.classList.remove("hidden");
 }else{
-message.textContent = result.message || "تعذر التحقق من البيانات.";
+message.textContent=result.message || "تعذر التحقق من البيانات.";
 }
 }catch(error){
-message.textContent = "تعذر الاتصال بالخادم.";
+message.textContent="تعذر الاتصال بالخادم.";
 }finally{
-button.disabled = false;
+button.disabled=false;
 }
 });
 
+// تسجيل دخول المدير
+document.getElementById("managerLoginForm").addEventListener("submit",async function(e){
+e.preventDefault();
+
+const username=document.getElementById("managerUsername").value.trim();
+const password=document.getElementById("managerPassword").value;
+const button=document.getElementById("managerLoginButton");
+
+managerMessage.style.display="block";
+managerMessage.textContent="جاري التحقق من بيانات المدير...";
+button.disabled=true;
+
+try{
+const response=await fetch(`${SUPABASE_URL}/functions/v1/manager-auth`,{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"apikey":SUPABASE_ANON_KEY,
+"Authorization":`Bearer ${SUPABASE_ANON_KEY}`
+},
+body:JSON.stringify({
+username:username,
+password:password
+})
+});
+
+const result=await response.json();
+
+if(response.ok && result.success && result.access_token && result.refresh_token){
+managerSession={
+access_token:result.access_token,
+refresh_token:result.refresh_token
+};
+
+document.getElementById("managerWelcome").textContent=
+"أهلاً بك، "+(result.manager.full_name || result.manager.username);
+
+managerLoginPage.classList.add("hidden");
+managerDashboard.classList.remove("hidden");
+managerMessage.style.display="none";
+document.getElementById("managerLoginForm").reset();
+}else{
+managerMessage.textContent=result.message || "اسم المستخدم أو كلمة المرور غير صحيحة.";
+}
+}catch(error){
+managerMessage.textContent="تعذر الاتصال بالخادم. حاول مرة أخرى.";
+}finally{
+button.disabled=false;
+}
+});
+
+// تسجيل خروج المدير
+document.getElementById("managerLogout").addEventListener("click",()=>{
+managerSession=null;
+managerDashboard.classList.add("hidden");
+loginPage.classList.remove("hidden");
+});
+
+// اختيار خدمة الموظف
 document.querySelectorAll(".service").forEach(card=>{
 card.addEventListener("click",()=>{
-const type = card.dataset.type;
-const titles = {
+const type=card.dataset.type;
+const titles={
 complaint:"تقديم شكوى",
 report:"تقديم بلاغ",
 request:"تقديم طلب"
 };
-document.getElementById("serviceTitle").textContent = titles[type];
+
+document.getElementById("serviceTitle").textContent=titles[type];
 servicesList.classList.add("hidden");
 serviceForm.classList.remove("hidden");
 });
 });
 
+// العودة للخدمات
 document.getElementById("backButton").addEventListener("click",()=>{
 serviceForm.classList.add("hidden");
 servicesList.classList.remove("hidden");
 });
 
+// تسجيل خروج الموظف
 document.getElementById("logoutButton").addEventListener("click",()=>{
 servicesPage.classList.add("hidden");
 loginPage.classList.remove("hidden");
 servicesList.classList.remove("hidden");
 serviceForm.classList.add("hidden");
 document.getElementById("loginForm").reset();
-message.style.display = "none";
+message.style.display="none";
 });
 </script>
 </body>
