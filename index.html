@@ -1,172 +1,42 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>بوابة منسوبي اليمامة</title>
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:Tahoma,Arial,sans-serif;
-  background:#f3f6fb;
-  color:#172b4d;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-}
-.page{
-  width:100%;
-  max-width:1050px;
-  min-height:600px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  background:#fff;
-  border-radius:24px;
-  overflow:hidden;
-  box-shadow:0 20px 65px rgba(24,48,85,.12);
-}
-.intro{
-  background:linear-gradient(145deg,#102b50,#1766a5);
-  color:white;
-  padding:65px 48px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
-.logo{
-  width:58px;height:58px;
-  border:1px solid #ffffff66;
-  border-radius:17px;
-  display:grid;place-items:center;
-  font-size:25px;font-weight:bold;
-  background:#ffffff18;
-}
-.intro h1{font-size:34px;line-height:1.7;margin:35px 0 12px}
-.intro p{color:#d5e5f6;line-height:2;font-size:15px}
-.footer{font-size:12px;color:#c2d8ed}
-.login{
-  padding:65px 55px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-.tag{
-  color:#1672b8;
-  font-size:13px;
-  font-weight:bold;
-  margin-bottom:15px;
-}
-h2{font-size:27px;margin:0 0 12px}
-.desc{color:#78869a;font-size:14px;line-height:1.9;margin-bottom:32px}
-label{display:block;font-size:13px;font-weight:bold;margin:0 0 9px}
-input{
-  width:100%;
-  padding:16px;
-  border:1px solid #dce3ed;
-  border-radius:11px;
-  font-size:15px;
-  outline:none;
-  margin-bottom:22px;
-  background:#fbfcfe;
-  direction:rtl;
-}
-input:focus{border-color:#2679bb;box-shadow:0 0 0 3px #2679bb18}
-button{
-  width:100%;
-  padding:16px;
-  border:0;
-  border-radius:11px;
-  background:#176bb0;
-  color:white;
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-}
-button:hover{background:#10558f}
-.note{
-  margin-top:20px;
-  padding:13px;
-  background:#f2f7fc;
-  border-radius:10px;
-  color:#65778d;
-  font-size:12px;
-  line-height:1.9;
-}
-.message{
-  display:none;
-  margin-top:16px;
-  padding:13px;
-  border-radius:10px;
-  background:#fff5e8;
-  color:#87551a;
-  font-size:13px;
-  line-height:1.8;
-}
-@media(max-width:750px){
-  body{padding:12px}
-  .page{grid-template-columns:1fr}
-  .intro{padding:28px;min-height:230px}
-  .intro h1{font-size:25px;margin:20px 0 5px}
-  .footer{margin-top:20px}
-  .login{padding:35px 25px}
-}
-</style>
-</head>
-<body>
-<div class="page">
-
-  <section class="intro">
-    <div>
-      <div class="logo">ي</div>
-      <h1>بوابة منسوبي اليمامة</h1>
-      <p>
-        منصتك الإلكترونية للوصول إلى الخدمات الإدارية،
-        وتقديم الطلبات والشكاوى ومتابعة معاملتك بكل سهولة وأمان.
-      </p>
-    </div>
-    <div class="footer">بوابة الخدمات الإلكترونية · اليمامة</div>
-  </section>
-
-  <section class="login">
-    <div class="tag">مرحباً بك في بوابتك الإلكترونية</div>
-    <h2>تسجيل دخول الموظف</h2>
-    <p class="desc">
-      أدخل رقمك الوظيفي ورقم جوالك المسجل لدى الإدارة لتسجيل الدخول.
-    </p>
-
-    <form id="loginForm">
-      <label for="employee">الرقم الوظيفي</label>
-      <input id="employee" type="text"
-        inputmode="numeric" placeholder="أدخل رقمك الوظيفي"
-        required>
-
-      <label for="phone">رقم الجوال المسجل</label>
-      <input id="phone" type="tel"
-        inputmode="tel" placeholder="05xxxxxxxx"
-        required>
-
-      <button type="submit">تسجيل الدخول</button>
-    </form>
-
-<div class="message" id="message">
-  سيتم التحقق من الرقم الوظيفي ورقم الجوال المسجلين في قاعدة بيانات الموظفين.
-</div>
-    
-    <div class="note">
-      🔒 بياناتك محمية، ويقتصر الدخول على الموظفين المسجلين في النظام.
-    </div>
-  </section>
-
-</div>
-
 <script>
-document.getElementById("loginForm").addEventListener("submit",function(e){
+const SUPABASE_URL = "https://lpnogejpefsprjggeceo.supabase.co/rest/v1/";
+
+const SUPABASE_ANON_KEY = "sb_publishable_S6tLSatDIEgbhPvB7uBTTw_oadYhvAa";
+
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
   e.preventDefault();
-  document.getElementById("message").style.display="block";
+
+  const employeeNumber = document.getElementById("employee").value.trim();
+  const phoneNumber = document.getElementById("phone").value.trim();
+  const message = document.getElementById("message");
+
+  message.style.display = "block";
+  message.textContent = "جاري التحقق من البيانات...";
+
+  try {
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/employee-auth`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({
+        employee_number: employeeNumber,
+        phone_number: phoneNumber
+      })
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.success) {
+      message.textContent = "تم التحقق من البيانات بنجاح.";
+    } else {
+      message.textContent = result.message || "تعذر التحقق من البيانات.";
+    }
+
+  } catch (error) {
+    message.textContent = "تعذر الاتصال بالخادم، حاول مرة أخرى.";
+  }
 });
 </script>
-</body>
-</html>
