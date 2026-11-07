@@ -8,14 +8,14 @@
 <style>
 *{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
 body{margin:0;min-height:100vh;background:linear-gradient(135deg,#102b46,#17645d);padding:25px}
-.container{max-width:850px;margin:40px auto;background:white;border-radius:22px;padding:30px;box-shadow:0 15px 50px #0002}
+.container{max-width:950px;margin:40px auto;background:white;border-radius:22px;padding:30px;box-shadow:0 15px 50px #0002}
 .logo{width:65px;height:65px;margin:0 auto 15px;background:#e8f3ef;color:#17645d;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:bold}
 h1{text-align:center;color:#17354d;margin:10px 0}
 .description{text-align:center;color:#788795;line-height:1.8;margin-bottom:30px}
 label{display:block;font-weight:bold;color:#263c4e;margin-bottom:9px}
 input,textarea,select{width:100%;padding:15px;border:1px solid #dce4e9;border-radius:10px;font-size:15px;margin-bottom:20px;outline:none}
 input:focus,textarea:focus,select:focus{border-color:#17645d}
-button{border:0;border-radius:10px;padding:15px 20px;background:#17645d;color:white;font-size:16px;font-weight:bold;cursor:pointer}
+button{border:0;border-radius:10px;padding:13px 18px;background:#17645d;color:white;font-size:15px;font-weight:bold;cursor:pointer}
 button:disabled{opacity:.6;cursor:not-allowed}
 .primary{width:100%}
 #message,#managerMessage{display:none;margin-top:15px;padding:13px;background:#eef5f3;border-radius:10px;text-align:center;color:#17645d}
@@ -33,13 +33,33 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .back{background:#eef3f1;color:#17645d;margin-bottom:20px}
 .form-title{color:#17354d}
 .footer{text-align:center;color:#9aa6ae;font-size:12px;margin-top:30px}
-.manager-card{background:#f5f8f7;border:1px solid #e5ecef;border-radius:15px;padding:25px;margin-top:20px}
+.manager-card{background:#f5f8f7;border:1px solid #e5ecef;border-radius:15px;padding:22px;margin-top:20px}
 .manager-card h2{color:#17354d;margin-top:0}
+.ticket-card{border:1px solid #e5ecef;border-radius:14px;padding:18px;margin:13px 0;background:#fff}
+.ticket-card h3{margin:0 0 10px;color:#17354d;font-size:17px}
+.ticket-card p{margin:7px 0;color:#667783;font-size:13px;line-height:1.7}
+.ticket-open{margin-top:12px;width:100%}
+.ticket-top{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.status{display:inline-block;padding:6px 10px;border-radius:20px;background:#eef3f1;color:#17645d;font-size:12px;font-weight:bold}
+.ticket-meta{font-size:12px;color:#84919a}
+.message-item{padding:15px;border-radius:12px;margin:12px 0;background:#f3f6f7;border:1px solid #e5ecef}
+.message-item.admin{background:#edf5f2;border-color:#d8e9e1}
+.message-item strong{display:block;color:#17354d;margin-bottom:8px;font-size:13px}
+.message-item p{margin:0;white-space:pre-wrap;line-height:1.8;color:#405361}
+.message-item small{display:block;margin-top:9px;color:#84919a}
+.empty-state{text-align:center;padding:30px;color:#84919a;background:#f7f9fa;border-radius:12px}
+.section-heading{color:#17354d;margin:25px 0 15px}
+.action-row{display:flex;gap:10px;flex-wrap:wrap}
+.action-row button{flex:1}
+.secondary{background:#eef3f1;color:#17645d}
+.danger{background:#f9eeee;color:#a33b3b}
+.small-note{font-size:12px;color:#84919a;line-height:1.8}
 @media(max-width:550px){
 body{padding:12px}
 .container{padding:22px 17px;margin:15px auto}
 .services{grid-template-columns:1fr}
 .service:last-child{grid-column:auto}
+.header h1{font-size:20px}
 }
 </style>
 </head>
@@ -64,8 +84,7 @@ body{padding:12px}
 <div id="message" role="status" aria-live="polite"></div>
 </form>
 
-<button type="button" class="primary" id="showManagerLogin"
-style="margin-top:12px;background:#17354d">
+<button type="button" class="primary" id="showManagerLogin" style="margin-top:12px;background:#17354d">
 دخول المدراء
 </button>
 </section>
@@ -87,9 +106,7 @@ style="margin-top:12px;background:#17354d">
 <div id="managerMessage" role="status" aria-live="polite"></div>
 </form>
 
-<button type="button" class="back" id="backToEmployee">
-العودة لدخول الموظفين
-</button>
+<button type="button" class="back" id="backToEmployee">العودة لدخول الموظفين</button>
 </section>
 
 <!-- خدمات الموظفين -->
@@ -146,11 +163,64 @@ style="margin-top:12px;background:#17354d">
 <button class="logout" id="managerLogout">تسجيل الخروج</button>
 </div>
 
+<!-- قائمة المعاملات -->
+<div id="managerListView">
 <div class="manager-card">
-<h2>مرحباً بك في لوحة الإدارة</h2>
-<p style="color:#788795;line-height:1.9">
-تم تسجيل دخولك بنجاح. هذه لوحة الإدارة الأولية، وسيتم تجهيز عرض الشكاوى والبلاغات والطلبات والرد عليها في الخطوات القادمة.
-</p>
+<div class="ticket-top">
+<h2 style="margin:0">جميع المعاملات</h2>
+<button type="button" id="refreshTickets">تحديث القائمة ↻</button>
+</div>
+<p class="small-note">تظهر هنا جميع الشكاوى والبلاغات والطلبات لجميع الموظفين.</p>
+
+<label for="ticketFilter">تصفية حسب نوع المعاملة</label>
+<select id="ticketFilter">
+<option value="all">كل المعاملات</option>
+<option value="complaint">الشكاوى</option>
+<option value="report">البلاغات</option>
+<option value="request">الطلبات</option>
+</select>
+
+<div id="ticketsCount" class="small-note"></div>
+<div id="ticketsList">
+<div class="empty-state">جاري تحميل المعاملات...</div>
+</div>
+</div>
+</div>
+
+<!-- تفاصيل المعاملة -->
+<div id="managerDetailsView" class="hidden">
+<button type="button" class="back" id="backToTickets">← العودة لجميع المعاملات</button>
+
+<div class="manager-card">
+<div class="ticket-top">
+<h2 id="detailSubject" style="margin:0"></h2>
+<span id="detailStatus" class="status"></span>
+</div>
+
+<div id="detailInfo" style="line-height:2;color:#667783;font-size:14px;margin-top:15px"></div>
+
+<h3 class="section-heading">تفاصيل المعاملة</h3>
+<p id="detailText" style="white-space:pre-wrap;line-height:1.9;color:#405361"></p>
+
+<h3 class="section-heading">تحديث حالة المعاملة</h3>
+<label for="ticketStatusSelect">الحالة الجديدة</label>
+<select id="ticketStatusSelect">
+<option value="submitted">جديدة</option>
+<option value="in_review">قيد المراجعة</option>
+<option value="completed">مكتملة</option>
+<option value="rejected">مرفوضة</option>
+</select>
+<button type="button" class="primary" id="updateStatusButton">حفظ الحالة</button>
+<div id="statusMessage" class="small-note" style="margin-top:10px"></div>
+
+<h3 class="section-heading">المحادثة والردود</h3>
+<div id="ticketMessages"></div>
+
+<h3 class="section-heading">إرسال رد للموظف</h3>
+<textarea id="managerReply" rows="4" placeholder="اكتب ردك هنا..."></textarea>
+<button type="button" class="primary" id="sendReplyButton">إرسال الرد</button>
+<div id="replyMessage" class="small-note" style="margin-top:10px"></div>
+</div>
 </div>
 </section>
 
@@ -171,150 +241,427 @@ const message = document.getElementById("message");
 const managerMessage = document.getElementById("managerMessage");
 
 let managerSession = null;
+let currentTicketId = null;
+let currentTickets = [];
+
+const typeLabels = {
+  complaint: "شكوى",
+  report: "بلاغ",
+  request: "طلب"
+};
+
+const statusLabels = {
+  submitted: "جديدة",
+  in_review: "قيد المراجعة",
+  completed: "مكتملة",
+  rejected: "مرفوضة"
+};
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, function(char) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[char];
+  });
+}
+
+function formatDate(value) {
+  if (!value) return "غير محدد";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "غير محدد";
+  return date.toLocaleString("ar-SA");
+}
+
+function showManagerList() {
+  document.getElementById("managerDetailsView").classList.add("hidden");
+  document.getElementById("managerListView").classList.remove("hidden");
+  currentTicketId = null;
+}
+
+async function managerRequest(payload) {
+  if (!managerSession || !managerSession.access_token) {
+    throw new Error("انتهت جلسة المدير. سجل الدخول مرة أخرى.");
+  }
+
+  const response = await fetch(`${SUPABASE_URL}/functions/v1/manager-tickets`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": `Bearer ${managerSession.access_token}`
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const result = await response.json();
+
+  if (response.status === 401) {
+    managerSession = null;
+    managerDashboard.classList.add("hidden");
+    managerLoginPage.classList.remove("hidden");
+    managerMessage.style.display = "block";
+    managerMessage.textContent = "انتهت الجلسة. سجل الدخول مرة أخرى.";
+    throw new Error("انتهت جلسة المدير.");
+  }
+
+  if (!response.ok || !result.success) {
+    throw new Error(result.message || "تعذر تنفيذ العملية.");
+  }
+
+  return result;
+}
 
 // إظهار صفحة دخول المدراء
-document.getElementById("showManagerLogin").addEventListener("click",()=>{
-loginPage.classList.add("hidden");
-managerLoginPage.classList.remove("hidden");
+document.getElementById("showManagerLogin").addEventListener("click", () => {
+  loginPage.classList.add("hidden");
+  managerLoginPage.classList.remove("hidden");
 });
 
 // العودة إلى دخول الموظفين
-document.getElementById("backToEmployee").addEventListener("click",()=>{
-managerLoginPage.classList.add("hidden");
-loginPage.classList.remove("hidden");
-managerMessage.style.display="none";
-document.getElementById("managerLoginForm").reset();
+document.getElementById("backToEmployee").addEventListener("click", () => {
+  managerLoginPage.classList.add("hidden");
+  loginPage.classList.remove("hidden");
+  managerMessage.style.display = "none";
+  document.getElementById("managerLoginForm").reset();
 });
 
 // تسجيل دخول الموظف
-document.getElementById("loginForm").addEventListener("submit",async function(e){
-e.preventDefault();
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-const employeeNumber=document.getElementById("employee").value.trim();
-const phoneNumber=document.getElementById("phone").value.trim();
-const button=document.getElementById("loginButton");
+  const employeeNumber = document.getElementById("employee").value.trim();
+  const phoneNumber = document.getElementById("phone").value.trim();
+  const button = document.getElementById("loginButton");
 
-message.style.display="block";
-message.textContent="جاري التحقق...";
-button.disabled=true;
+  message.style.display = "block";
+  message.textContent = "جاري التحقق...";
+  button.disabled = true;
 
-try{
-const response=await fetch(`${SUPABASE_URL}/functions/v1/employee-auth`,{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"apikey":SUPABASE_ANON_KEY,
-"Authorization":`Bearer ${SUPABASE_ANON_KEY}`
-},
-body:JSON.stringify({
-employee_number:employeeNumber,
-phone_number:phoneNumber
-})
-});
+  try {
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/employee-auth`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({
+        employee_number: employeeNumber,
+        phone_number: phoneNumber
+      })
+    });
 
-const result=await response.json();
+    const result = await response.json();
 
-if(response.ok && result.success){
-loginPage.classList.add("hidden");
-servicesPage.classList.remove("hidden");
-}else{
-message.textContent=result.message || "تعذر التحقق من البيانات.";
-}
-}catch(error){
-message.textContent="تعذر الاتصال بالخادم.";
-}finally{
-button.disabled=false;
-}
+    if (response.ok && result.success) {
+      loginPage.classList.add("hidden");
+      servicesPage.classList.remove("hidden");
+    } else {
+      message.textContent = result.message || "تعذر التحقق من البيانات.";
+    }
+  } catch (error) {
+    message.textContent = "تعذر الاتصال بالخادم.";
+  } finally {
+    button.disabled = false;
+  }
 });
 
 // تسجيل دخول المدير
-document.getElementById("managerLoginForm").addEventListener("submit",async function(e){
-e.preventDefault();
+document.getElementById("managerLoginForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-const username=document.getElementById("managerUsername").value.trim();
-const password=document.getElementById("managerPassword").value;
-const button=document.getElementById("managerLoginButton");
+  const username = document.getElementById("managerUsername").value.trim();
+  const password = document.getElementById("managerPassword").value;
+  const button = document.getElementById("managerLoginButton");
 
-managerMessage.style.display="block";
-managerMessage.textContent="جاري التحقق من بيانات المدير...";
-button.disabled=true;
+  managerMessage.style.display = "block";
+  managerMessage.textContent = "جاري التحقق من بيانات المدير...";
+  button.disabled = true;
 
-try{
-const response=await fetch(`${SUPABASE_URL}/functions/v1/manager-auth`,{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"apikey":SUPABASE_ANON_KEY,
-"Authorization":`Bearer ${SUPABASE_ANON_KEY}`
-},
-body:JSON.stringify({
-username:username,
-password:password
-})
+  try {
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/manager-auth`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+      },
+      body: JSON.stringify({ username, password })
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.success && result.access_token && result.refresh_token) {
+      managerSession = {
+        access_token: result.access_token,
+        refresh_token: result.refresh_token,
+        manager: result.manager
+      };
+
+      document.getElementById("managerWelcome").textContent =
+        "أهلاً بك، " + (result.manager.full_name || result.manager.username);
+
+      managerLoginPage.classList.add("hidden");
+      managerDashboard.classList.remove("hidden");
+      managerMessage.style.display = "none";
+      document.getElementById("managerLoginForm").reset();
+
+      showManagerList();
+      await loadManagerTickets();
+    } else {
+      managerMessage.textContent = result.message || "اسم المستخدم أو كلمة المرور غير صحيحة.";
+    }
+  } catch (error) {
+    managerMessage.textContent = error.message || "تعذر الاتصال بالخادم.";
+  } finally {
+    button.disabled = false;
+  }
 });
 
-const result=await response.json();
+// تحميل جميع المعاملات
+async function loadManagerTickets() {
+  const list = document.getElementById("ticketsList");
+  list.innerHTML = '<div class="empty-state">جاري تحميل المعاملات...</div>';
 
-if(response.ok && result.success && result.access_token && result.refresh_token){
-managerSession={
-access_token:result.access_token,
-refresh_token:result.refresh_token
-};
-
-document.getElementById("managerWelcome").textContent=
-"أهلاً بك، "+(result.manager.full_name || result.manager.username);
-
-managerLoginPage.classList.add("hidden");
-managerDashboard.classList.remove("hidden");
-managerMessage.style.display="none";
-document.getElementById("managerLoginForm").reset();
-}else{
-managerMessage.textContent=result.message || "اسم المستخدم أو كلمة المرور غير صحيحة.";
+  try {
+    const result = await managerRequest({ action: "list" });
+    currentTickets = result.tickets || [];
+    renderTickets();
+  } catch (error) {
+    list.innerHTML = `<div class="empty-state">${escapeHTML(error.message)}</div>`;
+  }
 }
-}catch(error){
-managerMessage.textContent="تعذر الاتصال بالخادم. حاول مرة أخرى.";
-}finally{
-button.disabled=false;
+
+// عرض قائمة المعاملات
+function renderTickets() {
+  const list = document.getElementById("ticketsList");
+  const filter = document.getElementById("ticketFilter").value;
+
+  const filtered = currentTickets.filter(ticket =>
+    filter === "all" || ticket.ticket_type === filter
+  );
+
+  document.getElementById("ticketsCount").textContent =
+    `عدد المعاملات المعروضة: ${filtered.length}`;
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="empty-state">لا توجد معاملات في هذا القسم حالياً.</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(ticket => {
+    const employee = ticket.employee || {};
+    return `
+      <div class="ticket-card">
+        <div class="ticket-top">
+          <h3>${escapeHTML(ticket.subject)}</h3>
+          <span class="status">${escapeHTML(statusLabels[ticket.status] || ticket.status)}</span>
+        </div>
+        <p>النوع: ${escapeHTML(typeLabels[ticket.ticket_type] || ticket.ticket_type)}</p>
+        <p>الموظف: ${escapeHTML(employee.full_name || "غير متوفر")}</p>
+        <p>الرقم الوظيفي: ${escapeHTML(employee.employee_number || "غير متوفر")}</p>
+        <p class="ticket-meta">تاريخ الإرسال: ${escapeHTML(formatDate(ticket.created_at))}</p>
+        <button class="ticket-open" type="button" data-ticket-id="${escapeHTML(ticket.id)}">
+          فتح المعاملة والتفاصيل
+        </button>
+      </div>
+    `;
+  }).join("");
 }
+
+// فتح تفاصيل معاملة
+async function openTicket(ticketId) {
+  currentTicketId = ticketId;
+
+  document.getElementById("managerListView").classList.add("hidden");
+  document.getElementById("managerDetailsView").classList.remove("hidden");
+
+  document.getElementById("detailSubject").textContent = "جاري تحميل المعاملة...";
+  document.getElementById("detailInfo").textContent = "";
+  document.getElementById("detailText").textContent = "";
+  document.getElementById("ticketMessages").innerHTML =
+    '<div class="empty-state">جاري تحميل المحادثة...</div>';
+
+  try {
+    const result = await managerRequest({
+      action: "details",
+      ticket_id: ticketId
+    });
+
+    const ticket = result.ticket;
+    const employee = ticket.employee || {};
+
+    document.getElementById("detailSubject").textContent = ticket.subject || "بدون عنوان";
+    document.getElementById("detailStatus").textContent =
+      statusLabels[ticket.status] || ticket.status;
+
+    document.getElementById("detailInfo").innerHTML = `
+      <div>نوع المعاملة: ${escapeHTML(typeLabels[ticket.ticket_type] || ticket.ticket_type)}</div>
+      <div>اسم الموظف: ${escapeHTML(employee.full_name || "غير متوفر")}</div>
+      <div>الرقم الوظيفي: ${escapeHTML(employee.employee_number || "غير متوفر")}</div>
+      <div>تاريخ الإرسال: ${escapeHTML(formatDate(ticket.created_at))}</div>
+    `;
+
+    document.getElementById("detailText").textContent = ticket.details || "";
+    document.getElementById("ticketStatusSelect").value = ticket.status;
+    document.getElementById("statusMessage").textContent = "";
+    document.getElementById("replyMessage").textContent = "";
+    document.getElementById("managerReply").value = "";
+
+    renderMessages(result.messages || []);
+  } catch (error) {
+    document.getElementById("ticketMessages").innerHTML =
+      `<div class="empty-state">${escapeHTML(error.message)}</div>`;
+  }
+}
+
+// عرض المحادثة
+function renderMessages(messages) {
+  const container = document.getElementById("ticketMessages");
+
+  if (!messages.length) {
+    container.innerHTML = '<div class="empty-state">لا توجد ردود سابقة على هذه المعاملة.</div>';
+    return;
+  }
+
+  container.innerHTML = messages.map(item => {
+    const isAdmin = item.sender_type === "admin";
+    return `
+      <div class="message-item ${isAdmin ? "admin" : ""}">
+        <strong>${isAdmin ? "رد الإدارة" : "رسالة الموظف"}</strong>
+        <p>${escapeHTML(item.message)}</p>
+        <small>${escapeHTML(formatDate(item.created_at))}</small>
+      </div>
+    `;
+  }).join("");
+}
+
+// فتح معاملة عند الضغط على زرها
+document.getElementById("ticketsList").addEventListener("click", event => {
+  const button = event.target.closest("[data-ticket-id]");
+  if (button) openTicket(button.dataset.ticketId);
+});
+
+// تصفية المعاملات
+document.getElementById("ticketFilter").addEventListener("change", renderTickets);
+
+// تحديث القائمة
+document.getElementById("refreshTickets").addEventListener("click", loadManagerTickets);
+
+// العودة للقائمة
+document.getElementById("backToTickets").addEventListener("click", () => {
+  showManagerList();
+});
+
+// إرسال رد
+document.getElementById("sendReplyButton").addEventListener("click", async () => {
+  const button = document.getElementById("sendReplyButton");
+  const reply = document.getElementById("managerReply").value.trim();
+  const status = document.getElementById("replyMessage");
+
+  if (!currentTicketId) return;
+
+  if (!reply) {
+    status.textContent = "اكتب الرد أولاً.";
+    return;
+  }
+
+  button.disabled = true;
+  status.textContent = "جاري إرسال الرد...";
+
+  try {
+    await managerRequest({
+      action: "reply",
+      ticket_id: currentTicketId,
+      message: reply
+    });
+
+    document.getElementById("managerReply").value = "";
+    status.textContent = "تم إرسال الرد بنجاح.";
+    await openTicket(currentTicketId);
+    document.getElementById("replyMessage").textContent = "تم إرسال الرد بنجاح.";
+  } catch (error) {
+    status.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+// تحديث حالة المعاملة
+document.getElementById("updateStatusButton").addEventListener("click", async () => {
+  const button = document.getElementById("updateStatusButton");
+  const newStatus = document.getElementById("ticketStatusSelect").value;
+  const statusMessage = document.getElementById("statusMessage");
+
+  if (!currentTicketId) return;
+
+  button.disabled = true;
+  statusMessage.textContent = "جاري تحديث الحالة...";
+
+  try {
+    await managerRequest({
+      action: "status",
+      ticket_id: currentTicketId,
+      status: newStatus
+    });
+
+    statusMessage.textContent = "تم تحديث حالة المعاملة بنجاح.";
+    await loadManagerTickets();
+    await openTicket(currentTicketId);
+    document.getElementById("statusMessage").textContent = "تم تحديث حالة المعاملة بنجاح.";
+  } catch (error) {
+    statusMessage.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
 });
 
 // تسجيل خروج المدير
-document.getElementById("managerLogout").addEventListener("click",()=>{
-managerSession=null;
-managerDashboard.classList.add("hidden");
-loginPage.classList.remove("hidden");
+document.getElementById("managerLogout").addEventListener("click", () => {
+  managerSession = null;
+  currentTicketId = null;
+  currentTickets = [];
+
+  managerDashboard.classList.add("hidden");
+  loginPage.classList.remove("hidden");
+  managerLoginPage.classList.add("hidden");
+  document.getElementById("managerLoginForm").reset();
 });
 
 // اختيار خدمة الموظف
-document.querySelectorAll(".service").forEach(card=>{
-card.addEventListener("click",()=>{
-const type=card.dataset.type;
-const titles={
-complaint:"تقديم شكوى",
-report:"تقديم بلاغ",
-request:"تقديم طلب"
-};
+document.querySelectorAll(".service").forEach(card => {
+  card.addEventListener("click", () => {
+    const type = card.dataset.type;
+    const titles = {
+      complaint: "تقديم شكوى",
+      report: "تقديم بلاغ",
+      request: "تقديم طلب"
+    };
 
-document.getElementById("serviceTitle").textContent=titles[type];
-servicesList.classList.add("hidden");
-serviceForm.classList.remove("hidden");
-});
+    document.getElementById("serviceTitle").textContent = titles[type];
+    servicesList.classList.add("hidden");
+    serviceForm.classList.remove("hidden");
+  });
 });
 
 // العودة للخدمات
-document.getElementById("backButton").addEventListener("click",()=>{
-serviceForm.classList.add("hidden");
-servicesList.classList.remove("hidden");
+document.getElementById("backButton").addEventListener("click", () => {
+  serviceForm.classList.add("hidden");
+  servicesList.classList.remove("hidden");
 });
 
 // تسجيل خروج الموظف
-document.getElementById("logoutButton").addEventListener("click",()=>{
-servicesPage.classList.add("hidden");
-loginPage.classList.remove("hidden");
-servicesList.classList.remove("hidden");
-serviceForm.classList.add("hidden");
-document.getElementById("loginForm").reset();
-message.style.display="none";
+document.getElementById("logoutButton").addEventListener("click", () => {
+  servicesPage.classList.add("hidden");
+  loginPage.classList.remove("hidden");
+  servicesList.classList.remove("hidden");
+  serviceForm.classList.add("hidden");
+  document.getElementById("loginForm").reset();
+  message.style.display = "none";
 });
 </script>
 </body>
