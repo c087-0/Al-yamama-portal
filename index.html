@@ -8,7 +8,48 @@
 *{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
 body{margin:0;min-height:100vh;background:linear-gradient(135deg,#102b46,#17645d);padding:25px}
 .container{max-width:950px;margin:40px auto;background:white;border-radius:22px;padding:30px;box-shadow:0 15px 50px #0002}
-.logo{width:65px;height:65px;margin:0 auto 15px;background:#e8f3ef;color:#17645d;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:bold}
+
+.logo{
+width:85px;
+height:85px;
+margin:0 auto 15px;
+background:white;
+border:1px solid #e8f3ef;
+border-radius:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+}
+
+.logo img{
+width:100%;
+height:100%;
+object-fit:contain;
+padding:4px;
+}
+
+/* العلامة المائية في صفحات الدخول فقط */
+.login-screen{
+position:relative;
+isolation:isolate;
+overflow:hidden;
+}
+
+.login-screen::before{
+content:"اليمامة";
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:clamp(90px,18vw,190px);
+font-weight:bold;
+color:rgba(23,53,77,.045);
+white-space:nowrap;
+pointer-events:none;
+z-index:-1;
+}
+
 h1{text-align:center;color:#17354d;margin:10px 0}
 .description{text-align:center;color:#788795;line-height:1.8;margin-bottom:30px}
 label{display:block;font-weight:bold;color:#263c4e;margin-bottom:9px}
@@ -68,8 +109,10 @@ body{padding:12px}
 <body>
 <main class="container">
 
-<section id="loginPage">
-<div class="logo">Y</div>
+<section id="loginPage" class="login-screen">
+<div class="logo">
+<img src="./yamama-logo.jpeg" alt="شعار اليمامة">
+</div>
 <h1>بوابة موظفي اليمامة</h1>
 <p class="description">مرحباً بك. أدخل بياناتك المسجلة لدى الإدارة.</p>
 <form id="loginForm">
@@ -83,8 +126,10 @@ body{padding:12px}
 <button type="button" class="primary" id="showManagerLogin" style="margin-top:12px;background:#17354d">دخول المدراء</button>
 </section>
 
-<section id="managerLoginPage" class="hidden">
-<div class="logo">Y</div>
+<section id="managerLoginPage" class="hidden login-screen">
+<div class="logo">
+<img src="./yamama-logo.jpeg" alt="شعار اليمامة">
+</div>
 <h1>دخول المدراء</h1>
 <p class="description">يرجى إدخال بيانات حساب المدير.</p>
 <form id="managerLoginForm">
