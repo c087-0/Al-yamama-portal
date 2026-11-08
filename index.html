@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -5,73 +6,669 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>بوابة موظفين مشروع الوسطى</title>
 <style>
-*{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
-body{margin:0;min-height:100vh;background:linear-gradient(135deg,#102b46,#17645d);padding:25px}
-.container{max-width:950px;margin:40px auto;background:white;border-radius:22px;padding:30px;box-shadow:0 15px 50px #0002}
-.logo{width:85px;height:85px;margin:0 auto 15px;background:white;border:1px solid #e8f3ef;border-radius:20px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.logo img{width:120%;height:120%;object-fit:contain;padding:4px}
-.login-screen{position:relative;isolation:isolate;overflow:hidden}
-.login-screen::before{content:"اليمامة";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(90px,18vw,190px);font-weight:bold;color:rgba(23,53,77,.045);white-space:nowrap;pointer-events:none;z-index:-1}
-h1{text-align:center;color:#17354d;margin:10px 0}
-.description{text-align:center;color:#788795;line-height:1.8;margin-bottom:30px}
-label{display:block;font-weight:bold;color:#263c4e;margin-bottom:9px}
-input,textarea,select{width:100%;padding:15px;border:1px solid #dce4e9;border-radius:10px;font-size:15px;margin-bottom:20px;outline:none}
-input:focus,textarea:focus,select:focus{border-color:#17645d}
-button{border:0;border-radius:10px;padding:13px 18px;background:#17645d;color:white;font-size:15px;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.6;cursor:not-allowed}
-.primary{width:100%}
-#message,#managerMessage{display:none;margin-top:15px;padding:13px;background:#eef5f3;border-radius:10px;text-align:center;color:#17645d}
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --navy:#122d40;
+  --navy-deep:#0b2533;
+  --teal:#087b70;
+  --teal-deep:#05675e;
+  --mint:#dff6ec;
+  --paper:#ffffff;
+  --page:#eff5f7;
+  --ink:#233c4b;
+  --muted:#697e8b;
+  --edge:#dae7e9;
+  --soft:#f5f9fa;
+  --shadow:0 25px 75px rgba(9,36,51,.14);
+  --ring:0 0 0 4px rgba(8,123,112,.13);
+}
+*{
+  box-sizing:border-box;
+  font-family:'Tajawal','Segoe UI',Tahoma,Arial,sans-serif;
+}
+html{
+  scroll-behavior:smooth;
+  scroll-padding-top:30px;
+}
+body{
+  position:relative;
+  min-height:100vh;
+  margin:0;
+  padding:48px 28px 68px;
+  background:linear-gradient(180deg,#dce9ed 0%,#eff5f7 46%,#f5f8f9 100%);
+  color:var(--ink);
+  font-size:16px;
+  line-height:1.65;
+}
+body::before{
+  content:"";
+  position:absolute;
+  top:0;
+  inset-inline:0;
+  height:360px;
+  z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 15% 15%,rgba(53,170,155,.22),transparent 48%),
+    radial-gradient(ellipse at 87% 0%,rgba(94,165,184,.23),transparent 42%),
+    linear-gradient(122deg,#102f42 0%,#174e5c 56%,#087d72 100%);
+}
+body::after{
+  content:"";
+  position:absolute;
+  top:0;
+  inset-inline:0;
+  height:360px;
+  z-index:0;
+  opacity:.26;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:45px 45px;
+}
+.container{
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:1240px;
+  min-height:530px;
+  margin:0 auto;
+  padding:44px clamp(25px,4.4vw,64px) 30px;
+  border-radius:26px;
+  background:var(--paper);
+  border:1px solid rgba(255,255,255,.74);
+  box-shadow:var(--shadow);
+  overflow:visible;
+}
+body:has(#loginPage:not(.hidden)) .container,
+body:has(#managerLoginPage:not(.hidden)) .container{
+  max-width:700px;
+  padding:40px clamp(26px,6vw,66px) 26px;
+}
+.login-screen{
+  position:relative;
+  max-width:570px;
+  margin:auto;
+  padding:8px 0 16px;
+  isolation:isolate;
+  overflow:visible;
+}
+.login-screen::before{
+  content:"اليمامة";
+  position:absolute;
+  top:55%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:clamp(80px,16vw,145px);
+  font-weight:bold;
+  color:rgba(7,111,104,.045);
+  white-space:nowrap;
+  pointer-events:none;
+  z-index:-1;
+}
+.logo{
+  width:104px;
+  height:104px;
+  margin:0 auto 25px;
+  background:#fff;
+  border:1px solid #d9ebe9;
+  border-radius:24px;
+  padding:9px;
+  box-shadow:0 10px 30px rgba(7,90,85,.11);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.logo img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:0;
+  display:block;
+}
+.logo.logo-fallback::after{
+  content:'اليمامة';
+  color:var(--teal-deep);
+  font-size:20px;
+  font-weight:800;
+}
+.logo.logo-fallback img{display:none}
+h1{
+  font-size:clamp(25px,3vw,32px);
+  font-weight:800;
+  color:var(--navy-deep);
+  line-height:1.45;
+  letter-spacing:-.35px;
+  margin:7px 0 8px;
+  text-align:center;
+}
+.login-screen h1{text-align:center}
+.description{
+  text-align:center;
+  font-size:16px;
+  line-height:1.9;
+  color:var(--muted);
+  margin:0 0 30px;
+}
+.login-screen .description{margin:0 0 34px}
+label{
+  display:block;
+  font-size:15.5px;
+  font-weight:700;
+  color:var(--navy);
+  margin-bottom:10px;
+}
+input,textarea,select{
+  display:block;
+  width:100%;
+  min-height:56px;
+  margin:0 0 22px;
+  padding:14px 17px;
+  background:#fcfefe;
+  border:1.5px solid var(--edge);
+  border-radius:13px;
+  color:var(--ink);
+  font-size:16px;
+  font-weight:500;
+  line-height:1.6;
+  box-shadow:0 2px 4px rgba(25,55,60,.018);
+  transition:border-color .18s,box-shadow .18s,background .18s;
+  outline:none;
+}
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+input::placeholder,textarea::placeholder{
+  color:#9aabb1;
+  font-weight:400;
+}
+input:hover,textarea:hover,select:hover{
+  border-color:#b9d3d4;
+}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--teal);
+  box-shadow:var(--ring);
+  background:white;
+}
+input[type=checkbox]{
+  width:19px;
+  height:19px;
+  min-height:19px;
+  accent-color:var(--teal);
+  box-shadow:none;
+}
+input[type=file]{
+  min-height:76px;
+  padding:15px;
+  background:#f7fbfa;
+  border:1.5px dashed #b9d8d2;
+  cursor:pointer;
+}
+input[type=file]::file-selector-button{
+  padding:9px 18px;
+  margin-inline-end:16px;
+  border:0;
+  border-radius:9px;
+  background:#e0f3ee;
+  color:var(--teal-deep);
+  font:700 14px 'Tajawal','Segoe UI',sans-serif;
+  cursor:pointer;
+}
+button{
+  border:1px solid transparent;
+  border-radius:12px;
+  min-height:48px;
+  padding:12px 21px;
+  background:linear-gradient(135deg,#0b8479,#096d66);
+  color:#fff;
+  font-size:15.5px;
+  font-weight:700;
+  line-height:1.4;
+  white-space:normal;
+  box-shadow:0 5px 14px rgba(8,123,112,.14);
+  cursor:pointer;
+  transition:transform .18s,box-shadow .18s,background .18s,filter .18s;
+}
+button:hover:not(:disabled){
+  transform:translateY(-1px);
+  box-shadow:0 9px 21px rgba(8,123,112,.20);
+  filter:brightness(1.04);
+}
+button:active:not(:disabled){transform:translateY(0)}
+button:focus-visible,.service:focus-visible,a:focus-visible{
+  outline:3px solid rgba(8,123,112,.4);
+  outline-offset:3px;
+}
+button:disabled{
+  opacity:.62;
+  cursor:not-allowed;
+}
+.primary{
+  width:100%;
+  min-height:53px;
+}
+#loginButton,#managerLoginButton{
+  min-height:57px;
+  font-size:17px;
+}
+#showManagerLogin{
+  min-height:54px;
+  background:var(--navy)!important;
+  box-shadow:0 5px 14px rgba(19,47,66,.17);
+}
+#message,#managerMessage{
+  display:none;
+  margin:16px 0 0;
+  padding:16px;
+  background:#f1f9f6;
+  border:1px solid #cfe9e1;
+  border-radius:12px;
+  text-align:center;
+  color:var(--teal-deep);
+  font-weight:600;
+  line-height:1.8;
+}
 .hidden{display:none!important}
-.header{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;border-bottom:1px solid #eee;padding-bottom:20px;margin-bottom:25px}
-.header h1{text-align:right;font-size:23px}
-.logout{background:#f1f3f5;color:#354b5e;padding:10px 15px;font-size:13px}
-.services{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.service{border:1px solid #e5ecef;border-radius:16px;padding:25px 15px;text-align:center;cursor:pointer;background:#fff;transition:.2s}
-.service:hover{border-color:#17645d;transform:translateY(-3px);box-shadow:0 8px 20px #0001}
-.service .icon{font-size:35px;margin-bottom:12px}
-.service h2{font-size:19px;color:#17354d;margin:8px}
-.service p{font-size:13px;color:#82909a;margin:0}
-.service:last-child{grid-column:1/-1}
-.back{background:#eef3f1;color:#17645d;margin-bottom:20px}
-.form-title{color:#17354d}
-.footer{text-align:center;color:#9aa6ae;font-size:12px;margin-top:30px}
-.manager-card{background:#f5f8f7;border:1px solid #e5ecef;border-radius:15px;padding:22px;margin-top:20px}
-.manager-card h2{color:#17354d;margin-top:0}
-.ticket-card{border:1px solid #e5ecef;border-radius:14px;padding:18px;margin:13px 0;background:#fff}
-.ticket-card h3{margin:0 0 10px;color:#17354d;font-size:17px}
-.ticket-card p{margin:7px 0;color:#667783;font-size:13px;line-height:1.7}
-.ticket-open{margin-top:12px;width:100%}
-.ticket-top{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
-.status{display:inline-block;padding:6px 10px;border-radius:20px;background:#eef3f1;color:#17645d;font-size:12px;font-weight:bold}
-.ticket-meta{font-size:12px;color:#84919a}
-.message-item{padding:15px;border-radius:12px;margin:12px 0;background:#f3f6f7;border:1px solid #e5ecef}
-.message-item.admin{background:#edf5f2;border-color:#d8e9e1}
-.message-item strong{display:block;color:#17354d;margin-bottom:8px;font-size:13px}
-.message-item p{margin:0;white-space:pre-wrap;line-height:1.8;color:#405361}
-.message-item small{display:block;margin-top:9px;color:#84919a}
-.empty-state{text-align:center;padding:30px;color:#84919a;background:#f7f9fa;border-radius:12px}
-.section-heading{color:#17354d;margin:25px 0 15px}
-.action-row{display:flex;gap:10px;flex-wrap:wrap}
-.action-row button{flex:1}
-.secondary{background:#eef3f1;color:#17645d}
-.danger{background:#f9eeee;color:#a33b3b}
-.small-note{font-size:12px;color:#84919a;line-height:1.8}
-.file-link{display:inline-block;color:#17645d;font-weight:bold;margin:8px 0}
-#formMessage,#statusMessage,#replyMessage{line-height:1.8}
-.employee-card{border:1px solid #e5ecef;border-radius:14px;background:white;padding:17px;margin:12px 0}
-.employee-card h3{margin:0 0 10px;color:#17354d}
-.employee-card p{margin:7px 0;color:#667783;font-size:13px}
-.employee-card .action-row{margin-top:13px}
-.employee-card .action-row button{font-size:13px;padding:10px}
-.employee-active{background:#eaf5ee;color:#247344}
-.employee-inactive{background:#f9eeee;color:#a33b3b}
-.employee-status{display:inline-block;padding:6px 10px;border-radius:20px;font-size:12px;font-weight:bold}
-@media(max-width:550px){
- body{padding:12px}
- .container{padding:22px 17px;margin:15px auto}
- .services{grid-template-columns:1fr}
- .service:last-child{grid-column:auto}
- .header h1{font-size:20px}
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:20px;
+  margin:0 0 32px;
+  padding:0 0 29px;
+  border-bottom:1px solid var(--edge);
+}
+.header h1{
+  font-size:clamp(24px,2.4vw,31px);
+  margin:0;
+  text-align:right;
+}
+.header .description{
+  margin:3px 0 0!important;
+  text-align:right;
+  font-size:15px;
+}
+.logout{
+  flex:0 0 auto;
+  min-height:45px;
+  padding:11px 21px;
+  border:1px solid #e0e8ec;
+  background:#f4f7f9;
+  color:var(--navy);
+  box-shadow:none;
+  font-size:14px;
+}
+.logout:hover:not(:disabled){
+  box-shadow:0 5px 12px #143f5110;
+}
+.services{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+  margin:14px 0 25px;
+}
+.service{
+  position:relative;
+  display:flex;
+  min-height:235px;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:31px 22px 28px;
+  background:linear-gradient(155deg,#fff 0%,#f9fcfc 100%);
+  border:1.5px solid var(--edge);
+  border-radius:19px;
+  box-shadow:0 5px 16px rgba(11,48,58,.035);
+  text-align:center;
+  cursor:pointer;
+  overflow:hidden;
+  transition:transform .22s,border-color .22s,box-shadow .22s,background .22s;
+}
+.service::before{
+  content:"";
+  position:absolute;
+  inset-inline:29%;
+  top:0;
+  height:3px;
+  border-radius:0 0 7px 7px;
+  background:linear-gradient(90deg,#27b4a6,#0b6e6b);
+  opacity:.55;
+}
+.service:hover{
+  border-color:#75bdb3;
+  transform:translateY(-5px);
+  background:#fff;
+  box-shadow:0 20px 40px rgba(11,71,70,.13);
+}
+.service .icon{
+  display:grid;
+  place-items:center;
+  width:78px;
+  height:78px;
+  margin:0 auto 18px;
+  background:linear-gradient(135deg,#e7f8f3,#f2fbfa);
+  border:1px solid #ddf1eb;
+  border-radius:22px;
+  font-size:38px;
+  line-height:1;
+}
+.service h2{
+  font-size:22px;
+  font-weight:800;
+  color:var(--navy);
+  margin:0 0 5px;
+}
+.service p{
+  font-size:15px;
+  color:var(--muted);
+  line-height:1.8;
+  margin:0;
+}
+.service:last-child{grid-column:auto}
+.back,.secondary{
+  background:#eaf4f1;
+  color:var(--teal-deep);
+  box-shadow:none;
+  border:1px solid #d5eae4;
+}
+.back{
+  margin-bottom:22px;
+  min-height:45px;
+}
+.back:hover:not(:disabled),.secondary:hover:not(:disabled){
+  box-shadow:0 7px 17px #0b605315;
+}
+.danger{
+  background:#fff0f0;
+  color:#b44349;
+  border:1px solid #f6d9da;
+  box-shadow:none;
+}
+.form-title{
+  font-size:26px;
+  font-weight:800;
+  color:var(--navy);
+  margin:4px 0 24px;
+  padding:0 0 16px;
+  border-bottom:1px solid #e7eeee;
+}
+.footer{
+  color:#85969f;
+  font-size:13px;
+  font-weight:500;
+  margin:37px 0 0;
+  padding:25px 0 0;
+  border-top:1px solid #ecf0f1;
+  text-align:center;
+}
+.manager-card{
+  background:#fbfdfd;
+  border:1px solid var(--edge);
+  border-radius:20px;
+  padding:clamp(21px,3vw,32px);
+  margin-top:21px;
+  box-shadow:0 8px 25px rgba(24,69,78,.035);
+}
+.manager-card h2{
+  font-size:23px;
+  font-weight:800;
+  color:var(--navy);
+  margin-top:0;
+}
+.manager-card h3{color:var(--navy)}
+.ticket-card,.employee-card{
+  margin:16px 0;
+  padding:23px 25px;
+  background:#fff;
+  border:1.5px solid #dee8ea;
+  border-radius:16px;
+  box-shadow:0 3px 12px rgba(21,64,78,.035);
+  transition:border-color .18s,box-shadow .18s;
+}
+.ticket-card:hover,.employee-card:hover{
+  border-color:#a6d0ca;
+  box-shadow:0 10px 22px rgba(25,86,83,.065);
+}
+.ticket-card h3,.employee-card h3{
+  font-size:19px;
+  font-weight:800;
+  line-height:1.6;
+  color:var(--navy);
+  margin:0 0 12px;
+  overflow-wrap:anywhere;
+}
+.ticket-card p,.employee-card p{
+  font-size:15px;
+  line-height:1.95;
+  color:#586f7e;
+  margin:5px 0;
+}
+.ticket-open{
+  margin-top:18px;
+  width:100%;
+  min-height:49px;
+}
+.ticket-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.status,.employee-status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 13px;
+  border-radius:100px;
+  background:#e5f5ee;
+  color:#126854;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.4;
+}
+.ticket-meta{
+  color:#82949e!important;
+  font-size:13px!important;
+}
+.message-item{
+  margin:15px 0;
+  padding:20px 22px;
+  border-radius:15px;
+  background:#f3f7f9;
+  border:1px solid #e0e9ec;
+}
+.message-item.admin{
+  background:#ebf7f1;
+  border-color:#d2ebdf;
+}
+.message-item strong{
+  display:block;
+  font-size:15px;
+  font-weight:800;
+  color:var(--navy);
+  margin-bottom:8px;
+}
+.message-item p{
+  color:#405966;
+  line-height:1.95;
+  font-size:15px;
+  margin:0;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.message-item small{
+  display:block;
+  font-size:13px;
+  margin-top:12px;
+  color:#7b909a;
+}
+.empty-state{
+  text-align:center;
+  padding:44px 25px;
+  color:#708795;
+  background:#f4f8f9;
+  border:1px dashed #dce8eb;
+  border-radius:15px;
+  font-size:16px;
+  line-height:1.8;
+}
+.section-heading{
+  font-size:19px;
+  font-weight:800;
+  margin:33px 0 17px;
+  padding-top:8px;
+  color:var(--navy);
+}
+.action-row{
+  display:flex;
+  align-items:stretch;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.action-row button{
+  flex:1 1 200px;
+  min-height:49px;
+}
+.small-note{
+  font-size:14px;
+  line-height:1.95;
+  color:var(--muted);
+}
+.file-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin:13px 0;
+  padding:12px 18px;
+  border:1px solid #c5e5dc;
+  border-radius:10px;
+  background:#ecf9f4;
+  color:#096c62;
+  font-size:15px;
+  font-weight:800;
+  text-decoration:none;
+  overflow-wrap:anywhere;
+}
+.file-link:hover{
+  background:#ddf3e9;
+  text-decoration:underline;
+}
+#formMessage{
+  white-space:pre-line;
+  transition:color .18s ease;
+}
+#formMessage.attachment-error{
+  color:#ad3034;
+  font-weight:700;
+}
+#formMessage.attachment-success{
+  color:#08735f;
+  font-weight:800;
+}
+#formMessage.attachment-progress{color:#385872}
+#formMessage,#statusMessage,#replyMessage,#employeeReplyMessage,#employeeFormMessage,#deleteMessage{
+  font-size:14px;
+  line-height:1.9;
+  overflow-wrap:anywhere;
+}
+.employee-card .action-row{margin-top:18px}
+.employee-card .action-row button{
+  font-size:14px;
+  padding:11px 15px;
+  min-height:46px;
+}
+.employee-active{
+  background:#e4f5e9;
+  color:#167249;
+}
+.employee-inactive{
+  background:#fff0ef;
+  color:#b04444;
+}
+#myTicketsList,#ticketsList,#employeesList{margin-top:17px}
+#employeeDetailInfo,#detailInfo{
+  font-size:15px!important;
+  line-height:2!important;
+  color:#607987!important;
+  overflow-wrap:anywhere;
+}
+#employeeDetailText,#detailText,#employeeResolution{
+  line-height:2!important;
+  font-size:16px;
+  overflow-wrap:anywhere;
+}
+#employeeAttachment,#managerAttachment{overflow-wrap:anywhere}
+#resolutionWrap{margin-top:18px}
+@media (max-width:920px){
+  .container{padding:33px 30px}
+  .services{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .service:last-child{grid-column:1/-1}
+  .service{min-height:200px}
+}
+@media (max-width:600px){
+  body{padding:16px 12px 30px}
+  body::before,body::after{height:265px}
+  .container,
+  body:has(#loginPage:not(.hidden)) .container,
+  body:has(#managerLoginPage:not(.hidden)) .container{
+    padding:28px 18px 24px;
+    margin:0 auto;
+    border-radius:19px;
+    min-height:unset;
+  }
+  .login-screen{padding:5px 0 12px}
+  .logo{
+    width:88px;
+    height:88px;
+    border-radius:19px;
+    margin-bottom:22px;
+  }
+  h1,.login-screen h1{font-size:24px}
+  .description{font-size:14.5px}
+  input,textarea,select{font-size:16px}
+  .header{
+    gap:14px;
+    align-items:flex-start;
+    padding-bottom:22px;
+    margin-bottom:26px;
+  }
+  .header>div{flex:1 1 100%}
+  .header h1{font-size:23px}
+  .header .logout{margin-inline-start:auto}
+  .services{grid-template-columns:1fr;gap:15px}
+  .service,.service:last-child{grid-column:auto}
+  .service{
+    min-height:188px;
+    padding:24px 15px;
+  }
+  .service .icon{
+    width:66px;
+    height:66px;
+    font-size:34px;
+    margin-bottom:12px;
+  }
+  .service h2{font-size:21px}
+  .manager-card{padding:20px 16px}
+  .ticket-card,.employee-card{padding:19px 16px}
+  .ticket-top{align-items:flex-start}
+  .form-title{font-size:23px}
+  .action-row{gap:10px}
+  .action-row button{flex:1 1 100%}
+  input[type=file]{padding:12px}
+  input[type=file]::file-selector-button{margin-inline-end:8px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    transition:none!important;
+    animation:none!important;
+  }
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -138,7 +735,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
 <label for="details">التفاصيل</label>
 <textarea id="details" rows="5" maxlength="10000" placeholder="اكتب تفاصيل الخدمة هنا" required></textarea>
 <label for="attachment">إرفاق ملف (اختياري)</label>
-<input id="attachment" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx">
+<input id="attachment" type="file" accept="image/jpeg,image/png,image/gif,image/webp,.pdf,.doc,.docx,.xls,.xlsx">
 <p class="small-note">الحد الأعلى 5 ميجابايت. الأنواع المسموحة: الصور وPDF وWord وExcel.</p>
 <button type="button" class="primary" id="submitTicket">إرسال المعاملة</button>
 <div id="formMessage" class="small-note" style="margin-top:12px" role="status"></div>
@@ -298,7 +895,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
 const SUPABASE_URL="https://lpnogejpefsprjggeceo.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_S6tLSatDIEgbhPvB7uBTTw_oadYhvAa";
 const BUCKET="ticket-attachments";
-const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const supabaseClient=window.supabase?.createClient ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
 const $=id=>document.getElementById(id);
 
 let employeeToken=null;
@@ -331,11 +928,131 @@ function showMessage(el,text){
  el.style.display="block";
  el.textContent=text;
 }
+// الروابط الموقّعة التي يصدرها الخادم قصيرة العمر؛ لا ننشئ رابطاً عاماً لمرفقات خاصة.
+function getAttachmentUrl(ticket,result){
+ const raw=ticket?.attachment_url||ticket?.signed_url||ticket?.attachment_signed_url
+  ||result?.attachment_url||result?.signed_url||result?.attachment_signed_url;
+ if(typeof raw!=="string"||!raw.trim())return null;
+ try{
+  const url=new URL(raw,SUPABASE_URL+"/");
+  return url.protocol==="https:"?url.href:null;
+ }catch{return null;}
+}
+function setAttachmentLink(container,ticket,result){
+ container.replaceChildren();
+ const safeUrl=getAttachmentUrl(ticket,result);
+ if(safeUrl){
+  const link=document.createElement("a");
+  link.className="file-link";
+  link.href=safeUrl;
+  link.target="_blank";
+  link.rel="noopener noreferrer";
+  link.textContent="فتح المرفق";
+  container.append(link);
+ }else{
+  container.textContent=ticket?.attachment_path
+   ?"المرفق محفوظ في المعاملة، لكن الخادم لم يُرجع رابط عرض صالحًا. يلزم أن تُرجع دالة ticket_details رابطًا موقّعًا جديدًا باسم attachment_url."
+   :"لا يوجد مرفق.";
+ }
+}
+const ALLOWED_FILE_EXTENSIONS=new Set(["jpg","jpeg","png","gif","webp","pdf","doc","docx","xls","xlsx"]);
+const FILE_MIME={jpg:"image/jpeg",jpeg:"image/jpeg",png:"image/png",gif:"image/gif",webp:"image/webp",pdf:"application/pdf",doc:"application/msword",docx:"application/vnd.openxmlformats-officedocument.wordprocessingml.document",xls:"application/vnd.ms-excel",xlsx:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"};
+const MAX_ATTACHMENT_SIZE=5*1024*1024;
+function getAttachmentExtension(file){
+ return String(file?.name||"").split(".").pop().toLowerCase();
+}
+function validateAttachmentFile(file){
+ if(!file)return;
+ if(!file.name||!ALLOWED_FILE_EXTENSIONS.has(getAttachmentExtension(file)))
+  throw new Error("نوع الملف غير مدعوم. الملفات المسموحة: JPG وPNG وGIF وWEBP وPDF وWord وExcel.");
+ if(file.size===0)throw new Error("الملف المحدد فارغ. اختر ملفًا آخر.");
+ if(file.size>MAX_ATTACHMENT_SIZE)
+  throw new Error("حجم الملف أكبر من 5 ميجابايت. اختر ملفًا أصغر.");
+ const ext=getAttachmentExtension(file);
+ if(file.type && file.type!=="application/octet-stream" && file.type!==FILE_MIME[ext]){
+  // تقبل بعض المتصفحات أنواعًا عامة لمستندات Office، ويتحقق الخادم من المحتوى نهائيًا.
+  const officeExt=["doc","docx","xls","xlsx"].includes(ext);
+  if(!officeExt || !["application/zip","application/x-zip-compressed"].includes(file.type))
+   throw new Error("نوع الملف لا يتطابق مع امتداده. احفظ الصورة أو المستند بصيغة مدعومة وأعد المحاولة.");
+ }
+}
+function getAttachmentContentType(file){
+ return FILE_MIME[getAttachmentExtension(file)]||file.type||"application/octet-stream";
+}
+// يدعم نتائج Edge Function القياسية، أو النتائج التي تغلّف بيانات الرفع في data/upload.
+// لا نستبدل مسار الملف أو نزيل المجلدات منه: يجب أن يكون مطابقًا للمسار الذي وقّعه الخادم.
+function parseSignedUploadResponse(response){
+ const data=response?.upload||response?.data||response;
+ if(!data||typeof data!=="object")throw new Error("استجابة رابط رفع المرفق غير صالحة.");
+ let path=data.path||data.attachment_path||data.file_path||"";
+ let token=data.token||data.upload_token||"";
+ const bucket=data.bucket||data.bucket_name||response?.bucket;
+ if(bucket && bucket!==BUCKET)
+  throw new Error(`الخادم أعاد مساحة تخزين ${bucket} لكنها تختلف عن ${BUCKET}. يجب توحيد اسم Bucket في الواجهة ودالة الرفع.`);
+ const urlValue=data.signedUrl||data.signed_url||data.upload_url;
+ if(urlValue && (!path||!token)){
+  try{
+   const u=new URL(urlValue,SUPABASE_URL+"/");
+   const prefix=`/storage/v1/object/upload/sign/${BUCKET}/`;
+   if(u.origin===new URL(SUPABASE_URL).origin && u.pathname.startsWith(prefix)){
+    if(!path)path=decodeURIComponent(u.pathname.slice(prefix.length));
+    if(!token)token=u.searchParams.get("token")||"";
+   }
+  }catch{}
+ }
+ if(typeof path!=="string"||!path.trim()||typeof token!=="string"||!token.trim())
+  throw new Error("دالة create_upload_url لم تُرجع path و token صالحين. راجع إعداد الدالة في Supabase وأسماء حقول الاستجابة.");
+ if(path.startsWith("/")||path.includes("\\")||path.split("/").includes("..")||/^https?:/i.test(path))
+  throw new Error("الخادم أعاد مسار رفع غير صالح. يجب إرسال مسار نسبي داخل Bucket وليس رابطًا كاملًا.");
+ return {path,token};
+}
+function uploadErrorMessage(error){
+ const status=Number(error?.statusCode||error?.status||error?.originalError?.status||0);
+ const code=String(error?.error||error?.code||error?.name||"");
+ const raw=String(error?.message||"حدث خطأ غير معروف");
+ if(code==="NoSuchBucket"||/bucket not found|no such bucket/i.test(raw))
+  return `تعذر رفع الصورة: مساحة التخزين ${BUCKET} غير موجودة في مشروع Supabase، أو لا يمكن الوصول إليها. راجع Storage > Buckets.`;
+ if(status===404||/NoSuchKey|not found|404/i.test(raw))
+  return `تعذر رفع المرفق (404). تأكد من وجود Bucket باسم ${BUCKET}، وأن الخادم يولّد path وtoken لنفس المسار. التفاصيل: ${raw}`;
+ if(status===401||status===403||/unauthorized|permission|row.level.security|invalidjwt|invalidsignature|jwt/i.test(raw+" "+code))
+  return `تعذر رفع المرفق بسبب الصلاحيات أو انتهاء رمز الرفع الموقّع (401/403). تأكد من createSignedUploadUrl وإعدادات Supabase. التفاصيل: ${raw}`;
+ if(status===413||/payload too large|entitytoolarge|file size limit|exceeded.*size/i.test(raw+" "+code))
+  return "Supabase رفض حجم الملف. يجب أن يسمح Bucket بحجم 5 ميجابايت على الأقل، وأن يتوافق الحد العام للمشروع معه.";
+ if(status===409||/already exists|resourcealreadyexists/i.test(raw+" "+code))
+  return "مسار الملف مستخدم مسبقًا. يجب أن تنشئ دالة create_upload_url اسمًا فريدًا لكل مرفق.";
+ if(/failed to fetch|networkerror|fetch failed|load failed/i.test(raw))
+  return "تعذر الاتصال بتخزين Supabase. تحقق من اتصال الإنترنت وإعدادات CORS والخادم ثم أعد المحاولة.";
+ return `تعذر رفع المرفق: ${raw}${status?` (HTTP ${status})`:""}`;
+}
+function setFormProgress(message,state="progress"){
+ const element=$("formMessage");
+ element.classList.remove("attachment-error","attachment-success","attachment-progress");
+ element.classList.add(`attachment-${state}`);
+ element.textContent=message;
+}
+// الإبقاء على ملف الشعار الأصلي مع تجربة امتداداته المعتادة.
+document.querySelectorAll(".logo img").forEach(img=>{
+ const candidates=["./yamama-logo.jpeg","./yamama-logo.jpg","./yamama-logo.png","./yamama-logo.webp"];
+ let index=0;
+ img.addEventListener("error",()=>{
+  index+=1;
+  if(index<candidates.length)img.src=candidates[index];
+  else img.closest(".logo")?.classList.add("logo-fallback");
+ });
+});
+
 async function readResponse(response){
  let result={};
  try{result=await response.json();}catch{}
  if(!response.ok||!result.success){
-  throw new Error(result.error||result.message||"تعذر تنفيذ العملية.");
+  let message=result.error||result.message;
+  if(typeof message!=="string")message=message?.message||"";
+  if(!message){
+   if(response.status===404)message="الخدمة المطلوبة غير موجودة على الخادم (404).";
+   else if(response.status===401||response.status===403)message="ليست لديك صلاحية تنفيذ هذه العملية، أو انتهت الجلسة.";
+   else message=`تعذر تنفيذ العملية (رمز الاستجابة ${response.status}).`;
+  }
+  throw new Error(message);
  }
  return result;
 }
@@ -514,9 +1231,7 @@ async function openTicket(ticketId){
   $("statusMessage").textContent="";
   $("replyMessage").textContent="";
   $("managerReply").value="";
-  $("managerAttachment").textContent=t.attachment_path?
-   "يوجد مرفق لهذه المعاملة. عرض المرفق للمدير يتطلب إضافة رابط آمن في دالة المدير.":
-   "لا يوجد مرفق.";
+  setAttachmentLink($("managerAttachment"),t,result);
   renderMessages(result.messages||[]);
  }catch(err){
   $("ticketMessages").innerHTML=`<div class="empty-state">${escapeHTML(err.message)}</div>`;
@@ -753,6 +1468,7 @@ $("employeeForm").addEventListener("submit",async e=>{
   return;
  }
 
+ const wasEditing=Boolean(editingEmployeeId);
  const button=$("saveEmployeeButton");
  button.disabled=true;
  $("employeeFormMessage").textContent="جاري حفظ البيانات...";
@@ -781,7 +1497,7 @@ $("employeeForm").addEventListener("submit",async e=>{
 
   await loadEmployees();
   resetEmployeeForm();
-  alert(editingEmployeeId?"تم تحديث بيانات الموظف.":"تمت إضافة الموظف بنجاح.");
+  alert(wasEditing?"تم تحديث بيانات الموظف.":"تمت إضافة الموظف بنجاح.");
  }catch(err){
   $("employeeFormMessage").textContent=err.message||"تعذر حفظ بيانات الموظف.";
  }finally{
@@ -810,7 +1526,7 @@ document.querySelectorAll(".service").forEach(card=>card.addEventListener("click
  $("subject").value="";
  $("details").value="";
  $("attachment").value="";
- $("formMessage").textContent="";
+ setFormProgress("");
  $("servicesList").classList.add("hidden");
  $("myTicketsView").classList.add("hidden");
  $("serviceForm").classList.remove("hidden");
@@ -891,9 +1607,7 @@ async function openEmployeeTicket(id){
   $("employeeDetailInfo").textContent=`الرقم المرجعي: ${t.reference_number||"غير متوفر"} | الحالة: ${statusLabels[t.status]||t.status} | تاريخ الإرسال: ${formatDate(t.created_at)}`;
   $("employeeDetailText").textContent=t.details||"";
   $("employeeResolution").textContent=t.resolution_comment||"لا توجد ملاحظة من الإدارة حتى الآن.";
-  $("employeeAttachment").innerHTML=t.attachment_url?
-   `<a class="file-link" href="${escapeHTML(t.attachment_url)}" target="_blank" rel="noopener">فتح المرفق</a>`:
-   (t.attachment_path?"المرفق مسجل، لكن لم يصل رابط فتحه.":"لا يوجد مرفق.");
+  setAttachmentLink($("employeeAttachment"),t,result);
   renderEmployeeMessages(result.messages||[]);
   $("employeeReply").value="";
   $("employeeReplyMessage").textContent="";
@@ -931,42 +1645,60 @@ $("sendEmployeeReply").addEventListener("click",async()=>{
  }finally{b.disabled=false;}
 });
 
-/* إرسال معاملة */
+/* التحقق من الملف عند اختياره، قبل محاولة الاتصال بالخادم */
+$("attachment").addEventListener("change",()=>{
+ const file=$("attachment").files[0];
+ if(!file){setFormProgress("");return;}
+ try{
+  validateAttachmentFile(file);
+  setFormProgress(`الملف المختار: ${file.name} (${(file.size/1024/1024).toFixed(2)} ميجابايت).`,"success");
+ }catch(err){setFormProgress(err.message,"error");}
+});
+
+/* إرسال معاملة: طلب رمز موقّع، رفع الملف، ثم حفظ المسار في المعاملة */
 $("submitTicket").addEventListener("click",async()=>{
  const b=$("submitTicket");
  const subject=$("subject").value.trim();
  const details=$("details").value.trim();
  const file=$("attachment").files[0]||null;
-
  if(!selectedServiceType||!subject||!details){
-  $("formMessage").textContent="أكمل عنوان الموضوع والتفاصيل.";
+  setFormProgress("أكمل عنوان الموضوع والتفاصيل.","error");
   return;
  }
-
- const allowed=[
-  "image/jpeg","image/png","image/gif","image/webp",
-  "application/pdf","application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "application/vnd.ms-excel",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
- ];
-
- if(file&&(file.size>5*1024*1024||(!allowed.includes(file.type)&&!/\.(jpe?g|png|gif|webp|pdf|docx?|xlsx?)$/i.test(file.name)))){
-  $("formMessage").textContent="الملف غير مسموح أو يتجاوز الحجم المحدد (5 ميجابايت).";
+ try{validateAttachmentFile(file);}catch(err){
+  setFormProgress(err.message,"error");
   return;
  }
-
  b.disabled=true;
- $("formMessage").textContent="جاري تجهيز المعاملة...";
+ let attachmentUploaded=false;
+ setFormProgress("جاري تجهيز المعاملة...");
  try{
   let attachmentPath=null;
   if(file){
-   const signed=await employeeRequest({action:"create_upload_url",file_name:file.name,content_type:file.type||"application/octet-stream",file_size:file.size});
-   const {error:uploadError}=await supabaseClient.storage.from(BUCKET).uploadToSignedUrl(signed.path,signed.token,file,{contentType:file.type||"application/octet-stream",upsert:false});
-   if(uploadError)throw new Error("تعذر رفع المرفق: "+uploadError.message);
-   attachmentPath=signed.path;
+   if(!supabaseClient)throw new Error("تعذر تحميل مكتبة Supabase اللازمة لرفع الملفات. تحقق من اتصال الإنترنت أو من حظر jsDelivr.");
+   const contentType=getAttachmentContentType(file);
+   setFormProgress("جاري طلب رابط رفع آمن من Supabase...");
+   let signed;
+   try{
+    signed=await employeeRequest({
+     action:"create_upload_url",file_name:file.name,content_type:contentType,file_size:file.size
+    });
+   }catch(err){
+    throw new Error(`فشل الحصول على رابط الرفع من employee-portal: ${err.message}`);
+   }
+   const {path,token}=parseSignedUploadResponse(signed);
+   setFormProgress("جاري رفع المرفق إلى التخزين...");
+   let result;
+   try{
+    result=await supabaseClient.storage.from(BUCKET).uploadToSignedUrl(path,token,file,{contentType});
+   }catch(err){
+    throw new Error(uploadErrorMessage(err));
+   }
+   if(result?.error)throw new Error(uploadErrorMessage(result.error));
+   attachmentUploaded=true;
+   attachmentPath=path;
   }
-
+  setFormProgress(attachmentUploaded?"تم رفع المرفق، جارٍ حفظ المعاملة...":"جارٍ حفظ المعاملة...");
   const result=await employeeRequest({
    action:"create_ticket",
    ticket_type:selectedServiceType,
@@ -975,13 +1707,16 @@ $("submitTicket").addEventListener("click",async()=>{
    details,
    attachment_path:attachmentPath
   });
-
-  $("formMessage").textContent=`تم إرسال المعاملة بنجاح. الرقم المرجعي: ${result.ticket?.reference_number||result.reference_number||"تم التسجيل"}`;
+  setFormProgress(`تم إرسال المعاملة بنجاح. الرقم المرجعي: ${result.ticket?.reference_number||result.reference_number||"تم التسجيل"}`,"success");
   $("subject").value="";
   $("details").value="";
   $("attachment").value="";
  }catch(err){
-  $("formMessage").textContent=err.message||"تعذر إرسال المعاملة.";
+  const explanation=err.message||"تعذر إرسال المعاملة.";
+  setFormProgress(attachmentUploaded
+   ?`تم رفع الملف، لكن تعذّر حفظ المعاملة. لم تُحذف بيانات النموذج. أعد المحاولة لاحقًا، أو تواصل مع إدارة النظام حتى لا يبقى مرفق دون معاملة.
+${explanation}`
+   :explanation,"error");
  }finally{b.disabled=false;}
 });
 
