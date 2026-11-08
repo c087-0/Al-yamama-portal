@@ -1680,7 +1680,7 @@ const englishText=new Map(Object.entries({
   "جاري رفع المرفق إلى التخزين...":"Uploading attachment...",
   "جارٍ حفظ المعاملة...":"Saving submission...",
   "جاري التحقق...":"Verifying...",
-  "جاري التحقق من بيانات المدير...":"Verifying administrator credentials...",
+  "جاري التحقق من بيانات المسؤول...":"Verifying administrator credentials...",
   "جاري إرسال الرد...":"Sending reply...",
   "جاري الإرسال...":"Sending...",
   "لا توجد معاملات مطابقة.":"No matching submissions.",
@@ -2240,7 +2240,7 @@ $("managerLoginForm").addEventListener("submit",async event=>{
   const button=$("managerLoginButton");
   button.disabled=true;
 
-  showMessage($("managerMessage"),"جاري التحقق من بيانات المدير...");
+  showMessage($("managerMessage"),"جاري التحقق من بيانات المسؤول...");
 
   try {
     const response=await fetch(`${SUPABASE_URL}/functions/v1/manager-portal`,{
