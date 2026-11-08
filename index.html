@@ -8,48 +8,10 @@
 *{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
 body{margin:0;min-height:100vh;background:linear-gradient(135deg,#102b46,#17645d);padding:25px}
 .container{max-width:950px;margin:40px auto;background:white;border-radius:22px;padding:30px;box-shadow:0 15px 50px #0002}
-
-.logo{
-width:85px;
-height:85px;
-margin:0 auto 15px;
-background:white;
-border:1px solid #e8f3ef;
-border-radius:20px;
-display:flex;
-align-items:center;
-justify-content:center;
-overflow:hidden;
-}
-
-.logo img{
-width:120%;
-height:120%;
-object-fit:contain;
-padding:4px;
-}
-
-/* العلامة المائية في صفحات الدخول فقط */
-.login-screen{
-position:relative;
-isolation:isolate;
-overflow:hidden;
-}
-
-.login-screen::before{
-content:"اليمامة";
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:clamp(90px,18vw,190px);
-font-weight:bold;
-color:rgba(23,53,77,.045);
-white-space:nowrap;
-pointer-events:none;
-z-index:-1;
-}
-
+.logo{width:85px;height:85px;margin:0 auto 15px;background:white;border:1px solid #e8f3ef;border-radius:20px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.logo img{width:120%;height:120%;object-fit:contain;padding:4px}
+.login-screen{position:relative;isolation:isolate;overflow:hidden}
+.login-screen::before{content:"اليمامة";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(90px,18vw,190px);font-weight:bold;color:rgba(23,53,77,.045);white-space:nowrap;pointer-events:none;z-index:-1}
 h1{text-align:center;color:#17354d;margin:10px 0}
 .description{text-align:center;color:#788795;line-height:1.8;margin-bottom:30px}
 label{display:block;font-weight:bold;color:#263c4e;margin-bottom:9px}
@@ -110,9 +72,7 @@ body{padding:12px}
 <main class="container">
 
 <section id="loginPage" class="login-screen">
-<div class="logo">
-<img src="./yamama-logo.jpeg" alt="شعار اليمامة">
-</div>
+<div class="logo"><img src="./yamama-logo.jpeg" alt="شعار اليمامة"></div>
 <h1>بوابة موظفي مشروع المنطقة الوسطى</h1>
 <p class="description">مرحباً بك. أدخل بياناتك المسجلة لدى الإدارة.</p>
 <form id="loginForm">
@@ -127,9 +87,7 @@ body{padding:12px}
 </section>
 
 <section id="managerLoginPage" class="hidden login-screen">
-<div class="logo">
-<img src="./yamama-logo.jpeg" alt="شعار اليمامة">
-</div>
+<div class="logo"><img src="./yamama-logo.jpeg" alt="شعار اليمامة"></div>
 <h1>دخول الإدارة</h1>
 <p class="description">يرجى إدخال بيانات حساب المدير.</p>
 <form id="managerLoginForm">
@@ -153,21 +111,9 @@ body{padding:12px}
 </div>
 
 <div id="servicesList" class="services">
-<div class="service" data-type="complaint">
-<div class="icon">🗣️</div>
-<h2>الشكاوى</h2>
-<p>تقديم شكوى للإدارة</p>
-</div>
-<div class="service" data-type="report">
-<div class="icon">📢</div>
-<h2>البلاغات</h2>
-<p>تقديم بلاغ للإدارة</p>
-</div>
-<div class="service" data-type="request">
-<div class="icon">📋</div>
-<h2>الطلبات</h2>
-<p>تقديم طلب إداري</p>
-</div>
+<div class="service" data-type="complaint"><div class="icon">🗣️</div><h2>الشكاوى</h2><p>تقديم شكوى للإدارة</p></div>
+<div class="service" data-type="report"><div class="icon">📢</div><h2>البلاغات</h2><p>تقديم بلاغ للإدارة</p></div>
+<div class="service" data-type="request"><div class="icon">📋</div><h2>الطلبات</h2><p>تقديم طلب إداري</p></div>
 </div>
 
 <div class="action-row" style="margin-top:18px">
@@ -254,6 +200,10 @@ body{padding:12px}
 <span id="detailStatus" class="status"></span>
 </div>
 <div id="detailInfo" style="line-height:2;color:#667783;font-size:14px;margin-top:15px"></div>
+
+<button type="button" class="danger primary" id="deleteTicketButton" style="margin-top:18px">حذف المعاملة نهائياً</button>
+<div id="deleteMessage" class="small-note" style="margin-top:10px"></div>
+
 <h3 class="section-heading">تفاصيل المعاملة</h3>
 <p id="detailText" style="white-space:pre-wrap;line-height:1.9;color:#405361"></p>
 <div id="managerAttachment" class="small-note"></div>
@@ -386,16 +336,8 @@ $("loginForm").addEventListener("submit",async e=>{
  try{
   const response=await fetch(`${SUPABASE_URL}/functions/v1/employee-portal`,{
    method:"POST",
-   headers:{
-    "Content-Type":"application/json",
-    "apikey":SUPABASE_ANON_KEY,
-    "Authorization":`Bearer ${SUPABASE_ANON_KEY}`
-   },
-   body:JSON.stringify({
-    action:"login",
-    employee_number:$("employee").value.trim(),
-    phone_number:$("phone").value.trim()
-   })
+   headers:{"Content-Type":"application/json","apikey":SUPABASE_ANON_KEY,"Authorization":`Bearer ${SUPABASE_ANON_KEY}`},
+   body:JSON.stringify({action:"login",employee_number:$("employee").value.trim(),phone_number:$("phone").value.trim()})
   });
   const result=await readResponse(response);
   employeeToken=result.token;
@@ -406,9 +348,7 @@ $("loginForm").addEventListener("submit",async e=>{
   $("message").style.display="none";
  }catch(err){
   showMessage($("message"),err.message||"تعذر الاتصال بالخادم.");
- }finally{
-  button.disabled=false;
- }
+ }finally{button.disabled=false;}
 });
 
 $("managerLoginForm").addEventListener("submit",async e=>{
@@ -419,22 +359,11 @@ $("managerLoginForm").addEventListener("submit",async e=>{
  try{
   const response=await fetch(`${SUPABASE_URL}/functions/v1/manager-portal`,{
    method:"POST",
-   headers:{
-    "Content-Type":"application/json",
-    "apikey":SUPABASE_ANON_KEY,
-    "Authorization":`Bearer ${SUPABASE_ANON_KEY}`
-   },
-   body:JSON.stringify({
-    action:"login",
-    username:$("managerUsername").value.trim(),
-    password:$("managerPassword").value
-   })
+   headers:{"Content-Type":"application/json","apikey":SUPABASE_ANON_KEY,"Authorization":`Bearer ${SUPABASE_ANON_KEY}`},
+   body:JSON.stringify({action:"login",username:$("managerUsername").value.trim(),password:$("managerPassword").value})
   });
   const result=await readResponse(response);
-  managerSession={
-   access_token:result.access_token,
-   refresh_token:result.refresh_token
-  };
+  managerSession={access_token:result.access_token,refresh_token:result.refresh_token};
   $("managerWelcome").textContent="أهلاً بك في لوحة الإدارة";
   $("managerLoginPage").classList.add("hidden");
   $("managerDashboard").classList.remove("hidden");
@@ -444,9 +373,7 @@ $("managerLoginForm").addEventListener("submit",async e=>{
   await loadManagerTickets();
  }catch(err){
   showMessage($("managerMessage"),err.message||"اسم المستخدم أو كلمة المرور غير صحيحة.");
- }finally{
-  button.disabled=false;
- }
+ }finally{button.disabled=false;}
 });
 
 async function loadManagerTickets(){
@@ -491,6 +418,7 @@ async function openTicket(ticketId){
  $("managerDetailsView").classList.remove("hidden");
  $("detailSubject").textContent="جاري تحميل المعاملة...";
  $("ticketMessages").innerHTML='<div class="empty-state">جاري تحميل المحادثة...</div>';
+ $("deleteMessage").textContent="";
  try{
   const result=await managerRequest({action:"ticket_details",ticket_id:ticketId});
   const t=result.ticket;
@@ -542,6 +470,40 @@ $("ticketFilter").addEventListener("change",renderTickets);
 $("refreshTickets").addEventListener("click",loadManagerTickets);
 $("backToTickets").addEventListener("click",showManagerList);
 
+/* حذف المعاملة من لوحة الإدارة */
+$("deleteTicketButton").addEventListener("click",async()=>{
+ if(!currentTicketId)return;
+
+ const confirmed=confirm(
+  "هل أنت متأكد من حذف هذه المعاملة نهائياً؟\n\nسيتم حذف المعاملة وجميع رسائلها، ولا يمكن التراجع عن هذا الإجراء."
+ );
+ if(!confirmed)return;
+
+ const button=$("deleteTicketButton");
+ button.disabled=true;
+ $("deleteMessage").textContent="جاري حذف المعاملة...";
+ try{
+  const result=await managerRequest({
+   action:"delete_ticket",
+   ticket_id:currentTicketId
+  });
+
+  currentTicketId=null;
+  await loadManagerTickets();
+  showManagerList();
+
+  if(result.attachment_cleanup_warning){
+   alert("تم حذف المعاملة ورسائلها، لكن تعذر حذف المرفق من التخزين. يرجى مراجعة التخزين.");
+  }else{
+   alert("تم حذف المعاملة نهائياً بنجاح.");
+  }
+ }catch(err){
+  $("deleteMessage").textContent=err.message||"تعذر حذف المعاملة.";
+ }finally{
+  button.disabled=false;
+ }
+});
+
 $("ticketStatusSelect").addEventListener("change",()=>{
  $("resolutionWrap").classList.toggle("hidden",$("ticketStatusSelect").value!=="completed");
 });
@@ -554,19 +516,13 @@ $("sendReplyButton").addEventListener("click",async()=>{
  b.disabled=true;
  $("replyMessage").textContent="جاري إرسال الرد...";
  try{
-  await managerRequest({
-   action:"send_message",
-   ticket_id:currentTicketId,
-   message:reply
-  });
+  await managerRequest({action:"send_message",ticket_id:currentTicketId,message:reply});
   $("managerReply").value="";
   await openTicket(currentTicketId);
   $("replyMessage").textContent="تم إرسال الرد بنجاح.";
  }catch(err){
   $("replyMessage").textContent=err.message;
- }finally{
-  b.disabled=false;
- }
+ }finally{b.disabled=false;}
 });
 
 $("updateStatusButton").addEventListener("click",async()=>{
@@ -582,20 +538,13 @@ $("updateStatusButton").addEventListener("click",async()=>{
  b.disabled=true;
  $("statusMessage").textContent="جاري تحديث الحالة...";
  try{
-  await managerRequest({
-   action:"update_ticket",
-   ticket_id:currentTicketId,
-   status,
-   resolution_comment:comment
-  });
+  await managerRequest({action:"update_ticket",ticket_id:currentTicketId,status,resolution_comment:comment});
   await loadManagerTickets();
   await openTicket(currentTicketId);
   $("statusMessage").textContent="تم تحديث حالة المعاملة بنجاح.";
  }catch(err){
   $("statusMessage").textContent=err.message;
- }finally{
-  b.disabled=false;
- }
+ }finally{b.disabled=false;}
 });
 
 $("managerLogout").addEventListener("click",()=>{
@@ -611,8 +560,7 @@ document.querySelectorAll(".service").forEach(card=>card.addEventListener("click
  selectedServiceType=card.dataset.type;
  const titles={complaint:"تقديم شكوى",report:"تقديم بلاغ",request:"تقديم طلب"};
  $("serviceTitle").textContent=titles[selectedServiceType];
- $("ticketSubtype").innerHTML=subtypeOptions[selectedServiceType]
-  .map(x=>`<option value="${escapeHTML(x)}">${escapeHTML(x)}</option>`).join("");
+ $("ticketSubtype").innerHTML=subtypeOptions[selectedServiceType].map(x=>`<option value="${escapeHTML(x)}">${escapeHTML(x)}</option>`).join("");
  $("subject").value="";
  $("details").value="";
  $("attachment").value="";
@@ -661,9 +609,7 @@ async function loadMyTickets(){
 
 function filterMyTickets(){
  const term=$("myTicketFilter").value.trim().toLowerCase();
- const filtered=employeeTickets.filter(t=>
-  String(t.reference_number||"").toLowerCase().includes(term)
- );
+ const filtered=employeeTickets.filter(t=>String(t.reference_number||"").toLowerCase().includes(term));
  if(!filtered.length){
   $("myTicketsList").innerHTML='<div class="empty-state">لا توجد معاملات مطابقة.</div>';
   return;
@@ -696,8 +642,7 @@ async function openEmployeeTicket(id){
   const result=await employeeRequest({action:"ticket_details",ticket_id:id});
   const t=result.ticket;
   $("employeeDetailSubject").textContent=t.subject||"بدون عنوان";
-  $("employeeDetailInfo").textContent=
-   `الرقم المرجعي: ${t.reference_number||"غير متوفر"} | الحالة: ${statusLabels[t.status]||t.status} | تاريخ الإرسال: ${formatDate(t.created_at)}`;
+  $("employeeDetailInfo").textContent=`الرقم المرجعي: ${t.reference_number||"غير متوفر"} | الحالة: ${statusLabels[t.status]||t.status} | تاريخ الإرسال: ${formatDate(t.created_at)}`;
   $("employeeDetailText").textContent=t.details||"";
   $("employeeResolution").textContent=t.resolution_comment||"لا توجد ملاحظة من الإدارة حتى الآن.";
   $("employeeAttachment").innerHTML=t.attachment_url?
@@ -709,9 +654,7 @@ async function openEmployeeTicket(id){
   $("myTicketsList").classList.add("hidden");
   $("employeeTicketDetails").classList.remove("hidden");
   currentTicketId=id;
- }catch(err){
-  alert(err.message);
- }
+ }catch(err){alert(err.message);}
 }
 
 function renderEmployeeMessages(messages){
@@ -734,18 +677,12 @@ $("sendEmployeeReply").addEventListener("click",async()=>{
  b.disabled=true;
  $("employeeReplyMessage").textContent="جاري الإرسال...";
  try{
-  await employeeRequest({
-   action:"send_message",
-   ticket_id:currentTicketId,
-   message
-  });
+  await employeeRequest({action:"send_message",ticket_id:currentTicketId,message});
   await openEmployeeTicket(currentTicketId);
   $("employeeReplyMessage").textContent="تم إرسال الرسالة.";
  }catch(err){
   $("employeeReplyMessage").textContent=err.message;
- }finally{
-  b.disabled=false;
- }
+ }finally{b.disabled=false;}
 });
 
 $("submitTicket").addEventListener("click",async()=>{
@@ -767,8 +704,7 @@ $("submitTicket").addEventListener("click",async()=>{
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
  ];
 
- if(file&&(file.size>5*1024*1024||
-  (!allowed.includes(file.type)&&!/\.(jpe?g|png|gif|webp|pdf|docx?|xlsx?)$/i.test(file.name)))){
+ if(file&&(file.size>5*1024*1024||(!allowed.includes(file.type)&&!/\.(jpe?g|png|gif|webp|pdf|docx?|xlsx?)$/i.test(file.name)))){
   $("formMessage").textContent="الملف غير مسموح أو يتجاوز الحجم المحدد (5 ميجابايت).";
   return;
  }
@@ -778,18 +714,8 @@ $("submitTicket").addEventListener("click",async()=>{
  try{
   let attachmentPath=null;
   if(file){
-   const signed=await employeeRequest({
-    action:"create_upload_url",
-    file_name:file.name,
-    content_type:file.type||"application/octet-stream",
-    file_size:file.size
-   });
-   const {error:uploadError}=await supabaseClient.storage
-    .from(BUCKET)
-    .uploadToSignedUrl(signed.path,signed.token,file,{
-     contentType:file.type||"application/octet-stream",
-     upsert:false
-    });
+   const signed=await employeeRequest({action:"create_upload_url",file_name:file.name,content_type:file.type||"application/octet-stream",file_size:file.size});
+   const {error:uploadError}=await supabaseClient.storage.from(BUCKET).uploadToSignedUrl(signed.path,signed.token,file,{contentType:file.type||"application/octet-stream",upsert:false});
    if(uploadError)throw new Error("تعذر رفع المرفق: "+uploadError.message);
    attachmentPath=signed.path;
   }
@@ -803,22 +729,17 @@ $("submitTicket").addEventListener("click",async()=>{
    attachment_path:attachmentPath
   });
 
-  $("formMessage").textContent=
-   `تم إرسال المعاملة بنجاح. الرقم المرجعي: ${result.ticket?.reference_number||result.reference_number||"تم التسجيل"}`;
+  $("formMessage").textContent=`تم إرسال المعاملة بنجاح. الرقم المرجعي: ${result.ticket?.reference_number||result.reference_number||"تم التسجيل"}`;
   $("subject").value="";
   $("details").value="";
   $("attachment").value="";
  }catch(err){
   $("formMessage").textContent=err.message||"تعذر إرسال المعاملة.";
- }finally{
-  b.disabled=false;
- }
+ }finally{b.disabled=false;}
 });
 
 $("logoutButton").addEventListener("click",async()=>{
- try{
-  if(employeeToken)await employeeRequest({action:"logout"});
- }catch{}
+ try{if(employeeToken)await employeeRequest({action:"logout"});}catch{}
  employeeToken=null;
  currentEmployee=null;
  employeeTickets=[];
