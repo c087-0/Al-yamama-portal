@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>بوابة موظفي اليمامة</title>
+<title>بوابة موظفي مشروع الوسطى</title>
 <style>
 *{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
 body{margin:0;min-height:100vh;background:linear-gradient(135deg,#102b46,#17645d);padding:25px}
@@ -23,8 +23,8 @@ overflow:hidden;
 }
 
 .logo img{
-width:100%;
-height:100%;
+width:120%;
+height:120%;
 object-fit:contain;
 padding:4px;
 }
@@ -167,7 +167,6 @@ body{padding:12px}
 <div class="icon">📋</div>
 <h2>الطلبات</h2>
 <p>تقديم طلب إداري</p>
-<p>تقديم طلب سعد</p>
 </div>
 </div>
 
@@ -282,7 +281,7 @@ body{padding:12px}
 </div>
 </section>
 
-<div class="footer">بوابة الموظفين ©️ اليمامة</div>
+<div class="footer">بوابة الموظفين ©️ مشروع الوسطى</div>
 </main>
 
 <script>
@@ -303,7 +302,7 @@ let selectedServiceType=null;
 const typeLabels={complaint:"شكوى",report:"بلاغ",request:"طلب"};
 const statusLabels={submitted:"جديدة",in_review:"قيد المراجعة",completed:"مكتملة",rejected:"مرفوضة"};
 const subtypeOptions={
- complaint:["شكوى إدارية","شكوى بيئة عمل","شكوى أخرى"],
+ complaint:["شكوى إدارية","شكوى بيئة العمل","شكوى حضور وإنصراف","شكوى متعلقة بالراتب","شكوى خطأ في البيانات","شكوى أخرى"],
  report:["بلاغ سلوك وظيفي","بلاغ مشكلة تشغيلية","بلاغ مشكلة تقنية","بلاغ آخر"],
  request:["طلب إجازة","طلب تعريف بالراتب","طلب خطاب أو إفادة","طلب تعديل بيانات","طلب عهدة أو مستلزمات","طلب صيانة","طلب دعم تقني","طلب نقل أو تكليف","طلب آخر"]
 };
