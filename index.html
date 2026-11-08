@@ -58,12 +58,20 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .small-note{font-size:12px;color:#84919a;line-height:1.8}
 .file-link{display:inline-block;color:#17645d;font-weight:bold;margin:8px 0}
 #formMessage,#statusMessage,#replyMessage{line-height:1.8}
+.employee-card{border:1px solid #e5ecef;border-radius:14px;background:white;padding:17px;margin:12px 0}
+.employee-card h3{margin:0 0 10px;color:#17354d}
+.employee-card p{margin:7px 0;color:#667783;font-size:13px}
+.employee-card .action-row{margin-top:13px}
+.employee-card .action-row button{font-size:13px;padding:10px}
+.employee-active{background:#eaf5ee;color:#247344}
+.employee-inactive{background:#f9eeee;color:#a33b3b}
+.employee-status{display:inline-block;padding:6px 10px;border-radius:20px;font-size:12px;font-weight:bold}
 @media(max-width:550px){
-body{padding:12px}
-.container{padding:22px 17px;margin:15px auto}
-.services{grid-template-columns:1fr}
-.service:last-child{grid-column:auto}
-.header h1{font-size:20px}
+ body{padding:12px}
+ .container{padding:22px 17px;margin:15px auto}
+ .services{grid-template-columns:1fr}
+ .service:last-child{grid-column:auto}
+ .header h1{font-size:20px}
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -173,6 +181,12 @@ body{padding:12px}
 <button class="logout" id="managerLogout">تسجيل الخروج</button>
 </div>
 
+<!-- خيارات لوحة المدير -->
+<div class="action-row" style="margin-bottom:20px">
+<button type="button" id="showManagerTickets">إدارة المعاملات</button>
+<button type="button" class="secondary" id="showEmployeeManagement">إدارة الموظفين</button>
+</div>
+
 <div id="managerListView">
 <div class="manager-card">
 <div class="ticket-top">
@@ -200,10 +214,8 @@ body{padding:12px}
 <span id="detailStatus" class="status"></span>
 </div>
 <div id="detailInfo" style="line-height:2;color:#667783;font-size:14px;margin-top:15px"></div>
-
 <button type="button" class="danger primary" id="deleteTicketButton" style="margin-top:18px">حذف المعاملة نهائياً</button>
 <div id="deleteMessage" class="small-note" style="margin-top:10px"></div>
-
 <h3 class="section-heading">تفاصيل المعاملة</h3>
 <p id="detailText" style="white-space:pre-wrap;line-height:1.9;color:#405361"></p>
 <div id="managerAttachment" class="small-note"></div>
@@ -229,6 +241,54 @@ body{padding:12px}
 <div id="replyMessage" class="small-note" style="margin-top:10px"></div>
 </div>
 </div>
+
+<!-- إدارة الموظفين - تظهر داخل لوحة المدير فقط -->
+<div id="employeeManagementView" class="hidden">
+<button type="button" class="back" id="backToManagerTickets">← العودة للوحة الإدارة</button>
+
+<div class="manager-card">
+<div class="ticket-top">
+<h2 style="margin:0">إدارة الموظفين</h2>
+<button type="button" id="refreshEmployees">تحديث ↻</button>
+</div>
+<p class="small-note">إضافة الموظفين وتعديل بياناتهم وإيقاف حساباتهم أو إعادة تفعيلها.</p>
+
+<label for="employeeSearch">البحث عن موظف</label>
+<input id="employeeSearch" type="search" placeholder="ابحث بالاسم أو الرقم الوظيفي">
+
+<div class="action-row" style="margin-bottom:15px">
+<button type="button" id="newEmployeeButton">＋ إضافة موظف جديد</button>
+</div>
+
+<div id="employeesCount" class="small-note"></div>
+<div id="employeesList"><div class="empty-state">جاري تحميل الموظفين...</div></div>
+</div>
+
+<div id="employeeEditor" class="manager-card hidden">
+<h2 id="employeeEditorTitle">إضافة موظف جديد</h2>
+<form id="employeeForm">
+<label for="newEmployeeNumber">الرقم الوظيفي</label>
+<input id="newEmployeeNumber" type="text" maxlength="50" placeholder="أدخل الرقم الوظيفي" required>
+
+<label for="newEmployeeName">اسم الموظف</label>
+<input id="newEmployeeName" type="text" maxlength="150" placeholder="الاسم الكامل" required>
+
+<label for="newEmployeePhone">رقم الجوال</label>
+<input id="newEmployeePhone" type="tel" maxlength="30" placeholder="05xxxxxxxx" required>
+
+<label style="display:flex;align-items:center;gap:10px;margin:5px 0 20px">
+<input id="newEmployeeActive" type="checkbox" checked style="width:auto;margin:0">
+الحساب نشط ويمكنه تسجيل الدخول
+</label>
+
+<div class="action-row">
+<button type="submit" id="saveEmployeeButton">حفظ الموظف</button>
+<button type="button" class="secondary" id="cancelEmployeeEdit">إلغاء</button>
+</div>
+<div id="employeeFormMessage" class="small-note" style="margin-top:12px"></div>
+</form>
+</div>
+</div>
 </section>
 
 <div class="footer">بوابة الموظفين ©️ مشروع الوسطى</div>
@@ -248,6 +308,8 @@ let currentTicketId=null;
 let currentTickets=[];
 let employeeTickets=[];
 let selectedServiceType=null;
+let currentEmployees=[];
+let editingEmployeeId=null;
 
 const typeLabels={complaint:"شكوى",report:"بلاغ",request:"طلب"};
 const statusLabels={submitted:"جديدة",in_review:"قيد المراجعة",completed:"مكتملة",rejected:"مرفوضة"};
@@ -311,12 +373,24 @@ async function managerRequest(payload){
  return readResponse(response);
 }
 
+/* التنقل داخل لوحة المدير */
 function showManagerList(){
  $("managerDetailsView").classList.add("hidden");
+ $("employeeManagementView").classList.add("hidden");
  $("managerListView").classList.remove("hidden");
  currentTicketId=null;
 }
+function showEmployeeManagementPage(){
+ $("managerListView").classList.add("hidden");
+ $("managerDetailsView").classList.add("hidden");
+ $("employeeManagementView").classList.remove("hidden");
+ loadEmployees();
+}
+$("showManagerTickets").addEventListener("click",showManagerList);
+$("showEmployeeManagement").addEventListener("click",showEmployeeManagementPage);
+$("backToManagerTickets").addEventListener("click",showManagerList);
 
+/* تسجيل الدخول */
 $("showManagerLogin").addEventListener("click",()=>{
  $("loginPage").classList.add("hidden");
  $("managerLoginPage").classList.remove("hidden");
@@ -376,6 +450,7 @@ $("managerLoginForm").addEventListener("submit",async e=>{
  }finally{button.disabled=false;}
 });
 
+/* قائمة المعاملات */
 async function loadManagerTickets(){
  $("ticketsList").innerHTML='<div class="empty-state">جاري تحميل المعاملات...</div>';
  try{
@@ -415,6 +490,7 @@ function renderTickets(){
 async function openTicket(ticketId){
  currentTicketId=ticketId;
  $("managerListView").classList.add("hidden");
+ $("employeeManagementView").classList.add("hidden");
  $("managerDetailsView").classList.remove("hidden");
  $("detailSubject").textContent="جاري تحميل المعاملة...";
  $("ticketMessages").innerHTML='<div class="empty-state">جاري تحميل المحادثة...</div>';
@@ -470,28 +546,19 @@ $("ticketFilter").addEventListener("change",renderTickets);
 $("refreshTickets").addEventListener("click",loadManagerTickets);
 $("backToTickets").addEventListener("click",showManagerList);
 
-/* حذف المعاملة من لوحة الإدارة */
+/* حذف المعاملة */
 $("deleteTicketButton").addEventListener("click",async()=>{
  if(!currentTicketId)return;
-
- const confirmed=confirm(
-  "هل أنت متأكد من حذف هذه المعاملة نهائياً؟\n\nسيتم حذف المعاملة وجميع رسائلها، ولا يمكن التراجع عن هذا الإجراء."
- );
+ const confirmed=confirm("هل أنت متأكد من حذف هذه المعاملة نهائياً؟\n\nسيتم حذف المعاملة وجميع رسائلها، ولا يمكن التراجع عن هذا الإجراء.");
  if(!confirmed)return;
-
  const button=$("deleteTicketButton");
  button.disabled=true;
  $("deleteMessage").textContent="جاري حذف المعاملة...";
  try{
-  const result=await managerRequest({
-   action:"delete_ticket",
-   ticket_id:currentTicketId
-  });
-
+  const result=await managerRequest({action:"delete_ticket",ticket_id:currentTicketId});
   currentTicketId=null;
   await loadManagerTickets();
   showManagerList();
-
   if(result.attachment_cleanup_warning){
    alert("تم حذف المعاملة ورسائلها، لكن تعذر حذف المرفق من التخزين. يرجى مراجعة التخزين.");
   }else{
@@ -499,9 +566,7 @@ $("deleteTicketButton").addEventListener("click",async()=>{
   }
  }catch(err){
   $("deleteMessage").textContent=err.message||"تعذر حذف المعاملة.";
- }finally{
-  button.disabled=false;
- }
+ }finally{button.disabled=false;}
 });
 
 $("ticketStatusSelect").addEventListener("change",()=>{
@@ -547,15 +612,196 @@ $("updateStatusButton").addEventListener("click",async()=>{
  }finally{b.disabled=false;}
 });
 
+/* =========================
+   إدارة الموظفين
+========================= */
+
+async function loadEmployees(){
+ $("employeesList").innerHTML='<div class="empty-state">جاري تحميل الموظفين...</div>';
+ try{
+  const result=await managerRequest({action:"list_employees"});
+  currentEmployees=result.employees||[];
+  renderEmployees();
+ }catch(err){
+  $("employeesList").innerHTML=`<div class="empty-state">${escapeHTML(err.message)}</div>`;
+ }
+}
+
+function renderEmployees(){
+ const term=$("employeeSearch").value.trim().toLowerCase();
+ const filtered=currentEmployees.filter(emp=>
+  String(emp.full_name||"").toLowerCase().includes(term)||
+  String(emp.employee_number||"").toLowerCase().includes(term)||
+  String(emp.phone_number||"").toLowerCase().includes(term)
+ );
+
+ $("employeesCount").textContent=`إجمالي الموظفين: ${currentEmployees.length} — نتائج البحث: ${filtered.length}`;
+
+ if(!filtered.length){
+  $("employeesList").innerHTML='<div class="empty-state">لا يوجد موظفون مطابقون للبحث.</div>';
+  return;
+ }
+
+ $("employeesList").innerHTML=filtered.map(emp=>{
+  const active=emp.is_active===true;
+  return `<div class="employee-card">
+   <div class="ticket-top">
+    <h3>${escapeHTML(emp.full_name)}</h3>
+    <span class="employee-status ${active?"employee-active":"employee-inactive"}">${active?"حساب نشط":"حساب موقوف"}</span>
+   </div>
+   <p>الرقم الوظيفي: ${escapeHTML(emp.employee_number)}</p>
+   <p>رقم الجوال: ${escapeHTML(emp.phone_number)}</p>
+   <div class="action-row">
+    <button type="button" class="secondary" data-edit-employee="${escapeHTML(emp.id)}">تعديل البيانات</button>
+    <button type="button" class="${active?"danger":"employee-active"}" data-toggle-employee="${escapeHTML(emp.id)}">${active?"إيقاف الحساب":"إعادة تفعيل الحساب"}</button>
+   </div>
+  </div>`;
+ }).join("");
+}
+
+$("employeeSearch").addEventListener("input",renderEmployees);
+$("refreshEmployees").addEventListener("click",loadEmployees);
+
+function resetEmployeeForm(){
+ editingEmployeeId=null;
+ $("employeeForm").reset();
+ $("newEmployeeActive").checked=true;
+ $("employeeEditorTitle").textContent="إضافة موظف جديد";
+ $("saveEmployeeButton").textContent="حفظ الموظف";
+ $("employeeFormMessage").textContent="";
+ $("employeeEditor").classList.add("hidden");
+}
+
+function openNewEmployeeForm(){
+ resetEmployeeForm();
+ $("employeeEditor").classList.remove("hidden");
+ $("employeeEditorTitle").textContent="إضافة موظف جديد";
+ $("newEmployeeNumber").focus();
+}
+
+function openEditEmployeeForm(employeeId){
+ const emp=currentEmployees.find(x=>String(x.id)===String(employeeId));
+ if(!emp){
+  alert("لم يتم العثور على بيانات الموظف.");
+  return;
+ }
+ editingEmployeeId=emp.id;
+ $("newEmployeeNumber").value=emp.employee_number||"";
+ $("newEmployeeName").value=emp.full_name||"";
+ $("newEmployeePhone").value=emp.phone_number||"";
+ $("newEmployeeActive").checked=emp.is_active===true;
+ $("employeeEditorTitle").textContent="تعديل بيانات الموظف";
+ $("saveEmployeeButton").textContent="حفظ التعديلات";
+ $("employeeFormMessage").textContent="";
+ $("employeeEditor").classList.remove("hidden");
+ $("employeeEditor").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+$("newEmployeeButton").addEventListener("click",openNewEmployeeForm);
+$("cancelEmployeeEdit").addEventListener("click",resetEmployeeForm);
+
+$("employeesList").addEventListener("click",async e=>{
+ const editButton=e.target.closest("[data-edit-employee]");
+ const toggleButton=e.target.closest("[data-toggle-employee]");
+
+ if(editButton){
+  openEditEmployeeForm(editButton.dataset.editEmployee);
+  return;
+ }
+
+ if(toggleButton){
+  const employeeId=toggleButton.dataset.toggleEmployee;
+  const emp=currentEmployees.find(x=>String(x.id)===String(employeeId));
+  if(!emp)return;
+
+  const nextState=emp.is_active!==true;
+  const confirmText=nextState
+   ? `هل تريد إعادة تفعيل حساب الموظف ${emp.full_name}؟`
+   : `هل تريد إيقاف حساب الموظف ${emp.full_name}؟\n\nسيُمنع من تسجيل الدخول، وستبقى معاملاته السابقة محفوظة.`;
+
+  if(!confirm(confirmText))return;
+
+  toggleButton.disabled=true;
+  try{
+   await managerRequest({
+    action:"update_employee",
+    employee_id:emp.id,
+    employee_number:emp.employee_number,
+    full_name:emp.full_name,
+    phone_number:emp.phone_number,
+    is_active:nextState
+   });
+   await loadEmployees();
+   alert(nextState?"تم تفعيل حساب الموظف.":"تم إيقاف حساب الموظف.");
+  }catch(err){
+   alert(err.message||"تعذر تحديث حالة الموظف.");
+   toggleButton.disabled=false;
+  }
+ }
+});
+
+$("employeeForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+
+ const employee_number=$("newEmployeeNumber").value.trim();
+ const full_name=$("newEmployeeName").value.trim();
+ const phone_number=$("newEmployeePhone").value.trim();
+ const is_active=$("newEmployeeActive").checked;
+
+ if(!employee_number||!full_name||!phone_number){
+  $("employeeFormMessage").textContent="يرجى تعبئة جميع الحقول.";
+  return;
+ }
+
+ const button=$("saveEmployeeButton");
+ button.disabled=true;
+ $("employeeFormMessage").textContent="جاري حفظ البيانات...";
+
+ try{
+  if(editingEmployeeId){
+   await managerRequest({
+    action:"update_employee",
+    employee_id:editingEmployeeId,
+    employee_number,
+    full_name,
+    phone_number,
+    is_active
+   });
+   $("employeeFormMessage").textContent="تم تحديث بيانات الموظف بنجاح.";
+  }else{
+   await managerRequest({
+    action:"create_employee",
+    employee_number,
+    full_name,
+    phone_number,
+    is_active
+   });
+   $("employeeFormMessage").textContent="تمت إضافة الموظف بنجاح.";
+  }
+
+  await loadEmployees();
+  resetEmployeeForm();
+  alert(editingEmployeeId?"تم تحديث بيانات الموظف.":"تمت إضافة الموظف بنجاح.");
+ }catch(err){
+  $("employeeFormMessage").textContent=err.message||"تعذر حفظ بيانات الموظف.";
+ }finally{
+  button.disabled=false;
+ }
+});
+
+/* تسجيل خروج المدير */
 $("managerLogout").addEventListener("click",()=>{
  managerSession=null;
  currentTicketId=null;
  currentTickets=[];
+ currentEmployees=[];
+ resetEmployeeForm();
  $("managerDashboard").classList.add("hidden");
  $("loginPage").classList.remove("hidden");
  $("managerLoginForm").reset();
 });
 
+/* خدمات الموظف */
 document.querySelectorAll(".service").forEach(card=>card.addEventListener("click",()=>{
  selectedServiceType=card.dataset.type;
  const titles={complaint:"تقديم شكوى",report:"تقديم بلاغ",request:"تقديم طلب"};
@@ -685,6 +931,7 @@ $("sendEmployeeReply").addEventListener("click",async()=>{
  }finally{b.disabled=false;}
 });
 
+/* إرسال معاملة */
 $("submitTicket").addEventListener("click",async()=>{
  const b=$("submitTicket");
  const subject=$("subject").value.trim();
@@ -738,6 +985,7 @@ $("submitTicket").addEventListener("click",async()=>{
  }finally{b.disabled=false;}
 });
 
+/* تسجيل خروج الموظف */
 $("logoutButton").addEventListener("click",async()=>{
  try{if(employeeToken)await employeeRequest({action:"logout"});}catch{}
  employeeToken=null;
