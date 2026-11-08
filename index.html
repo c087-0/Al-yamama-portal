@@ -978,8 +978,10 @@ function translatePage(){
   document.title=currentLanguage==="en"
    ?"Central Region Project Employee Portal"
    :"بوابة موظفين مشروع الوسطى";
-  $("languageToggle").textContent=currentLanguage==="en"
-   ?"🌐 العربية":"🌐 English";
+  const languageText = currentLanguage === "en" ? "🌐 العربية" : "🌐 English";
+if ($("languageToggle").textContent !== languageText) {
+  $("languageToggle").textContent = languageText;
+}
   const root=document.querySelector("main");
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
   while(walker.nextNode())localizeNode(walker.currentNode);
