@@ -9,44 +9,39 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap');
 
-:root{
+:root {
   --navy:#122d40;
   --navy-deep:#0b2533;
   --teal:#087b70;
   --teal-deep:#05675e;
-  --mint:#dff6ec;
-  --paper:#ffffff;
+  --paper:#fff;
   --ink:#233c4b;
   --muted:#697e8b;
   --edge:#dae7e9;
   --soft:#f5f9fa;
   --star:#cc414e;
-  --shadow:0 25px 75px rgba(9,36,51,.14);
   --ring:0 0 0 4px rgba(8,123,112,.13);
 }
 
-*{
+* {
   box-sizing:border-box;
   font-family:'Tajawal',Tahoma,Arial,sans-serif;
 }
-
-html{
+html {
   scroll-behavior:smooth;
   scroll-padding-top:30px;
 }
-
-body{
+body {
   margin:0;
   min-height:100vh;
-  background:linear-gradient(145deg,#102d43 0%,#184f58 53%,#117468 100%);
+  padding:48px 28px 68px;
+  background:linear-gradient(145deg,#102d43,#184f58 53%,#117468);
   background-attachment:fixed;
   color:var(--ink);
-  padding:48px 28px 68px;
   font-size:16px;
   line-height:1.65;
 }
-
-.container{
+.container {
   position:relative;
   width:100%;
   max-width:1320px;
@@ -58,26 +53,20 @@ body{
   border-radius:26px;
   box-shadow:0 25px 80px rgba(0,24,36,.2);
 }
-
 body:has(#loginPage:not(.hidden)) .container,
-body:has(#managerLoginPage:not(.hidden)) .container{
+body:has(#managerLoginPage:not(.hidden)) .container {
   max-width:790px;
   padding:44px clamp(32px,6vw,75px) 36px;
 }
-
-.hidden{
-  display:none!important;
-}
-
-.login-screen{
+.hidden {display:none!important}
+.login-screen {
   position:relative;
   max-width:630px;
   margin:auto;
   padding:8px 0 16px;
   isolation:isolate;
 }
-
-.login-screen::before{
+.login-screen::before {
   content:"اليمامة";
   position:absolute;
   top:55%;
@@ -91,69 +80,57 @@ body:has(#managerLoginPage:not(.hidden)) .container{
   z-index:-1;
 }
 
-.logo{
-  width:104px;
-  height:104px;
-  margin:0 auto 25px;
-  padding:9px;
-  background:#fff;
-  border:1px solid #d9ebe9;
-  border-radius:24px;
-  box-shadow:0 10px 30px rgba(7,90,85,.11);
+/* شعار اليمامة بنفس حجمه وطريقة عرضه الأصلية */
+.logo {
+  width:85px;
+  height:85px;
+  margin:0 auto 15px;
+  padding:0;
+  background:white;
+  border:1px solid #e8f3ef;
+  border-radius:20px;
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
 }
-
-.logo img{
-  width:100%;
-  height:100%;
+.logo img {
+  width:120%;
+  height:120%;
   object-fit:contain;
-  display:block;
+  padding:4px;
 }
-
-.logo.logo-fallback::after{
+.logo.logo-fallback::after {
   content:"اليمامة";
-  color:var(--teal-deep);
-  font-size:20px;
+  color:#05675e;
+  font-size:18px;
   font-weight:800;
 }
+.logo.logo-fallback img {display:none}
 
-.logo.logo-fallback img{
-  display:none;
-}
-
-h1{
-  color:var(--navy-deep);
+h1 {
   text-align:center;
+  color:var(--navy-deep);
   font-size:clamp(25px,3vw,32px);
   font-weight:800;
   line-height:1.45;
   margin:7px 0 8px;
 }
-
-.description{
+.description {
   text-align:center;
   color:var(--muted);
   font-size:16px;
   line-height:1.9;
   margin:0 0 30px;
 }
-
-.login-screen .description{
-  margin-bottom:34px;
-}
-
-label{
+label {
   display:block;
   color:var(--navy);
-  font-weight:700;
   font-size:15.5px;
+  font-weight:700;
   margin-bottom:10px;
 }
-
-input,textarea,select{
+input,textarea,select {
   display:block;
   width:100%;
   min-height:56px;
@@ -167,45 +144,28 @@ input,textarea,select{
   font-weight:500;
   line-height:1.6;
   outline:none;
-  transition:border-color .18s,box-shadow .18s,background .18s;
+  transition:border-color .18s,box-shadow .18s;
 }
-
-textarea{
-  min-height:120px;
-  resize:vertical;
-}
-
-input::placeholder,
-textarea::placeholder{
-  color:#9aabb1;
-  font-weight:400;
-}
-
-input:focus,
-textarea:focus,
-select:focus{
+textarea {min-height:120px;resize:vertical}
+input::placeholder,textarea::placeholder {color:#9aabb1}
+input:focus,textarea:focus,select:focus {
   border-color:var(--teal);
   box-shadow:var(--ring);
-  background:#fff;
 }
-
-input[type=checkbox]{
+input[type=checkbox] {
   width:19px;
   height:19px;
   min-height:19px;
   accent-color:var(--teal);
-  box-shadow:none;
 }
-
-input[type=file]{
+input[type=file] {
   min-height:76px;
   padding:15px;
   background:#f7fbfa;
   border:1.5px dashed #b9d8d2;
   cursor:pointer;
 }
-
-input[type=file]::file-selector-button{
+input[type=file]::file-selector-button {
   padding:9px 18px;
   margin-inline-end:16px;
   border:0;
@@ -215,48 +175,31 @@ input[type=file]::file-selector-button{
   font-weight:700;
   cursor:pointer;
 }
-
-button{
+button {
   border:1px solid transparent;
   border-radius:12px;
   min-height:48px;
   padding:12px 21px;
   background:linear-gradient(135deg,#0b8479,#096d66);
-  color:#fff;
+  color:white;
   font-size:15.5px;
   font-weight:700;
-  line-height:1.4;
   cursor:pointer;
   transition:transform .18s,box-shadow .18s;
 }
-
-button:hover:not(:disabled){
+button:hover:not(:disabled) {
   transform:translateY(-1px);
   box-shadow:0 9px 21px rgba(8,123,112,.2);
 }
-
-button:disabled{
-  opacity:.62;
-  cursor:not-allowed;
+button:disabled {opacity:.62;cursor:not-allowed}
+button:focus-visible,a:focus-visible,.service:focus-visible {
+  outline:3px solid rgba(8,123,112,.4);
+  outline-offset:3px;
 }
-
-.primary{
-  width:100%;
-  min-height:53px;
-}
-
-#loginButton,
-#managerLoginButton{
-  min-height:57px;
-  font-size:17px;
-}
-
-#showManagerLogin{
-  background:#17354d!important;
-}
-
-#message,
-#managerMessage{
+.primary {width:100%;min-height:53px}
+#loginButton,#managerLoginButton {min-height:57px;font-size:17px}
+#showManagerLogin {background:#17354d}
+#message,#managerMessage {
   display:none;
   margin:16px 0 0;
   padding:16px;
@@ -264,187 +207,127 @@ button:disabled{
   border:1px solid #cfe9e1;
   border-radius:12px;
   text-align:center;
-  color:var(--teal-deep);
-  font-weight:600;
+  color:#05675e;
 }
-
-.header{
+.header {
   display:flex;
   align-items:center;
   justify-content:space-between;
   flex-wrap:wrap;
   gap:20px;
-  margin:0 0 32px;
-  padding:0 0 29px;
+  padding-bottom:29px;
+  margin-bottom:32px;
   border-bottom:1px solid var(--edge);
 }
-
-.header h1{
-  text-align:right;
-  margin:0;
-}
-
-.header .description{
-  text-align:right;
-  margin:3px 0 0!important;
-}
-
-.logout{
+.header h1 {text-align:right;margin:0}
+.header .description {text-align:right;margin:3px 0 0!important}
+.logout {
   background:#f4f7f9;
   color:#17354d;
-  border:1px solid #e0e8ec;
-  box-shadow:none;
+  border-color:#e0e8ec;
 }
-
-.services{
+.services {
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:23px;
   margin:14px 0 25px;
 }
-
-.service{
-  position:relative;
+.service {
   display:flex;
-  min-height:250px;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  text-align:center;
+  min-height:250px;
   padding:34px 24px;
   background:linear-gradient(155deg,#fff,#f9fcfc);
   border:1.5px solid var(--edge);
   border-radius:19px;
+  text-align:center;
   cursor:pointer;
-  transition:transform .22s,border-color .22s,box-shadow .22s;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
 }
-
-.service:hover{
-  border-color:#75bdb3;
+.service:hover {
   transform:translateY(-5px);
+  border-color:#75bdb3;
   box-shadow:0 20px 40px rgba(11,71,70,.13);
 }
-
-.service .icon{
+.service .icon {
   display:grid;
   place-items:center;
   width:84px;
   height:84px;
-  margin:0 auto 18px;
-  background:linear-gradient(135deg,#e7f8f3,#f2fbfa);
+  margin-bottom:18px;
+  background:#e7f8f3;
   border:1px solid #ddf1eb;
   border-radius:22px;
   font-size:38px;
 }
-
-.service h2{
+.service h2 {
   color:var(--navy);
   font-size:23px;
   margin:0 0 5px;
 }
-
-.service p{
+.service p {
   color:var(--muted);
   font-size:16px;
   margin:0;
 }
-
-.back,.secondary{
+.back,.secondary {
   background:#eaf4f1;
-  color:var(--teal-deep);
-  border:1px solid #d5eae4;
-  box-shadow:none;
+  color:#05675e;
+  border-color:#d5eae4;
 }
-
-.back{
-  margin-bottom:22px;
-}
-
-.danger{
+.back {margin-bottom:22px}
+.danger {
   background:#fff0f0;
   color:#b44349;
-  border:1px solid #f6d9da;
-  box-shadow:none;
+  border-color:#f6d9da;
 }
-
-.form-title{
+.form-title {
   color:var(--navy);
   font-size:26px;
   margin:4px 0 24px;
   padding-bottom:16px;
   border-bottom:1px solid var(--edge);
 }
-
-.footer{
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-  margin:37px 0 0;
-  padding-top:25px;
-  border-top:1px solid var(--edge);
-}
-
-.manager-card{
+.manager-card {
   background:#fbfdfd;
   border:1px solid var(--edge);
   border-radius:20px;
   padding:clamp(21px,3vw,32px);
   margin-top:21px;
 }
-
-.manager-card h2,
-.manager-card h3{
-  color:var(--navy);
-}
-
-.ticket-card,
-.employee-card{
+.manager-card h2,.manager-card h3 {color:var(--navy)}
+.ticket-card,.employee-card {
   margin:16px 0;
   padding:23px 25px;
-  background:#fff;
+  background:white;
   border:1.5px solid var(--edge);
   border-radius:16px;
-  transition:border-color .18s,box-shadow .18s;
 }
-
-.ticket-card:hover,
-.employee-card:hover{
-  border-color:#a6d0ca;
-  box-shadow:0 10px 22px rgba(25,86,83,.065);
-}
-
-.ticket-card h3,
-.employee-card h3{
+.ticket-card:hover,.employee-card:hover {border-color:#a6d0ca}
+.ticket-card h3,.employee-card h3 {
   color:var(--navy);
   font-size:19px;
   margin:0 0 12px;
   overflow-wrap:anywhere;
 }
-
-.ticket-card p,
-.employee-card p{
+.ticket-card p,.employee-card p {
   color:#586f7e;
   font-size:15px;
   line-height:1.95;
   margin:5px 0;
 }
-
-.ticket-open{
-  margin-top:18px;
-  width:100%;
-}
-
-.ticket-top{
+.ticket-open {margin-top:18px;width:100%}
+.ticket-top {
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-}
-
-.status,.employee-status{
-  display:inline-flex;
   align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.status,.employee-status {
+  display:inline-block;
   padding:7px 13px;
   border-radius:100px;
   background:#e5f5ee;
@@ -452,240 +335,169 @@ button:disabled{
   font-size:13px;
   font-weight:700;
 }
-
-.ticket-meta{
-  color:var(--muted)!important;
-  font-size:13px!important;
-}
-
-.message-item{
-  margin:15px 0;
+.ticket-meta {color:#82949e!important;font-size:13px!important}
+.message-item {
   padding:20px 22px;
-  border-radius:15px;
+  margin:15px 0;
   background:#f3f7f9;
   border:1px solid var(--edge);
+  border-radius:15px;
 }
-
-.message-item.admin{
-  background:#ebf7f1;
-  border-color:#d2ebdf;
-}
-
-.message-item strong{
-  display:block;
-  color:var(--navy);
-  margin-bottom:8px;
-}
-
-.message-item p{
+.message-item.admin {background:#ebf7f1;border-color:#d2ebdf}
+.message-item strong {display:block;color:var(--navy);margin-bottom:8px}
+.message-item p {
   margin:0;
-  white-space:pre-wrap;
-  line-height:1.95;
   color:#405966;
+  line-height:1.95;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
-
-.message-item small{
-  display:block;
-  margin-top:12px;
-  color:var(--muted);
-}
-
-.empty-state{
-  text-align:center;
+.message-item small {display:block;margin-top:12px;color:var(--muted)}
+.empty-state {
   padding:44px 25px;
+  text-align:center;
   color:var(--muted);
   background:#f4f8f9;
   border:1px dashed var(--edge);
   border-radius:15px;
 }
-
-.section-heading{
-  color:var(--navy);
-  margin:33px 0 17px;
-}
-
-.action-row{
-  display:flex;
-  align-items:stretch;
-  gap:14px;
-  flex-wrap:wrap;
-}
-
-.action-row button{
-  flex:1 1 200px;
-}
-
-.small-note{
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.95;
-}
-
-.file-link{
+.section-heading {color:var(--navy);margin:33px 0 17px}
+.action-row {display:flex;gap:14px;flex-wrap:wrap}
+.action-row button {flex:1 1 200px}
+.small-note {color:var(--muted);font-size:14px;line-height:1.95}
+.file-link {
   display:inline-flex;
   margin:13px 0;
   padding:12px 18px;
-  border:1px solid #c5e5dc;
-  border-radius:10px;
   background:#ecf9f4;
   color:#096c62;
+  border:1px solid #c5e5dc;
+  border-radius:10px;
   font-weight:800;
   text-decoration:none;
-  overflow-wrap:anywhere;
 }
-
-.employee-card .action-row{
-  margin-top:18px;
-}
-
-.employee-active{
-  background:#e4f5e9;
-  color:#167249;
-}
-
-.employee-inactive{
-  background:#fff0ef;
-  color:#b04444;
-}
-
-#formMessage,
-#statusMessage,
-#replyMessage{
-  line-height:1.9;
-  overflow-wrap:anywhere;
-}
-
-#formMessage{
+.employee-active {background:#e4f5e9;color:#167249}
+.employee-inactive {background:#fff0ef;color:#b04444}
+.employee-card .action-row {margin-top:18px}
+#formMessage {
   white-space:pre-line;
+  line-height:1.9;
 }
+#formMessage.attachment-error {color:#ad3034;font-weight:700}
+#formMessage.attachment-success {color:#08735f;font-weight:800}
+#formMessage.attachment-progress {color:#385872}
 
-#formMessage.attachment-error{
-  color:#ad3034;
-  font-weight:700;
-}
-
-#formMessage.attachment-success{
-  color:#08735f;
-  font-weight:800;
-}
-
-#formMessage.attachment-progress{
-  color:#385872;
-}
-
-.required-star{
-  color:var(--star);
-  font-size:1.2em;
-  font-weight:900;
-  margin-inline-start:4px;
-}
-
-.required-hint{
-  margin:0 0 20px;
-  color:var(--muted);
-  font-size:13px;
-}
-
-.sr-only{
+.required-star {color:var(--star);font-weight:900;font-size:1.2em}
+.required-hint {font-size:13px;color:var(--muted)}
+.sr-only {
   position:absolute!important;
   width:1px;
   height:1px;
-  padding:0;
-  margin:-1px;
   overflow:hidden;
   clip:rect(0,0,0,0);
   white-space:nowrap;
-  border:0;
 }
 
-.settings-bar{
+/* الإعدادات واللغة */
+.settings-bar {
   position:relative;
   display:flex;
-  justify-content:flex-start;
-  min-height:48px;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:flex-start;
   margin:-13px 0 15px;
   z-index:30;
 }
-
-.settings-toggle{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
+.settings-toggle {
   min-height:44px;
+  padding:9px 17px;
   background:var(--soft);
   color:var(--navy);
   border:1px solid var(--edge);
-  font-size:14px;
   box-shadow:none;
-  padding:9px 17px;
 }
-
-.settings-panel{
+.language-toggle {min-width:108px}
+.settings-panel {
   position:absolute;
   top:53px;
   inset-inline-start:0;
   z-index:50;
   width:min(370px,calc(100vw - 58px));
-  padding:21px 22px 19px;
+  padding:21px 22px;
   border:1px solid var(--edge);
   border-radius:18px;
   background:var(--paper);
-  color:var(--ink);
   box-shadow:0 24px 60px rgba(8,35,47,.18);
 }
-
-.settings-panel h2{
-  font-size:20px;
-  color:var(--navy);
-  margin:0 0 6px;
+.settings-panel h2 {color:var(--navy);margin:0 0 6px}
+.settings-panel p {font-size:13px;color:var(--muted)}
+.settings-panel select {min-height:46px}
+.settings-reset {width:100%}
+.confirmation-box {
+  margin:20px 0 18px;
+  padding:18px 20px;
+  background:#eff8f5;
+  border:1.5px solid #c9e4dc;
+  border-radius:14px;
 }
-
-.settings-panel p{
-  font-size:13px;
+.confirmation-box.needs-attention {
+  border-color:#d85c67;
+  background:#fff4f4;
+}
+.confirmation-label {
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  cursor:pointer;
+  line-height:1.9;
+}
+.confirmation-label input {
+  width:21px;
+  min-width:21px;
+  height:21px;
+  min-height:21px;
+  margin:4px 0 0;
+}
+.footer {
+  text-align:center;
+  margin-top:37px;
+  padding-top:25px;
+  border-top:1px solid var(--edge);
   color:var(--muted);
-  margin:0 0 19px;
+  font-size:13px;
 }
-
-.settings-panel label{
-  font-size:14px;
+.creator-credit {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:6px 9px;
+  width:fit-content;
+  max-width:100%;
+  margin:15px auto 0;
+  padding:11px 18px;
+  background:var(--soft);
+  border:1px solid var(--edge);
+  border-radius:14px;
 }
+.creator-credit strong {font-size:14px;color:var(--navy)}
+.creator-credit-icon,.creator-separator {color:var(--teal)}
 
-.settings-panel select{
-  min-height:46px;
-  margin-bottom:14px;
-}
-
-.settings-panel .settings-reset{
-  width:100%;
-}
-
-html[data-font-size="large"] body{
-  font-size:18px;
-}
-
-html[data-font-size="large"] :is(
-label,input,textarea,select,button,
-.description,.service p,.ticket-card p,
-.employee-card p,.message-item p,.small-note
-){
+/* إعدادات حجم الخط والحركة */
+html[data-font-size="large"] body {font-size:18px}
+html[data-font-size="large"] :is(label,input,textarea,select,button,.description,.service p,.small-note) {
   font-size:17px!important;
 }
-
-html[data-motion="reduced"]{
-  scroll-behavior:auto;
-}
-
+html[data-motion="reduced"] {scroll-behavior:auto}
 html[data-motion="reduced"] *,
 html[data-motion="reduced"] *::before,
-html[data-motion="reduced"] *::after{
+html[data-motion="reduced"] *::after {
   transition:none!important;
   animation:none!important;
-  scroll-behavior:auto!important;
 }
 
 /* الوضع الداكن */
-
-html[data-theme="dark"]{
+html[data-theme="dark"] {
   color-scheme:dark;
   --navy:#dff3f1;
   --navy-deep:#f0fbfb;
@@ -698,468 +510,334 @@ html[data-theme="dark"]{
   --soft:#1a3441;
   --star:#ff8790;
 }
-
-html[data-theme="dark"] body{
+html[data-theme="dark"] body {
   background:linear-gradient(145deg,#091823,#0c2933,#103d42);
 }
-
-html[data-theme="dark"] .container{
-  border-color:#2b4c59;
+html[data-theme="dark"] .container {border-color:#2b4c59}
+html[data-theme="dark"] .logo {
+  background:white;
+  border-color:#e8f3ef;
 }
-
-html[data-theme="dark"] .logo{
-  background:#fff;
-}
-
-html[data-theme="dark"] .login-screen::before{
-  color:rgba(154,212,205,.07);
-}
-
 html[data-theme="dark"] input,
 html[data-theme="dark"] textarea,
-html[data-theme="dark"] select{
+html[data-theme="dark"] select {
   background:#0f2633;
-  border-color:var(--edge);
   color:var(--ink);
+  border-color:var(--edge);
 }
-
-html[data-theme="dark"] input:focus,
-html[data-theme="dark"] textarea:focus,
-html[data-theme="dark"] select:focus{
-  background:#153240;
-  border-color:var(--teal);
-}
-
 html[data-theme="dark"] .service,
 html[data-theme="dark"] .manager-card,
 html[data-theme="dark"] .ticket-card,
 html[data-theme="dark"] .employee-card,
 html[data-theme="dark"] .message-item,
-html[data-theme="dark"] .empty-state{
+html[data-theme="dark"] .empty-state {
   background:#173440;
   border-color:var(--edge);
 }
-
-html[data-theme="dark"] .service:hover{
-  background:#1a3945;
-  border-color:#3faca1;
-}
-
-html[data-theme="dark"] .service .icon{
-  background:#22483f;
-  border-color:#366f64;
-}
-
-html[data-theme="dark"] .message-item.admin{
-  background:#18453f;
-}
-
+html[data-theme="dark"] .service .icon {background:#22483f;border-color:#366f64}
+html[data-theme="dark"] .message-item.admin {background:#18453f}
 html[data-theme="dark"] .ticket-card p,
 html[data-theme="dark"] .employee-card p,
-html[data-theme="dark"] .message-item p{
-  color:#bdd0d7;
-}
-
-html[data-theme="dark"] .logout,
+html[data-theme="dark"] .message-item p {color:#bdd0d7}
 html[data-theme="dark"] .back,
 html[data-theme="dark"] .secondary,
-html[data-theme="dark"] .settings-toggle{
+html[data-theme="dark"] .logout,
+html[data-theme="dark"] .settings-toggle {
   background:#214450;
   color:#dceeed;
   border-color:#335969;
 }
-
-html[data-theme="dark"] .danger{
-  background:#482b37;
-  color:#ffc3c6;
+html[data-theme="dark"] .danger {background:#482b37;color:#ffc3c6}
+html[data-theme="dark"] .settings-panel {background:#17323f}
+html[data-theme="dark"] .confirmation-box {
+  background:#1a3c3c;
+  border-color:#35675e;
 }
-
-html[data-theme="dark"] .settings-panel{
-  background:#17323f;
-  border-color:#45616a;
-}
-
-html[data-theme="dark"] .footer,
+html[data-theme="dark"] .creator-credit {background:#193743}
+html[data-theme="dark"] .form-title,
 html[data-theme="dark"] .header,
-html[data-theme="dark"] .form-title{
-  border-color:var(--edge);
+html[data-theme="dark"] .footer {border-color:var(--edge)}
+html[data-theme="dark"] #detailText,
+html[data-theme="dark"] #employeeDetailText,
+html[data-theme="dark"] #employeeResolution {color:#c7d7de!important}
+html[dir="ltr"] .header h1,
+html[dir="ltr"] .header .description {text-align:left}
+
+@media(max-width:920px) {
+  .services {grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-
-html[data-theme="dark"] :is(
-#employeeDetailText,#detailText,#employeeResolution,
-#employeeDetailInfo,#detailInfo
-){
-  color:#c7d7de!important;
-}
-
-/* تجاوب الشاشات */
-
-@media(max-width:920px){
-  .services{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-  .service{
-    min-height:215px;
-  }
-}
-
-@media(max-width:600px){
-  body{
-    padding:16px 12px 30px;
-  }
+@media(max-width:600px) {
+  body {padding:16px 12px 30px}
   .container,
   body:has(#loginPage:not(.hidden)) .container,
-  body:has(#managerLoginPage:not(.hidden)) .container{
+  body:has(#managerLoginPage:not(.hidden)) .container {
     padding:27px 21px 25px;
     border-radius:19px;
   }
-  .header{
-    gap:14px;
-  }
-  .header>div{
-    flex:1 1 100%;
-  }
-  .services{
-    grid-template-columns:1fr;
-    gap:15px;
-  }
-  .service{
-    min-height:202px;
-    padding:27px 18px;
-  }
-  .service .icon{
-    width:72px;
-    height:72px;
-  }
-  .action-row button{
-    flex:1 1 100%;
-  }
-  .manager-card,
-  .ticket-card,
-  .employee-card{
-    padding:19px 16px;
-  }
-  .settings-panel{
-    max-width:calc(100vw - 62px);
-  }
+  .services {grid-template-columns:1fr}
+  .service {min-height:202px;padding:27px 18px}
+  .service .icon {width:72px;height:72px}
+  .action-row button {flex:1 1 100%}
+  .manager-card,.ticket-card,.employee-card {padding:19px 16px}
 }
-
-@media(prefers-reduced-motion:reduce){
-  html{
-    scroll-behavior:auto;
-  }
-  *,*::before,*::after{
-    transition:none!important;
-    animation:none!important;
-  }
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {transition:none!important;animation:none!important}
 }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 <body>
 <main class="container">
 
 <div class="settings-bar" id="settingsBar">
-<button type="button" id="settingsToggle" class="settings-toggle" aria-controls="settingsPanel" aria-expanded="false">⚙ الإعدادات</button>
-
-<section id="settingsPanel" class="settings-panel hidden" aria-label="الإعدادات العامة">
-<h2>الإعدادات العامة</h2>
-<p>خصّص طريقة عرض الموقع. تُحفظ اختياراتك على هذا المتصفح.</p>
-
-<label for="themeSetting">مظهر الموقع</label>
-<select id="themeSetting">
-<option value="light">فاتح</option>
-<option value="dark">داكن</option>
-<option value="system">حسب إعداد الجهاز</option>
-</select>
-
-<label for="fontSetting">حجم الكتابة</label>
-<select id="fontSetting">
-<option value="normal">عادي</option>
-<option value="large">كبير</option>
-</select>
-
-<label for="motionSetting">تأثيرات الحركة</label>
-<select id="motionSetting">
-<option value="normal">عادية</option>
-<option value="reduced">تقليل الحركة</option>
-</select>
-
-<button type="button" class="secondary settings-reset" id="resetSettings">استعادة الإعدادات الافتراضية</button>
-</section>
+  <button type="button" id="settingsToggle" class="settings-toggle" aria-expanded="false" aria-controls="settingsPanel">⚙ الإعدادات</button>
+  <button type="button" id="languageToggle" class="settings-toggle language-toggle">🌐 English</button>
+  <section id="settingsPanel" class="settings-panel hidden" aria-label="الإعدادات العامة">
+    <h2>الإعدادات العامة</h2>
+    <p>خصّص طريقة عرض الموقع. تُحفظ اختياراتك على هذا المتصفح.</p>
+    <label for="themeSetting">مظهر الموقع</label>
+    <select id="themeSetting">
+      <option value="light">فاتح</option>
+      <option value="dark">داكن</option>
+      <option value="system">حسب إعداد الجهاز</option>
+    </select>
+    <label for="fontSetting">حجم الكتابة</label>
+    <select id="fontSetting">
+      <option value="normal">عادي</option>
+      <option value="large">كبير</option>
+    </select>
+    <label for="motionSetting">تأثيرات الحركة</label>
+    <select id="motionSetting">
+      <option value="normal">عادية</option>
+      <option value="reduced">تقليل الحركة</option>
+    </select>
+    <button type="button" class="secondary settings-reset" id="resetSettings">استعادة الإعدادات الافتراضية</button>
+  </section>
 </div>
 
 <section id="loginPage" class="login-screen">
-<div class="logo"><img src="./yamama-logo.jpeg" alt="شعار اليمامة"></div>
-<h1>بوابة موظفين مشروع المنطقة الوسطى</h1>
-<p class="description">مرحباً بك. أدخل بياناتك المسجلة لدى الإدارة.</p>
-
-<form id="loginForm">
-<label for="employee">الرقم الوظيفي</label>
-<input id="employee" type="text" placeholder="أدخل الرقم الوظيفي" required>
-
-<label for="phone">رقم الجوال</label>
-<input id="phone" type="tel" placeholder="05xxxxxxxx" required>
-
-<button class="primary" id="loginButton" type="submit">تسجيل دخول الموظفين</button>
-<div id="message" role="status" aria-live="polite"></div>
-</form>
-
-<button type="button" class="primary" id="showManagerLogin" style="margin-top:12px">دخول الإدارة</button>
+  <div class="logo"><img src="./yamama-logo.jpeg" alt="شعار اليمامة"></div>
+  <h1>بوابة موظفين مشروع المنطقة الوسطى</h1>
+  <p class="description">مرحباً بك. أدخل بياناتك المسجلة لدى الإدارة.</p>
+  <form id="loginForm">
+    <label for="employee">الرقم الوظيفي</label>
+    <input id="employee" type="text" placeholder="أدخل الرقم الوظيفي" required>
+    <label for="phone">رقم الجوال</label>
+    <input id="phone" type="tel" placeholder="05xxxxxxxx" required>
+    <button class="primary" id="loginButton" type="submit">تسجيل دخول الموظفين</button>
+    <div id="message" role="status" aria-live="polite"></div>
+  </form>
+  <button type="button" class="primary" id="showManagerLogin" style="margin-top:12px">دخول الإدارة</button>
 </section>
 
 <section id="managerLoginPage" class="hidden login-screen">
-<div class="logo"><img src="./yamama-logo.jpeg" alt="شعار اليمامة"></div>
-<h1>دخول الإدارة</h1>
-<p class="description">يرجى إدخال بيانات حساب المدير.</p>
-
-<form id="managerLoginForm">
-<label for="managerUsername">اسم المستخدم</label>
-<input id="managerUsername" type="text" placeholder="أدخل اسم المستخدم" required>
-
-<label for="managerPassword">كلمة المرور</label>
-<input id="managerPassword" type="password" placeholder="أدخل كلمة المرور" required>
-
-<button class="primary" id="managerLoginButton" type="submit">تسجيل الدخول</button>
-<div id="managerMessage" role="status" aria-live="polite"></div>
-</form>
-
-<button type="button" class="back" id="backToEmployee">العودة لدخول الموظفين</button>
+  <div class="logo"><img src="./yamama-logo.jpeg" alt="شعار اليمامة"></div>
+  <h1>دخول الإدارة</h1>
+  <p class="description">يرجى إدخال بيانات حساب المدير.</p>
+  <form id="managerLoginForm">
+    <label for="managerUsername">اسم المستخدم</label>
+    <input id="managerUsername" type="text" placeholder="أدخل اسم المستخدم" required>
+    <label for="managerPassword">كلمة المرور</label>
+    <input id="managerPassword" type="password" placeholder="أدخل كلمة المرور" required>
+    <button class="primary" id="managerLoginButton" type="submit">تسجيل الدخول</button>
+    <div id="managerMessage" role="status" aria-live="polite"></div>
+  </form>
+  <button type="button" class="back" id="backToEmployee">العودة لدخول الموظفين</button>
 </section>
 
 <section id="servicesPage" class="hidden">
+  <div class="header">
+    <div>
+      <h1>بوابة موظفين مشروع المنطقة الوسطى</h1>
+      <p class="description" id="employeeWelcome"></p>
+    </div>
+    <button class="logout" id="logoutButton">تسجيل الخروج</button>
+  </div>
 
-<div class="header">
-<div>
-<h1>بوابة موظفين مشروع المنطقة الوسطى</h1>
-<p class="description" id="employeeWelcome" style="margin:5px 0"></p>
-</div>
-<button class="logout" id="logoutButton">تسجيل الخروج</button>
-</div>
+  <div id="servicesList" class="services">
+    <div class="service" data-type="complaint" role="button" tabindex="0"><div class="icon">🗣️</div><h2>الشكاوى</h2><p>تقديم شكوى للإدارة</p></div>
+    <div class="service" data-type="report" role="button" tabindex="0"><div class="icon">📢</div><h2>البلاغات</h2><p>تقديم بلاغ للإدارة</p></div>
+    <div class="service" data-type="request" role="button" tabindex="0"><div class="icon">📋</div><h2>الطلبات</h2><p>تقديم طلب إداري</p></div>
+  </div>
 
-<div id="servicesList" class="services">
-<div class="service" data-type="complaint" tabindex="0" role="button">
-<div class="icon">🗣️</div>
-<h2>الشكاوى</h2>
-<p>تقديم شكوى للإدارة</p>
-</div>
-<div class="service" data-type="report" tabindex="0" role="button">
-<div class="icon">📢</div>
-<h2>البلاغات</h2>
-<p>تقديم بلاغ للإدارة</p>
-</div>
-<div class="service" data-type="request" tabindex="0" role="button">
-<div class="icon">📋</div>
-<h2>الطلبات</h2>
-<p>تقديم طلب إداري</p>
-</div>
-</div>
+  <div class="action-row">
+    <button type="button" class="secondary" id="showMyTickets">متابعة معاملاتي وسجل الطلبات</button>
+  </div>
 
-<div class="action-row" style="margin-top:18px">
-<button type="button" class="secondary" id="showMyTickets">متابعة معاملاتي وسجل الطلبات</button>
-</div>
+  <div id="serviceForm" class="hidden">
+    <button class="back" id="backButton" type="button">← العودة للخدمات</button>
+    <h2 class="form-title" id="serviceTitle"></h2>
+    <p class="required-hint">الحقول التي بجانبها نجمة <span class="required-star">*</span> مطلوبة.</p>
+    <label for="ticketSubtype" id="subtypeLabel">تصنيف الشكوى <span class="required-star">*</span></label>
+    <select id="ticketSubtype" required></select>
+    <label for="subject" id="subjectLabel">عنوان الشكوى <span class="required-star">*</span></label>
+    <input id="subject" type="text" maxlength="180" placeholder="اكتب عنوان الشكوى" required>
+    <label for="details" id="detailsLabel">تفاصيل الشكوى <span class="required-star">*</span></label>
+    <textarea id="details" rows="5" maxlength="10000" placeholder="اكتب تفاصيل الشكوى هنا" required></textarea>
+    <label for="attachment">إرفاق ملف (اختياري)</label>
+    <input id="attachment" type="file" accept="image/jpeg,image/png,image/gif,image/webp,.pdf,.doc,.docx,.xls,.xlsx">
+    <p class="small-note">الحد الأعلى 5 ميجابايت. الأنواع المسموحة: الصور وPDF وWord وExcel.</p>
 
-<div id="serviceForm" class="hidden">
-<button class="back" id="backButton" type="button">← العودة للخدمات</button>
-<h2 class="form-title" id="serviceTitle"></h2>
+    <div class="confirmation-box" id="confirmationBox">
+      <label for="confirmInformation" class="confirmation-label">
+        <input type="checkbox" id="confirmInformation" required>
+        <span>أؤكد أن جميع البيانات المدخلة صحيحة مع تحمل كامل المسؤولية <span class="required-star">*</span></span>
+      </label>
+    </div>
 
-<p class="required-hint">الحقول التي بجانبها نجمة <span class="required-star">*</span> مطلوبة.</p>
+    <button type="button" class="primary" id="submitTicket">إرسال المعاملة</button>
+    <div id="formMessage" class="small-note" role="status"></div>
+  </div>
 
-<label for="ticketSubtype" id="subtypeLabel">تصنيف الشكوى <span class="required-star">*</span></label>
-<select id="ticketSubtype" required></select>
+  <div id="myTicketsView" class="hidden">
+    <button class="back" id="backFromTickets" type="button">← العودة للخدمات</button>
+    <h2 class="form-title">متابعة معاملاتي</h2>
+    <label for="myTicketFilter">بحث بالرقم المرجعي</label>
+    <input id="myTicketFilter" type="text" placeholder="أدخل الرقم المرجعي للمعاملة">
+    <button type="button" class="secondary primary" id="refreshMyTickets">تحديث معاملاتي</button>
+    <div id="myTicketsList"><div class="empty-state">جاري تحميل المعاملات...</div></div>
 
-<label for="subject" id="subjectLabel">عنوان الشكوى <span class="required-star">*</span></label>
-<input id="subject" type="text" maxlength="180" placeholder="اكتب عنوان الشكوى" required>
-
-<label for="details" id="detailsLabel">تفاصيل الشكوى <span class="required-star">*</span></label>
-<textarea id="details" rows="5" maxlength="10000" placeholder="اكتب تفاصيل الشكوى هنا" required></textarea>
-
-<label for="attachment">إرفاق ملف (اختياري)</label>
-<input id="attachment" type="file" accept="image/jpeg,image/png,image/gif,image/webp,.pdf,.doc,.docx,.xls,.xlsx">
-<p class="small-note">الحد الأعلى 5 ميجابايت. الأنواع المسموحة: الصور وPDF وWord وExcel.</p>
-
-<button type="button" class="primary" id="submitTicket">إرسال المعاملة</button>
-<div id="formMessage" class="small-note" style="margin-top:12px" role="status"></div>
-</div>
-
-<div id="myTicketsView" class="hidden">
-<button class="back" id="backFromTickets" type="button">← العودة للخدمات</button>
-<h2 class="form-title">متابعة معاملاتي</h2>
-
-<label for="myTicketFilter">بحث بالرقم المرجعي</label>
-<input id="myTicketFilter" type="text" placeholder="أدخل الرقم المرجعي للمعاملة">
-
-<button type="button" class="secondary primary" id="refreshMyTickets">تحديث معاملاتي</button>
-
-<div id="myTicketsList">
-<div class="empty-state">جاري تحميل المعاملات...</div>
-</div>
-
-<div id="employeeTicketDetails" class="hidden">
-<button type="button" class="back" id="backToMyTickets">← العودة للقائمة</button>
-
-<div class="manager-card">
-<h3 id="employeeDetailSubject"></h3>
-<div id="employeeDetailInfo" class="small-note"></div>
-
-<h3 class="section-heading">تفاصيل المعاملة</h3>
-<p id="employeeDetailText" style="white-space:pre-wrap;line-height:1.9"></p>
-<div id="employeeAttachment"></div>
-
-<h3 class="section-heading">ملاحظة الإدارة</h3>
-<p id="employeeResolution" style="white-space:pre-wrap;line-height:1.8"></p>
-
-<h3 class="section-heading">المحادثة والردود</h3>
-<div id="employeeMessages"></div>
-
-<label for="employeeReply">إرسال رسالة للإدارة</label>
-<textarea id="employeeReply" rows="3" placeholder="اكتب رسالتك هنا..."></textarea>
-<button type="button" class="primary" id="sendEmployeeReply">إرسال الرسالة</button>
-<div id="employeeReplyMessage" class="small-note"></div>
-</div>
-</div>
-</div>
+    <div id="employeeTicketDetails" class="hidden">
+      <button type="button" class="back" id="backToMyTickets">← العودة للقائمة</button>
+      <div class="manager-card">
+        <h3 id="employeeDetailSubject"></h3>
+        <div id="employeeDetailInfo" class="small-note"></div>
+        <h3 class="section-heading">تفاصيل المعاملة</h3>
+        <p id="employeeDetailText" style="white-space:pre-wrap;line-height:1.9"></p>
+        <div id="employeeAttachment"></div>
+        <h3 class="section-heading">ملاحظة الإدارة</h3>
+        <p id="employeeResolution" style="white-space:pre-wrap;line-height:1.8"></p>
+        <h3 class="section-heading">المحادثة والردود</h3>
+        <div id="employeeMessages"></div>
+        <label for="employeeReply">إرسال رسالة للإدارة</label>
+        <textarea id="employeeReply" rows="3" placeholder="اكتب رسالتك هنا..."></textarea>
+        <button type="button" class="primary" id="sendEmployeeReply">إرسال الرسالة</button>
+        <div id="employeeReplyMessage" class="small-note"></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="managerDashboard" class="hidden">
-<div class="header">
-<div>
-<h1>لوحة تحكم المدراء</h1>
-<p class="description" id="managerWelcome">أهلاً بك في لوحة الإدارة</p>
-</div>
-<button class="logout" id="managerLogout">تسجيل الخروج</button>
-</div>
+  <div class="header">
+    <div>
+      <h1>لوحة تحكم المدراء</h1>
+      <p class="description" id="managerWelcome">أهلاً بك في لوحة الإدارة</p>
+    </div>
+    <button class="logout" id="managerLogout">تسجيل الخروج</button>
+  </div>
 
-<div class="action-row" style="margin-bottom:20px">
-<button type="button" id="showManagerTickets">إدارة المعاملات</button>
-<button type="button" class="secondary" id="showEmployeeManagement">إدارة الموظفين</button>
-</div>
+  <div class="action-row">
+    <button type="button" id="showManagerTickets">إدارة المعاملات</button>
+    <button type="button" class="secondary" id="showEmployeeManagement">إدارة الموظفين</button>
+  </div>
 
-<div id="managerListView">
-<div class="manager-card">
-<div class="ticket-top">
-<h2 style="margin:0">جميع المعاملات</h2>
-<button type="button" id="refreshTickets">تحديث القائمة ↻</button>
-</div>
+  <div id="managerListView">
+    <div class="manager-card">
+      <div class="ticket-top">
+        <h2>جميع المعاملات</h2>
+        <button type="button" id="refreshTickets">تحديث القائمة ↻</button>
+      </div>
+      <p class="small-note">تظهر هنا جميع الشكاوى والبلاغات والطلبات لجميع الموظفين.</p>
+      <label for="ticketFilter">تصفية حسب نوع المعاملة</label>
+      <select id="ticketFilter">
+        <option value="all">كل المعاملات</option>
+        <option value="complaint">الشكاوى</option>
+        <option value="report">البلاغات</option>
+        <option value="request">الطلبات</option>
+      </select>
+      <div id="ticketsCount" class="small-note"></div>
+      <div id="ticketsList"><div class="empty-state">جاري تحميل المعاملات...</div></div>
+    </div>
+  </div>
 
-<p class="small-note">تظهر هنا جميع الشكاوى والبلاغات والطلبات لجميع الموظفين.</p>
+  <div id="managerDetailsView" class="hidden">
+    <button type="button" class="back" id="backToTickets">← العودة لجميع المعاملات</button>
+    <div class="manager-card">
+      <div class="ticket-top">
+        <h2 id="detailSubject"></h2>
+        <span id="detailStatus" class="status"></span>
+      </div>
+      <div id="detailInfo" class="small-note"></div>
+      <button type="button" class="danger primary" id="deleteTicketButton">حذف المعاملة نهائياً</button>
+      <div id="deleteMessage" class="small-note"></div>
+      <h3 class="section-heading">تفاصيل المعاملة</h3>
+      <p id="detailText" style="white-space:pre-wrap;line-height:1.9"></p>
+      <div id="managerAttachment"></div>
+      <h3 class="section-heading">تحديث حالة المعاملة</h3>
+      <label for="ticketStatusSelect">الحالة الجديدة</label>
+      <select id="ticketStatusSelect">
+        <option value="submitted">جديدة</option>
+        <option value="in_review">قيد المراجعة</option>
+        <option value="completed">مكتملة</option>
+        <option value="rejected">مرفوضة</option>
+      </select>
+      <div id="resolutionWrap" class="hidden">
+        <label for="resolutionComment">ملاحظة إتمام المعاملة (إلزامية)</label>
+        <textarea id="resolutionComment" rows="3" placeholder="مثال: تم التواصل معه عن طريق الواتساب"></textarea>
+      </div>
+      <button type="button" class="primary" id="updateStatusButton">حفظ الحالة</button>
+      <div id="statusMessage" class="small-note"></div>
+      <h3 class="section-heading">المحادثة والردود</h3>
+      <div id="ticketMessages"></div>
+      <h3 class="section-heading">إرسال رد للموظف</h3>
+      <textarea id="managerReply" rows="4" placeholder="اكتب ردك هنا..."></textarea>
+      <button type="button" class="primary" id="sendReplyButton">إرسال الرد</button>
+      <div id="replyMessage" class="small-note"></div>
+    </div>
+  </div>
 
-<label for="ticketFilter">تصفية حسب نوع المعاملة</label>
-<select id="ticketFilter">
-<option value="all">كل المعاملات</option>
-<option value="complaint">الشكاوى</option>
-<option value="report">البلاغات</option>
-<option value="request">الطلبات</option>
-</select>
+  <div id="employeeManagementView" class="hidden">
+    <button type="button" class="back" id="backToManagerTickets">← العودة للوحة الإدارة</button>
+    <div class="manager-card">
+      <div class="ticket-top">
+        <h2>إدارة الموظفين</h2>
+        <button type="button" id="refreshEmployees">تحديث ↻</button>
+      </div>
+      <p class="small-note">إضافة الموظفين وتعديل بياناتهم وإيقاف حساباتهم أو إعادة تفعيلها.</p>
+      <label for="employeeSearch">البحث عن موظف</label>
+      <input id="employeeSearch" type="search" placeholder="ابحث بالاسم أو الرقم الوظيفي">
+      <div class="action-row">
+        <button type="button" id="newEmployeeButton">＋ إضافة موظف جديد</button>
+      </div>
+      <div id="employeesCount" class="small-note"></div>
+      <div id="employeesList"><div class="empty-state">جاري تحميل الموظفين...</div></div>
+    </div>
 
-<div id="ticketsCount" class="small-note"></div>
-<div id="ticketsList">
-<div class="empty-state">جاري تحميل المعاملات...</div>
-</div>
-</div>
-</div>
-
-<div id="managerDetailsView" class="hidden">
-<button type="button" class="back" id="backToTickets">← العودة لجميع المعاملات</button>
-
-<div class="manager-card">
-<div class="ticket-top">
-<h2 id="detailSubject"></h2>
-<span id="detailStatus" class="status"></span>
-</div>
-
-<div id="detailInfo" style="line-height:2;margin-top:15px"></div>
-
-<button type="button" class="danger primary" id="deleteTicketButton" style="margin-top:18px">حذف المعاملة نهائياً</button>
-<div id="deleteMessage" class="small-note"></div>
-
-<h3 class="section-heading">تفاصيل المعاملة</h3>
-<p id="detailText" style="white-space:pre-wrap;line-height:1.9"></p>
-<div id="managerAttachment" class="small-note"></div>
-
-<h3 class="section-heading">تحديث حالة المعاملة</h3>
-<label for="ticketStatusSelect">الحالة الجديدة</label>
-<select id="ticketStatusSelect">
-<option value="submitted">جديدة</option>
-<option value="in_review">قيد المراجعة</option>
-<option value="completed">مكتملة</option>
-<option value="rejected">مرفوضة</option>
-</select>
-
-<div id="resolutionWrap" class="hidden">
-<label for="resolutionComment">ملاحظة إتمام المعاملة (إلزامية)</label>
-<textarea id="resolutionComment" rows="3" placeholder="مثال: تم التواصل معه عن طريق الواتساب"></textarea>
-</div>
-
-<button type="button" class="primary" id="updateStatusButton">حفظ الحالة</button>
-<div id="statusMessage" class="small-note"></div>
-
-<h3 class="section-heading">المحادثة والردود</h3>
-<div id="ticketMessages"></div>
-
-<h3 class="section-heading">إرسال رد للموظف</h3>
-<textarea id="managerReply" rows="4" placeholder="اكتب ردك هنا..."></textarea>
-<button type="button" class="primary" id="sendReplyButton">إرسال الرد</button>
-<div id="replyMessage" class="small-note"></div>
-</div>
-</div>
-
-<div id="employeeManagementView" class="hidden">
-<button type="button" class="back" id="backToManagerTickets">← العودة للوحة الإدارة</button>
-
-<div class="manager-card">
-<div class="ticket-top">
-<h2>إدارة الموظفين</h2>
-<button type="button" id="refreshEmployees">تحديث ↻</button>
-</div>
-
-<p class="small-note">إضافة الموظفين وتعديل بياناتهم وإيقاف حساباتهم أو إعادة تفعيلها.</p>
-
-<label for="employeeSearch">البحث عن موظف</label>
-<input id="employeeSearch" type="search" placeholder="ابحث بالاسم أو الرقم الوظيفي">
-
-<div class="action-row">
-<button type="button" id="newEmployeeButton">＋ إضافة موظف جديد</button>
-</div>
-
-<div id="employeesCount" class="small-note"></div>
-<div id="employeesList">
-<div class="empty-state">جاري تحميل الموظفين...</div>
-</div>
-</div>
-
-<div id="employeeEditor" class="manager-card hidden">
-<h2 id="employeeEditorTitle">إضافة موظف جديد</h2>
-
-<form id="employeeForm">
-<label for="newEmployeeNumber">الرقم الوظيفي</label>
-<input id="newEmployeeNumber" type="text" maxlength="50" placeholder="أدخل الرقم الوظيفي" required>
-
-<label for="newEmployeeName">اسم الموظف</label>
-<input id="newEmployeeName" type="text" maxlength="150" placeholder="الاسم الكامل" required>
-
-<label for="newEmployeePhone">رقم الجوال</label>
-<input id="newEmployeePhone" type="tel" maxlength="30" placeholder="05xxxxxxxx" required>
-
-<label style="display:flex;align-items:center;gap:10px;margin:5px 0 20px">
-<input id="newEmployeeActive" type="checkbox" checked style="width:auto;margin:0">
-الحساب نشط ويمكنه تسجيل الدخول
-</label>
-
-<div class="action-row">
-<button type="submit" id="saveEmployeeButton">حفظ الموظف</button>
-<button type="button" class="secondary" id="cancelEmployeeEdit">إلغاء</button>
-</div>
-<div id="employeeFormMessage" class="small-note"></div>
-</form>
-</div>
-</div>
+    <div id="employeeEditor" class="manager-card hidden">
+      <h2 id="employeeEditorTitle">إضافة موظف جديد</h2>
+      <form id="employeeForm">
+        <label for="newEmployeeNumber">الرقم الوظيفي</label>
+        <input id="newEmployeeNumber" type="text" maxlength="50" placeholder="أدخل الرقم الوظيفي" required>
+        <label for="newEmployeeName">اسم الموظف</label>
+        <input id="newEmployeeName" type="text" maxlength="150" placeholder="الاسم الكامل" required>
+        <label for="newEmployeePhone">رقم الجوال</label>
+        <input id="newEmployeePhone" type="tel" maxlength="30" placeholder="05xxxxxxxx" required>
+        <label style="display:flex;align-items:center;gap:10px">
+          <input id="newEmployeeActive" type="checkbox" checked style="width:auto;margin:0">
+          الحساب نشط ويمكنه تسجيل الدخول
+        </label>
+        <div class="action-row">
+          <button type="submit" id="saveEmployeeButton">حفظ الموظف</button>
+          <button type="button" class="secondary" id="cancelEmployeeEdit">إلغاء</button>
+        </div>
+        <div id="employeeFormMessage" class="small-note"></div>
+      </form>
+    </div>
+  </div>
 </section>
 
-<div class="footer">بوابة الموظفين ©️ مشروع الوسطى
-<br>منشئين الموقع (سالم عائش المطرفي، سعد حماد الهذلي)</div>
+<footer class="footer">
+  <div>بوابة الموظفين ©️ مشروع الوسطى</div>
+  <div class="creator-credit">
+    <span class="creator-credit-icon">✦</span>
+    <span>تم تصميم وتطوير هذا الموقع بواسطة</span>
+    <strong>سالم عائش المطرفي</strong>
+    <span class="creator-separator">و</span>
+    <strong>سعد حماد الهذلي</strong>
+  </div>
+</footer>
 </main>
 
 <script>
@@ -1168,8 +846,8 @@ const SUPABASE_ANON_KEY="sb_publishable_S6tLSatDIEgbhPvB7uBTTw_oadYhvAa";
 const BUCKET="ticket-attachments";
 
 const supabaseClient=window.supabase?.createClient
-  ? window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY)
-  : null;
+  ?window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY)
+  :null;
 
 const $=id=>document.getElementById(id);
 
@@ -1183,187 +861,491 @@ let selectedServiceType=null;
 let currentEmployees=[];
 let editingEmployeeId=null;
 
-/* إعدادات الموقع */
-
+/* الإعدادات */
 const SETTINGS_STORAGE_KEY="employee_portal_display_settings_v1";
-const defaultDisplaySettings={
-  theme:"light",
-  font:"normal",
-  motion:"normal"
-};
-
+const defaultDisplaySettings={theme:"light",font:"normal",motion:"normal"};
 let displaySettings={...defaultDisplaySettings};
 
-try{
-  const stored=JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY)||"null");
-  if(stored&&typeof stored==="object"){
-    if(["light","dark","system"].includes(stored.theme))displaySettings.theme=stored.theme;
-    if(["normal","large"].includes(stored.font))displaySettings.font=stored.font;
-    if(["normal","reduced"].includes(stored.motion))displaySettings.motion=stored.motion;
+try {
+  const saved=JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY)||"null");
+  if(saved&&typeof saved==="object"){
+    if(["light","dark","system"].includes(saved.theme))displaySettings.theme=saved.theme;
+    if(["normal","large"].includes(saved.font))displaySettings.font=saved.font;
+    if(["normal","reduced"].includes(saved.motion))displaySettings.motion=saved.motion;
   }
 }catch{}
 
 const systemDarkMedia=window.matchMedia?.("(prefers-color-scheme: dark)");
 
 function applyDisplaySettings(){
-  const effectiveTheme=displaySettings.theme==="system"
-    ? (systemDarkMedia?.matches?"dark":"light")
-    : displaySettings.theme;
-
-  document.documentElement.dataset.theme=effectiveTheme;
+  document.documentElement.dataset.theme=displaySettings.theme==="system"
+    ?(systemDarkMedia?.matches?"dark":"light")
+    :displaySettings.theme;
   document.documentElement.dataset.fontSize=displaySettings.font;
   document.documentElement.dataset.motion=displaySettings.motion;
-
   $("themeSetting").value=displaySettings.theme;
   $("fontSetting").value=displaySettings.font;
   $("motionSetting").value=displaySettings.motion;
 }
-
 function saveDisplaySettings(){
-  try{
-    localStorage.setItem(SETTINGS_STORAGE_KEY,JSON.stringify(displaySettings));
-  }catch{}
+  try{localStorage.setItem(SETTINGS_STORAGE_KEY,JSON.stringify(displaySettings));}catch{}
   applyDisplaySettings();
 }
-
 applyDisplaySettings();
-
 systemDarkMedia?.addEventListener?.("change",()=>{
   if(displaySettings.theme==="system")applyDisplaySettings();
 });
-
 $("settingsToggle").addEventListener("click",()=>{
-  const open=$("settingsPanel").classList.contains("hidden");
-  $("settingsPanel").classList.toggle("hidden",!open);
-  $("settingsToggle").setAttribute("aria-expanded",String(open));
-  if(open)$("themeSetting").focus();
+  const opening=$("settingsPanel").classList.contains("hidden");
+  $("settingsPanel").classList.toggle("hidden",!opening);
+  $("settingsToggle").setAttribute("aria-expanded",String(opening));
 });
-
-function closeSettingsPanel(){
+function closeSettings(){
   $("settingsPanel").classList.add("hidden");
   $("settingsToggle").setAttribute("aria-expanded","false");
 }
-
 document.addEventListener("click",e=>{
-  if(!$("settingsBar").contains(e.target))closeSettingsPanel();
+  if(!$("settingsBar").contains(e.target))closeSettings();
 });
-
 document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){
-    closeSettingsPanel();
-  }
+  if(e.key==="Escape")closeSettings();
 });
-
 $("themeSetting").addEventListener("change",()=>{
   displaySettings.theme=$("themeSetting").value;
   saveDisplaySettings();
 });
-
 $("fontSetting").addEventListener("change",()=>{
   displaySettings.font=$("fontSetting").value;
   saveDisplaySettings();
 });
-
 $("motionSetting").addEventListener("change",()=>{
   displaySettings.motion=$("motionSetting").value;
   saveDisplaySettings();
 });
-
 $("resetSettings").addEventListener("click",()=>{
   displaySettings={...defaultDisplaySettings};
   saveDisplaySettings();
 });
 
-/* بيانات المعاملات */
+/* اللغة: تبقى قيم النظام وقاعدة البيانات بالعربية كما كانت */
+const LANGUAGE_STORAGE_KEY="employee_portal_language_v1";
+let currentLanguage="ar";
+try{
+  currentLanguage=localStorage.getItem(LANGUAGE_STORAGE_KEY)==="en"?"en":"ar";
+}catch{}
 
-const typeLabels={
-  complaint:"شكوى",
-  report:"بلاغ",
-  request:"طلب"
+const englishText={
+  "الإعدادات":"Settings",
+  "الإعدادات العامة":"General settings",
+  "خصّص طريقة عرض الموقع. تُحفظ اختياراتك على هذا المتصفح.":"Customize how the portal looks. Preferences are saved on this browser.",
+  "مظهر الموقع":"Appearance",
+  "فاتح":"Light","داكن":"Dark","حسب إعداد الجهاز":"Follow device settings",
+  "حجم الكتابة":"Text size",
+  "عادي":"Normal","كبير":"Large",
+  "تأثيرات الحركة":"Motion effects",
+  "عادية":"Normal","تقليل الحركة":"Reduce motion",
+  "استعادة الإعدادات الافتراضية":"Restore defaults",
+  "بوابة موظفين مشروع المنطقة الوسطى":"Central Region Project Employee Portal",
+  "مرحباً بك. أدخل بياناتك المسجلة لدى الإدارة.":"Welcome. Enter your registered details.",
+  "الرقم الوظيفي":"Employee ID",
+  "رقم الجوال":"Mobile number",
+  "تسجيل دخول الموظفين":"Employee sign in",
+  "دخول الإدارة":"Administration sign in",
+  "يرجى إدخال بيانات حساب المدير.":"Enter administrator account details.",
+  "اسم المستخدم":"Username",
+  "كلمة المرور":"Password",
+  "تسجيل الدخول":"Sign in",
+  "العودة لدخول الموظفين":"Back to employee sign in",
+  "تسجيل الخروج":"Sign out",
+  "الشكاوى":"Complaints",
+  "البلاغات":"Reports",
+  "الطلبات":"Requests",
+  "تقديم شكوى للإدارة":"Submit a complaint to administration",
+  "تقديم بلاغ للإدارة":"Submit a report to administration",
+  "تقديم طلب إداري":"Submit an administrative request",
+  "متابعة معاملاتي وسجل الطلبات":"My submissions and history",
+  "← العودة للخدمات":"← Back to services",
+  "الحقول التي بجانبها نجمة":"Fields marked with an asterisk",
+  "مطلوبة.":"are required.",
+  "تصنيف الشكوى":"Complaint category",
+  "تصنيف البلاغ":"Report category",
+  "تصنيف الطلب":"Request category",
+  "عنوان الشكوى":"Complaint title",
+  "عنوان البلاغ":"Report title",
+  "عنوان الطلب":"Request title",
+  "تفاصيل الشكوى":"Complaint details",
+  "تفاصيل البلاغ":"Report details",
+  "تفاصيل الطلب":"Request details",
+  "إرفاق ملف (اختياري)":"Attach a file (optional)",
+  "الحد الأعلى 5 ميجابايت. الأنواع المسموحة: الصور وPDF وWord وExcel.":"Maximum 5 MB. Allowed: images, PDF, Word and Excel.",
+  "أؤكد أن جميع البيانات المدخلة صحيحة مع تحمل كامل المسؤولية":"I confirm that all information entered is accurate and accept full responsibility.",
+  "إرسال المعاملة":"Submit",
+  "متابعة معاملاتي":"My submissions",
+  "بحث بالرقم المرجعي":"Search by reference number",
+  "تحديث معاملاتي":"Refresh my submissions",
+  "جاري تحميل المعاملات...":"Loading submissions...",
+  "← العودة للقائمة":"← Back to list",
+  "تفاصيل المعاملة":"Submission details",
+  "ملاحظة الإدارة":"Administration note",
+  "المحادثة والردود":"Messages and replies",
+  "إرسال رسالة للإدارة":"Send a message to administration",
+  "إرسال الرسالة":"Send message",
+  "لوحة تحكم المدراء":"Administration dashboard",
+  "أهلاً بك في لوحة الإدارة":"Welcome to the administration dashboard",
+  "إدارة المعاملات":"Manage submissions",
+  "إدارة الموظفين":"Manage employees",
+  "جميع المعاملات":"All submissions",
+  "تحديث القائمة ↻":"Refresh list ↻",
+  "تظهر هنا جميع الشكاوى والبلاغات والطلبات لجميع الموظفين.":"All employee submissions appear here.",
+  "تصفية حسب نوع المعاملة":"Filter by submission type",
+  "كل المعاملات":"All submissions",
+  "← العودة لجميع المعاملات":"← Back to all submissions",
+  "حذف المعاملة نهائياً":"Permanently delete submission",
+  "تحديث حالة المعاملة":"Update submission status",
+  "الحالة الجديدة":"New status",
+  "جديدة":"New","قيد المراجعة":"Under review",
+  "مكتملة":"Completed","مرفوضة":"Rejected",
+  "ملاحظة إتمام المعاملة (إلزامية)":"Completion note (required)",
+  "حفظ الحالة":"Save status",
+  "إرسال رد للموظف":"Reply to employee",
+  "إرسال الرد":"Send reply",
+  "← العودة للوحة الإدارة":"← Back to dashboard",
+  "تحديث ↻":"Refresh ↻",
+  "إضافة الموظفين وتعديل بياناتهم وإيقاف حساباتهم أو إعادة تفعيلها.":"Add employees, edit details, disable or reactivate accounts.",
+  "البحث عن موظف":"Search employees",
+  "＋ إضافة موظف جديد":"＋ Add new employee",
+  "جاري تحميل الموظفين...":"Loading employees...",
+  "إضافة موظف جديد":"Add new employee",
+  "اسم الموظف":"Employee name",
+  "الحساب نشط ويمكنه تسجيل الدخول":"Account is active and can sign in",
+  "حفظ الموظف":"Save employee",
+  "إلغاء":"Cancel",
+  "بوابة الموظفين ©️ مشروع الوسطى":"Employee Portal © Central Region Project",
+  "تم تصميم وتطوير هذا الموقع بواسطة":"This website was designed and developed by",
+  "و":"and",
+  "أدخل الرقم الوظيفي":"Enter employee ID",
+  "أدخل اسم المستخدم":"Enter username",
+  "أدخل كلمة المرور":"Enter password",
+  "اكتب عنوان الشكوى":"Enter complaint title",
+  "اكتب عنوان البلاغ":"Enter report title",
+  "اكتب عنوان الطلب":"Enter request title",
+  "اكتب تفاصيل الشكوى هنا":"Enter complaint details here",
+  "اكتب تفاصيل البلاغ هنا":"Enter report details here",
+  "اكتب تفاصيل الطلب هنا":"Enter request details here",
+  "أدخل الرقم المرجعي للمعاملة":"Enter submission reference number",
+  "اكتب رسالتك هنا...":"Write your message here...",
+  "اكتب ردك هنا...":"Write your reply here...",
+  "ابحث بالاسم أو الرقم الوظيفي":"Search by name or employee ID",
+  "الاسم الكامل":"Full name",
+  "مثال: تم التواصل معه عن طريق الواتساب":"Example: Contacted through WhatsApp",
+  "تقديم شكوى":"Submit a complaint",
+  "تقديم بلاغ":"Submit a report",
+  "تقديم طلب":"Submit a request",
+  "شكوى":"Complaint","بلاغ":"Report","طلب":"Request",
+  "شكوى إدارية":"Administrative complaint",
+  "شكوى بيئة العمل":"Workplace complaint",
+  "شكوى حضور وإنصراف":"Attendance complaint",
+  "شكوى متعلقة بالراتب":"Salary complaint",
+  "شكوى خطأ في البيانات":"Incorrect details complaint",
+  "شكوى أخرى":"Other complaint",
+  "بلاغ سلوك وظيفي":"Employee conduct report",
+  "بلاغ مشكلة تشغيلية":"Operations issue report",
+  "بلاغ مشكلة تقنية":"Technical issue report",
+  "بلاغ آخر":"Other report",
+  "طلب إجازة":"Leave request",
+  "طلب تعريف بالراتب":"Salary certificate request",
+  "طلب خطاب أو إفادة":"Letter or statement request",
+  "طلب تعديل بيانات":"Update details request",
+  "طلب عهدة أو مستلزمات":"Equipment or supplies request",
+  "طلب صيانة":"Maintenance request",
+  "طلب دعم تقني":"Technical support request",
+  "طلب نقل أو تكليف":"Transfer or assignment request",
+  "طلب آخر":"Other request",
+  "لا يوجد مرفق.":"No attachment.",
+  "فتح المرفق":"Open attachment",
+  "جاري تجهيز المعاملة...":"Preparing submission...",
+  "جاري طلب رابط رفع آمن من Supabase...":"Requesting secure upload link...",
+  "جاري رفع المرفق إلى التخزين...":"Uploading attachment...",
+  "جارٍ حفظ المعاملة...":"Saving submission...",
+  "جاري التحقق...":"Verifying...",
+  "جاري التحقق من بيانات المدير...":"Verifying administrator credentials...",
+  "جاري إرسال الرد...":"Sending reply...",
+  "جاري الإرسال...":"Sending...",
+  "لا توجد معاملات مطابقة.":"No matching submissions.",
+  "لا توجد معاملات في هذا القسم حالياً.":"No submissions in this category yet.",
+  "لا توجد ردود سابقة على هذه المعاملة.":"No previous replies.",
+  "لا توجد رسائل حتى الآن.":"No messages yet.",
+  "لا يوجد موظفون مطابقون للبحث.":"No matching employees.",
+  "فتح المعاملة والتفاصيل":"Open submission details",
+  "عرض التفاصيل والمتابعة":"View details and follow up",
+  "تعديل البيانات":"Edit details",
+  "إيقاف الحساب":"Disable account",
+  "إعادة تفعيل الحساب":"Reactivate account",
+  "حساب نشط":"Active account",
+  "حساب موقوف":"Inactive account",
+  "الرقم المرجعي":"Reference number",
+  "غير متوفر":"Unavailable",
+  "غير محدد":"Not specified",
+  "رسالتك":"Your message",
+  "رسالة الموظف":"Employee message",
+  "رد الإدارة":"Administration reply",
+  "بدون عنوان":"Untitled",
+  "لا توجد ملاحظة من الإدارة حتى الآن.":"No administration note yet.",
+  "تم التسجيل":"Recorded",
+  "يجب الموافقة على إقرار صحة البيانات وتحمل المسؤولية قبل إرسال المعاملة.":"You must accept the declaration before submitting."
 };
 
+const originalTexts=new WeakMap();
+const originalAttrs=new WeakMap();
+
+function translateKnownText(text){
+  const str=String(text??"");
+  const trimmed=str.trim();
+  if(currentLanguage==="ar")return str;
+  if(englishText[trimmed])return str.replace(trimmed,englishText[trimmed]);
+  let result=str;
+  const prefixes=[
+    ["الرقم المرجعي:","Reference number:"],
+    ["الرقم الوظيفي:","Employee ID:"],
+    ["رقم الجوال:","Mobile number:"],
+    ["اسم الموظف:","Employee name:"],
+    ["النوع:","Type:"],
+    ["الموظف:","Employee:"],
+    ["تاريخ الإرسال:","Submitted on:"],
+    ["الحالة:","Status:"],
+    ["إجمالي الموظفين:","Total employees:"],
+    ["نتائج البحث:","Search results:"],
+    ["عدد المعاملات المعروضة:","Displayed submissions:"],
+    ["مرحباً ","Welcome "],
+    ["الملف المختار:","Selected file:"]
+  ];
+  for(const [ar,en] of prefixes)result=result.replaceAll(ar,en);
+  return result;
+}
+
+let translating=false;
+function translatePage(){
+  if(translating)return;
+  translating=true;
+  try{
+    document.documentElement.lang=currentLanguage;
+    document.documentElement.dir=currentLanguage==="en"?"ltr":"rtl";
+    document.title=currentLanguage==="en"
+      ?"Central Region Project Employee Portal"
+      :"بوابة موظفين مشروع الوسطى";
+    $("languageToggle").textContent=currentLanguage==="en"?"🌐 العربية":"🌐 English";
+
+    const root=document.querySelector("main");
+    const tree=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    while(tree.nextNode()){
+      const node=tree.currentNode;
+      const parent=node.parentElement;
+      if(!parent||parent.closest("script,style,textarea,#detailText,#employeeDetailText,#employeeResolution,#employeeDetailSubject,#detailSubject,.ticket-card h3,.employee-card h3,.message-item p"))continue;
+
+      const prev=originalTexts.get(node);
+      const now=node.nodeValue;
+      const original=prev&&now===prev.last?prev.original:now;
+      const next=translateKnownText(original);
+      originalTexts.set(node,{original,last:next});
+      if(now!==next)node.nodeValue=next;
+    }
+    root.querySelectorAll("[placeholder],[aria-label],[title]").forEach(el=>{
+      let record=originalAttrs.get(el)||{};
+      for(const attr of ["placeholder","aria-label","title"]){
+        if(!el.hasAttribute(attr))continue;
+        const now=el.getAttribute(attr);
+        const prev=record[attr];
+        const original=prev&&now===prev.last?prev.original:now;
+        const next=translateKnownText(original);
+        record[attr]={original,last:next};
+        if(now!==next)el.setAttribute(attr,next);
+      }
+      originalAttrs.set(el,record);
+    });
+  }finally{
+    translating=false;
+  }
+}
+$("languageToggle").addEventListener("click",()=>{
+  currentLanguage=currentLanguage==="ar"?"en":"ar";
+  try{localStorage.setItem(LANGUAGE_STORAGE_KEY,currentLanguage);}catch{}
+  translatePage();
+});
+const translationObserver=new MutationObserver(()=>translatePage());
+translationObserver.observe(document.querySelector("main"),{
+  subtree:true,
+  childList:true,
+  characterData:true,
+  attributes:true,
+  attributeFilter:["placeholder","aria-label","title"]
+});
+translatePage();
+
+/* بيانات النظام كما هي */
+const typeLabels={complaint:"شكوى",report:"بلاغ",request:"طلب"};
 const statusLabels={
   submitted:"جديدة",
   in_review:"قيد المراجعة",
   completed:"مكتملة",
   rejected:"مرفوضة"
 };
-
 const subtypeOptions={
-  complaint:[
-    "شكوى إدارية",
-    "شكوى بيئة العمل",
-    "شكوى حضور وإنصراف",
-    "شكوى متعلقة بالراتب",
-    "شكوى خطأ في البيانات",
-    "شكوى أخرى"
-  ],
-  report:[
-    "بلاغ سلوك وظيفي",
-    "بلاغ مشكلة تشغيلية",
-    "بلاغ مشكلة تقنية",
-    "بلاغ آخر"
-  ],
-  request:[
-    "طلب إجازة",
-    "طلب تعريف بالراتب",
-    "طلب خطاب أو إفادة",
-    "طلب تعديل بيانات",
-    "طلب عهدة أو مستلزمات",
-    "طلب صيانة",
-    "طلب دعم تقني",
-    "طلب نقل أو تكليف",
-    "طلب آخر"
-  ]
+  complaint:["شكوى إدارية","شكوى بيئة العمل","شكوى حضور وإنصراف","شكوى متعلقة بالراتب","شكوى خطأ في البيانات","شكوى أخرى"],
+  report:["بلاغ سلوك وظيفي","بلاغ مشكلة تشغيلية","بلاغ مشكلة تقنية","بلاغ آخر"],
+  request:["طلب إجازة","طلب تعريف بالراتب","طلب خطاب أو إفادة","طلب تعديل بيانات","طلب عهدة أو مستلزمات","طلب صيانة","طلب دعم تقني","طلب نقل أو تكليف","طلب آخر"]
 };
 
 function escapeHTML(value){
   return String(value??"").replace(/[&<>"']/g,c=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
   }[c]));
 }
-
 function formatDate(value){
   if(!value)return"غير محدد";
   const d=new Date(value);
-  return Number.isNaN(d.getTime())
-    ?"غير محدد"
-    :d.toLocaleString("ar-SA");
+  return Number.isNaN(d.getTime())?"غير محدد":d.toLocaleString(currentLanguage==="en"?"en-GB":"ar-SA");
 }
-
 function showMessage(el,text){
   el.style.display="block";
   el.textContent=text;
 }
+function displayError(element,error){
+  element.textContent=error?.message||"تعذر تنفيذ العملية.";
+}
 
-/* الروابط الآمنة للمرفقات */
+async function readResponse(response){
+  let result={};
+  try{result=await response.json();}catch{}
+  if(!response.ok||!result.success){
+    let message=result.error||result.message;
+    if(typeof message!=="string")message=message?.message||"";
+    throw new Error(message||`تعذر تنفيذ العملية (${response.status}).`);
+  }
+  return result;
+}
+async function employeeRequest(payload){
+  if(!employeeToken)throw new Error("انتهت جلسة الموظف. سجل الدخول مرة أخرى.");
+  const response=await fetch(`${SUPABASE_URL}/functions/v1/employee-portal`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "apikey":SUPABASE_ANON_KEY,
+      "Authorization":`Bearer ${SUPABASE_ANON_KEY}`
+    },
+    body:JSON.stringify({...payload,token:employeeToken})
+  });
+  return readResponse(response);
+}
+async function managerRequest(payload){
+  if(!managerSession?.access_token)throw new Error("انتهت جلسة المدير. سجل الدخول مرة أخرى.");
+  const response=await fetch(`${SUPABASE_URL}/functions/v1/manager-portal`,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "apikey":SUPABASE_ANON_KEY,
+      "Authorization":`Bearer ${managerSession.access_token}`
+    },
+    body:JSON.stringify(payload)
+  });
+  if(response.status===401){
+    managerSession=null;
+    $("managerDashboard").classList.add("hidden");
+    $("managerLoginPage").classList.remove("hidden");
+  }
+  return readResponse(response);
+}
 
+/* المرفقات */
+const FILE_MIME={
+  jpg:"image/jpeg",jpeg:"image/jpeg",png:"image/png",
+  gif:"image/gif",webp:"image/webp",pdf:"application/pdf",
+  doc:"application/msword",
+  docx:"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  xls:"application/vnd.ms-excel",
+  xlsx:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+};
+const MAX_ATTACHMENT_SIZE=5*1024*1024;
+function getAttachmentExtension(file){
+  return String(file?.name||"").split(".").pop().toLowerCase();
+}
+function validateAttachmentFile(file){
+  if(!file)return;
+  const ext=getAttachmentExtension(file);
+  if(!Object.prototype.hasOwnProperty.call(FILE_MIME,ext)){
+    throw new Error("نوع الملف غير مدعوم. اختر صورة أو PDF أو Word أو Excel.");
+  }
+  if(!file.size)throw new Error("الملف المحدد فارغ.");
+  if(file.size>MAX_ATTACHMENT_SIZE)throw new Error("حجم الملف يتجاوز 5 ميجابايت.");
+  if(file.type&&file.type!=="application/octet-stream"&&file.type!==FILE_MIME[ext]){
+    const office=["doc","docx","xls","xlsx"].includes(ext);
+    if(!office||!["application/zip","application/x-zip-compressed"].includes(file.type)){
+      throw new Error("نوع الملف لا يتطابق مع امتداده.");
+    }
+  }
+}
+function getAttachmentContentType(file){
+  return FILE_MIME[getAttachmentExtension(file)]||file.type||"application/octet-stream";
+}
+function parseSignedUploadResponse(response){
+  const data=response?.upload||response?.data||response;
+  if(!data||typeof data!=="object")throw new Error("استجابة رفع الملف غير صالحة.");
+
+  let path=data.path||data.attachment_path||data.file_path||"";
+  let token=data.token||data.upload_token||"";
+  const bucket=data.bucket||data.bucket_name||response?.bucket;
+  if(bucket&&bucket!==BUCKET)throw new Error("اسم مساحة التخزين في الخادم مختلف عن الموقع.");
+
+  const signed=data.signedUrl||data.signed_url||data.upload_url;
+  if(signed&&(!path||!token)){
+    try{
+      const url=new URL(signed,SUPABASE_URL+"/");
+      const prefix=`/storage/v1/object/upload/sign/${BUCKET}/`;
+      if(url.origin===new URL(SUPABASE_URL).origin&&url.pathname.startsWith(prefix)){
+        if(!path)path=decodeURIComponent(url.pathname.slice(prefix.length));
+        if(!token)token=url.searchParams.get("token")||"";
+      }
+    }catch{}
+  }
+  if(typeof path!=="string"||!path.trim()||typeof token!=="string"||!token.trim()){
+    throw new Error("دالة create_upload_url لم ترجع path و token صالحين.");
+  }
+  if(path.startsWith("/")||path.includes("\\")||path.split("/").includes("..")||/^https?:/i.test(path)){
+    throw new Error("الخادم أعاد مسار ملف غير صالح.");
+  }
+  return {path,token};
+}
+function uploadErrorMessage(error){
+  const status=Number(error?.statusCode||error?.status||error?.originalError?.status||0);
+  const raw=String(error?.message||"خطأ غير معروف");
+  if(status===404||/bucket not found|no such bucket/i.test(raw)){
+    return `تعذر العثور على المرفق أو مساحة التخزين ${BUCKET}. راجع إعدادات Supabase. ${raw}`;
+  }
+  if(status===401||status===403){
+    return `تعذر رفع المرفق بسبب الصلاحيات أو رمز الرفع. ${raw}`;
+  }
+  if(status===413)return "حجم الملف أكبر من الحد المسموح به في Supabase.";
+  if(status===409)return "مسار الملف مستخدم مسبقًا.";
+  if(/failed to fetch|networkerror/i.test(raw))return "تعذر الاتصال بخادم رفع الملفات.";
+  return `تعذر رفع المرفق: ${raw}`;
+}
+function setFormProgress(message,state="progress"){
+  const el=$("formMessage");
+  el.classList.remove("attachment-error","attachment-success","attachment-progress");
+  el.classList.add(`attachment-${state}`);
+  el.textContent=message;
+}
 function getAttachmentUrl(ticket,result){
-  const raw=ticket?.attachment_url
-    ||ticket?.signed_url
-    ||ticket?.attachment_signed_url
-    ||result?.attachment_url
-    ||result?.signed_url
-    ||result?.attachment_signed_url;
-
+  const raw=ticket?.attachment_url||ticket?.signed_url||ticket?.attachment_signed_url
+    ||result?.attachment_url||result?.signed_url||result?.attachment_signed_url;
   if(typeof raw!=="string"||!raw.trim())return null;
-
   try{
     const url=new URL(raw,SUPABASE_URL+"/");
     return url.protocol==="https:"?url.href:null;
-  }catch{
-    return null;
-  }
+  }catch{return null;}
 }
-
 function setAttachmentLink(container,ticket,result){
   container.replaceChildren();
   const url=getAttachmentUrl(ticket,result);
-
   if(url){
     const link=document.createElement("a");
     link.className="file-link";
@@ -1379,237 +1361,30 @@ function setAttachmentLink(container,ticket,result){
   }
 }
 
-const FILE_MIME={
-  jpg:"image/jpeg",
-  jpeg:"image/jpeg",
-  png:"image/png",
-  gif:"image/gif",
-  webp:"image/webp",
-  pdf:"application/pdf",
-  doc:"application/msword",
-  docx:"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  xls:"application/vnd.ms-excel",
-  xlsx:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-};
-
-const ALLOWED_FILE_EXTENSIONS=new Set(Object.keys(FILE_MIME));
-const MAX_ATTACHMENT_SIZE=5*1024*1024;
-
-function getAttachmentExtension(file){
-  return String(file?.name||"").split(".").pop().toLowerCase();
-}
-
-function validateAttachmentFile(file){
-  if(!file)return;
-
-  const ext=getAttachmentExtension(file);
-
-  if(!ALLOWED_FILE_EXTENSIONS.has(ext)){
-    throw new Error("نوع الملف غير مدعوم. الملفات المسموحة: الصور وPDF وWord وExcel.");
-  }
-
-  if(file.size===0){
-    throw new Error("الملف المحدد فارغ.");
-  }
-
-  if(file.size>MAX_ATTACHMENT_SIZE){
-    throw new Error("حجم الملف أكبر من 5 ميجابايت.");
-  }
-
-  if(file.type&&file.type!=="application/octet-stream"&&file.type!==FILE_MIME[ext]){
-    const office=["doc","docx","xls","xlsx"].includes(ext);
-    if(!office||!["application/zip","application/x-zip-compressed"].includes(file.type)){
-      throw new Error("نوع الملف لا يتطابق مع امتداده.");
-    }
-  }
-}
-
-function getAttachmentContentType(file){
-  return FILE_MIME[getAttachmentExtension(file)]
-    ||file.type
-    ||"application/octet-stream";
-}
-
-function parseSignedUploadResponse(response){
-  const data=response?.upload||response?.data||response;
-
-  if(!data||typeof data!=="object"){
-    throw new Error("استجابة رابط الرفع غير صالحة.");
-  }
-
-  let path=data.path||data.attachment_path||data.file_path||"";
-  let token=data.token||data.upload_token||"";
-
-  const bucket=data.bucket||data.bucket_name||response?.bucket;
-
-  if(bucket&&bucket!==BUCKET){
-    throw new Error("اسم مساحة التخزين في الخادم مختلف عن الموقع.");
-  }
-
-  const urlValue=data.signedUrl||data.signed_url||data.upload_url;
-
-  if(urlValue&&(!path||!token)){
-    try{
-      const u=new URL(urlValue,SUPABASE_URL+"/");
-      const prefix=`/storage/v1/object/upload/sign/${BUCKET}/`;
-      if(u.origin===new URL(SUPABASE_URL).origin&&u.pathname.startsWith(prefix)){
-        if(!path)path=decodeURIComponent(u.pathname.slice(prefix.length));
-        if(!token)token=u.searchParams.get("token")||"";
-      }
-    }catch{}
-  }
-
-  if(typeof path!=="string"||!path.trim()||typeof token!=="string"||!token.trim()){
-    throw new Error("الخادم لم يرجع مسار الملف ورمز الرفع بشكل صحيح.");
-  }
-
-  if(path.startsWith("/")||path.includes("\\")||path.split("/").includes("..")||/^https?:/i.test(path)){
-    throw new Error("مسار رفع الملف غير صالح.");
-  }
-
-  return {path,token};
-}
-
-function uploadErrorMessage(error){
-  const status=Number(error?.statusCode||error?.status||0);
-  const raw=String(error?.message||"خطأ غير معروف");
-
-  if(status===404||/not found|bucket/i.test(raw)){
-    return `تعذر العثور على مساحة التخزين ${BUCKET}. راجع Supabase Storage. التفاصيل: ${raw}`;
-  }
-
-  if(status===401||status===403){
-    return `تم رفض رفع المرفق بسبب الصلاحيات أو رمز الرفع. التفاصيل: ${raw}`;
-  }
-
-  if(status===413){
-    return "Supabase رفض حجم الملف.";
-  }
-
-  if(status===409){
-    return "اسم الملف مستخدم مسبقًا في التخزين.";
-  }
-
-  if(/failed to fetch|networkerror/i.test(raw)){
-    return "تعذر الاتصال بخادم رفع الصور.";
-  }
-
-  return `تعذر رفع المرفق: ${raw}`;
-}
-
-function setFormProgress(message,state="progress"){
-  const element=$("formMessage");
-  element.classList.remove("attachment-error","attachment-success","attachment-progress");
-  element.classList.add(`attachment-${state}`);
-  element.textContent=message;
-}
-
-/* الشعار */
-
+/* الشعار: نفس اسم الملف الأصلي */
 document.querySelectorAll(".logo img").forEach(img=>{
-  const candidates=[
-    "./yamama-logo.jpeg",
-    "./yamama-logo.jpg",
-    "./yamama-logo.png",
-    "./yamama-logo.webp"
-  ];
-
+  const names=["./yamama-logo.jpeg","./yamama-logo.jpg","./yamama-logo.png","./yamama-logo.webp"];
   let index=0;
-
   img.addEventListener("error",()=>{
     index++;
-    if(index<candidates.length){
-      img.src=candidates[index];
-    }else{
-      img.closest(".logo")?.classList.add("logo-fallback");
-    }
+    if(index<names.length)img.src=names[index];
+    else img.closest(".logo")?.classList.add("logo-fallback");
   });
 });
 
-/* استدعاءات الخادم */
-
-async function readResponse(response){
-  let result={};
-
-  try{
-    result=await response.json();
-  }catch{}
-
-  if(!response.ok||!result.success){
-    let message=result.error||result.message;
-
-    if(typeof message!=="string"){
-      message=message?.message||"";
-    }
-
-    if(!message){
-      message=`تعذر تنفيذ العملية (${response.status}).`;
-    }
-
-    throw new Error(message);
-  }
-
-  return result;
-}
-
-async function employeeRequest(payload){
-  if(!employeeToken){
-    throw new Error("انتهت جلسة الموظف. سجل الدخول مرة أخرى.");
-  }
-
-  const response=await fetch(`${SUPABASE_URL}/functions/v1/employee-portal`,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "apikey":SUPABASE_ANON_KEY,
-      "Authorization":`Bearer ${SUPABASE_ANON_KEY}`
-    },
-    body:JSON.stringify({...payload,token:employeeToken})
-  });
-
-  return readResponse(response);
-}
-
-async function managerRequest(payload){
-  if(!managerSession?.access_token){
-    throw new Error("انتهت جلسة المدير. سجل الدخول مرة أخرى.");
-  }
-
-  const response=await fetch(`${SUPABASE_URL}/functions/v1/manager-portal`,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "apikey":SUPABASE_ANON_KEY,
-      "Authorization":`Bearer ${managerSession.access_token}`
-    },
-    body:JSON.stringify(payload)
-  });
-
-  if(response.status===401){
-    managerSession=null;
-    $("managerDashboard").classList.add("hidden");
-    $("managerLoginPage").classList.remove("hidden");
-  }
-
-  return readResponse(response);
-}
-
-/* التنقل */
-
+/* التنقل في الإدارة */
 function showManagerList(){
   $("managerDetailsView").classList.add("hidden");
   $("employeeManagementView").classList.add("hidden");
   $("managerListView").classList.remove("hidden");
   currentTicketId=null;
 }
-
 function showEmployeeManagementPage(){
   $("managerListView").classList.add("hidden");
   $("managerDetailsView").classList.add("hidden");
   $("employeeManagementView").classList.remove("hidden");
   loadEmployees();
 }
-
 $("showManagerTickets").addEventListener("click",showManagerList);
 $("showEmployeeManagement").addEventListener("click",showEmployeeManagementPage);
 $("backToManagerTickets").addEventListener("click",showManagerList);
@@ -1618,7 +1393,6 @@ $("showManagerLogin").addEventListener("click",()=>{
   $("loginPage").classList.add("hidden");
   $("managerLoginPage").classList.remove("hidden");
 });
-
 $("backToEmployee").addEventListener("click",()=>{
   $("managerLoginPage").classList.add("hidden");
   $("loginPage").classList.remove("hidden");
@@ -1627,14 +1401,11 @@ $("backToEmployee").addEventListener("click",()=>{
 });
 
 /* دخول الموظف */
-
 $("loginForm").addEventListener("submit",async e=>{
   e.preventDefault();
-
   const button=$("loginButton");
   button.disabled=true;
   showMessage($("message"),"جاري التحقق...");
-
   try{
     const response=await fetch(`${SUPABASE_URL}/functions/v1/employee-portal`,{
       method:"POST",
@@ -1649,17 +1420,13 @@ $("loginForm").addEventListener("submit",async e=>{
         phone_number:$("phone").value.trim()
       })
     });
-
     const result=await readResponse(response);
-
     employeeToken=result.token;
     currentEmployee=result.employee||{};
-
     $("employeeWelcome").textContent=`مرحباً ${currentEmployee.full_name||"بك"}`;
     $("loginPage").classList.add("hidden");
     $("servicesPage").classList.remove("hidden");
     $("message").style.display="none";
-
   }catch(err){
     showMessage($("message"),err.message||"تعذر الاتصال بالخادم.");
   }finally{
@@ -1667,15 +1434,12 @@ $("loginForm").addEventListener("submit",async e=>{
   }
 });
 
-/* دخول المدير */
-
+/* دخول الإدارة - بيانات الدخول لم تتغير */
 $("managerLoginForm").addEventListener("submit",async e=>{
   e.preventDefault();
-
   const button=$("managerLoginButton");
   button.disabled=true;
   showMessage($("managerMessage"),"جاري التحقق من بيانات المدير...");
-
   try{
     const response=await fetch(`${SUPABASE_URL}/functions/v1/manager-portal`,{
       method:"POST",
@@ -1690,35 +1454,28 @@ $("managerLoginForm").addEventListener("submit",async e=>{
         password:$("managerPassword").value
       })
     });
-
     const result=await readResponse(response);
-
     managerSession={
       access_token:result.access_token,
       refresh_token:result.refresh_token
     };
-
     $("managerWelcome").textContent="أهلاً بك في لوحة الإدارة";
     $("managerLoginPage").classList.add("hidden");
     $("managerDashboard").classList.remove("hidden");
     $("managerMessage").style.display="none";
     $("managerLoginForm").reset();
-
     showManagerList();
     await loadManagerTickets();
-
   }catch(err){
-    showMessage($("managerMessage"),err.message||"اسم المستخدم أو كلمة المرور غير صحيحة.");
+    showMessage($("managerMessage"),err.message||"تعذر تسجيل دخول الإدارة.");
   }finally{
     button.disabled=false;
   }
 });
 
-/* معاملات الإدارة */
-
+/* قائمة معاملات الإدارة */
 async function loadManagerTickets(){
   $("ticketsList").innerHTML='<div class="empty-state">جاري تحميل المعاملات...</div>';
-
   try{
     const result=await managerRequest({action:"list_tickets"});
     currentTickets=result.tickets||[];
@@ -1727,225 +1484,149 @@ async function loadManagerTickets(){
     $("ticketsList").innerHTML=`<div class="empty-state">${escapeHTML(err.message)}</div>`;
   }
 }
-
 function renderTickets(){
   const filter=$("ticketFilter").value;
   const filtered=currentTickets.filter(t=>filter==="all"||t.ticket_type===filter);
-
   $("ticketsCount").textContent=`عدد المعاملات المعروضة: ${filtered.length}`;
-
   if(!filtered.length){
     $("ticketsList").innerHTML='<div class="empty-state">لا توجد معاملات في هذا القسم حالياً.</div>';
     return;
   }
-
   $("ticketsList").innerHTML=filtered.map(t=>{
     const emp=t.employees||{};
-
     return `<div class="ticket-card">
-      <div class="ticket-top">
-        <h3>${escapeHTML(t.subject)}</h3>
-        <span class="status">${escapeHTML(statusLabels[t.status]||t.status)}</span>
-      </div>
+      <div class="ticket-top"><h3>${escapeHTML(t.subject)}</h3>
+      <span class="status">${escapeHTML(statusLabels[t.status]||t.status)}</span></div>
       <p>النوع: ${escapeHTML(typeLabels[t.ticket_type]||t.ticket_type)}${t.ticket_subtype?" — "+escapeHTML(t.ticket_subtype):""}</p>
       <p>الموظف: ${escapeHTML(emp.full_name||"غير متوفر")}</p>
       <p>الرقم الوظيفي: ${escapeHTML(emp.employee_number||"غير متوفر")}</p>
       <p>الرقم المرجعي: ${escapeHTML(t.reference_number||"غير متوفر")}</p>
       <p class="ticket-meta">تاريخ الإرسال: ${escapeHTML(formatDate(t.created_at))}</p>
-      <button class="ticket-open" type="button" data-ticket-id="${escapeHTML(t.id)}">فتح المعاملة والتفاصيل</button>
+      <button type="button" class="ticket-open" data-ticket-id="${escapeHTML(t.id)}">فتح المعاملة والتفاصيل</button>
     </div>`;
   }).join("");
 }
-
-async function openTicket(ticketId){
-  currentTicketId=ticketId;
-
+async function openTicket(id){
+  currentTicketId=id;
   $("managerListView").classList.add("hidden");
   $("employeeManagementView").classList.add("hidden");
   $("managerDetailsView").classList.remove("hidden");
-
   $("detailSubject").textContent="جاري تحميل المعاملة...";
   $("ticketMessages").innerHTML='<div class="empty-state">جاري تحميل المحادثة...</div>';
   $("deleteMessage").textContent="";
-
   try{
-    const result=await managerRequest({
-      action:"ticket_details",
-      ticket_id:ticketId
-    });
-
+    const result=await managerRequest({action:"ticket_details",ticket_id:id});
     const t=result.ticket;
     const emp=t.employees||{};
-
     $("detailSubject").textContent=t.subject||"بدون عنوان";
     $("detailStatus").textContent=statusLabels[t.status]||t.status;
-
     $("detailInfo").innerHTML=`
       <div>الرقم المرجعي: ${escapeHTML(t.reference_number||"غير متوفر")}</div>
       <div>نوع المعاملة: ${escapeHTML(typeLabels[t.ticket_type]||t.ticket_type)} — ${escapeHTML(t.ticket_subtype||"")}</div>
       <div>اسم الموظف: ${escapeHTML(emp.full_name||"غير متوفر")}</div>
       <div>الرقم الوظيفي: ${escapeHTML(emp.employee_number||"غير متوفر")}</div>
       <div>تاريخ الإرسال: ${escapeHTML(formatDate(t.created_at))}</div>`;
-
     $("detailText").textContent=t.details||"";
     $("ticketStatusSelect").value=t.status;
     $("resolutionComment").value=t.resolution_comment||"";
-
     $("resolutionWrap").classList.toggle("hidden",t.status!=="completed");
-
     $("statusMessage").textContent="";
     $("replyMessage").textContent="";
     $("managerReply").value="";
-
     setAttachmentLink($("managerAttachment"),t,result);
     renderMessages(result.messages||[]);
-
   }catch(err){
     $("ticketMessages").innerHTML=`<div class="empty-state">${escapeHTML(err.message)}</div>`;
   }
 }
-
 function renderMessages(messages){
-  if(!messages.length){
-    $("ticketMessages").innerHTML='<div class="empty-state">لا توجد ردود سابقة على هذه المعاملة.</div>';
-    return;
-  }
-
-  $("ticketMessages").innerHTML=messages.map(m=>{
-    const isAdmin=m.sender_type==="admin";
-    return `<div class="message-item ${isAdmin?"admin":""}">
-      <strong>${isAdmin?"رد الإدارة":"رسالة الموظف"}</strong>
+  $("ticketMessages").innerHTML=messages.length
+    ?messages.map(m=>`<div class="message-item ${m.sender_type==="admin"?"admin":""}">
+      <strong>${m.sender_type==="admin"?"رد الإدارة":"رسالة الموظف"}</strong>
       <p>${escapeHTML(m.message)}</p>
       <small>${escapeHTML(formatDate(m.created_at))}</small>
-    </div>`;
-  }).join("");
+    </div>`).join("")
+    :'<div class="empty-state">لا توجد ردود سابقة على هذه المعاملة.</div>';
 }
-
 $("ticketsList").addEventListener("click",e=>{
-  const b=e.target.closest("[data-ticket-id]");
-  if(b)openTicket(b.dataset.ticketId);
+  const button=e.target.closest("[data-ticket-id]");
+  if(button)openTicket(button.dataset.ticketId);
 });
-
 $("ticketFilter").addEventListener("change",renderTickets);
 $("refreshTickets").addEventListener("click",loadManagerTickets);
 $("backToTickets").addEventListener("click",showManagerList);
 
 /* حذف المعاملة */
-
 $("deleteTicketButton").addEventListener("click",async()=>{
   if(!currentTicketId)return;
-
-  const confirmed=confirm("هل أنت متأكد من حذف هذه المعاملة نهائياً؟\n\nسيتم حذف المعاملة وجميع رسائلها، ولا يمكن التراجع عن هذا الإجراء.");
-
-  if(!confirmed)return;
-
+  if(!confirm("هل أنت متأكد من حذف هذه المعاملة نهائياً؟\n\nسيتم حذف المعاملة وجميع رسائلها، ولا يمكن التراجع عن هذا الإجراء."))return;
   const button=$("deleteTicketButton");
   button.disabled=true;
   $("deleteMessage").textContent="جاري حذف المعاملة...";
-
   try{
-    const result=await managerRequest({
-      action:"delete_ticket",
-      ticket_id:currentTicketId
-    });
-
+    const result=await managerRequest({action:"delete_ticket",ticket_id:currentTicketId});
     currentTicketId=null;
     await loadManagerTickets();
     showManagerList();
-
     if(result.attachment_cleanup_warning){
-      alert("تم حذف المعاملة ورسائلها، لكن تعذر حذف المرفق من التخزين.");
+      alert("تم حذف المعاملة، لكن تعذر حذف المرفق من التخزين.");
     }else{
       alert("تم حذف المعاملة نهائياً بنجاح.");
     }
-
   }catch(err){
-    $("deleteMessage").textContent=err.message||"تعذر حذف المعاملة.";
+    displayError($("deleteMessage"),err);
   }finally{
     button.disabled=false;
   }
 });
-
 $("ticketStatusSelect").addEventListener("change",()=>{
   $("resolutionWrap").classList.toggle("hidden",$("ticketStatusSelect").value!=="completed");
 });
-
-/* إرسال رد */
-
 $("sendReplyButton").addEventListener("click",async()=>{
   const reply=$("managerReply").value.trim();
-
   if(!currentTicketId)return;
-
-  if(!reply){
-    $("replyMessage").textContent="اكتب الرد أولاً.";
-    return;
-  }
-
-  const b=$("sendReplyButton");
-  b.disabled=true;
+  if(!reply){$("replyMessage").textContent="اكتب الرد أولاً.";return;}
+  const button=$("sendReplyButton");
+  button.disabled=true;
   $("replyMessage").textContent="جاري إرسال الرد...";
-
   try{
-    await managerRequest({
-      action:"send_message",
-      ticket_id:currentTicketId,
-      message:reply
-    });
-
+    await managerRequest({action:"send_message",ticket_id:currentTicketId,message:reply});
     $("managerReply").value="";
     await openTicket(currentTicketId);
     $("replyMessage").textContent="تم إرسال الرد بنجاح.";
-
   }catch(err){
-    $("replyMessage").textContent=err.message;
+    displayError($("replyMessage"),err);
   }finally{
-    b.disabled=false;
+    button.disabled=false;
   }
 });
-
-/* تحديث حالة المعاملة */
-
 $("updateStatusButton").addEventListener("click",async()=>{
   const status=$("ticketStatusSelect").value;
   const comment=$("resolutionComment").value.trim();
-
   if(!currentTicketId)return;
-
   if(status==="completed"&&!comment){
     $("statusMessage").textContent="اكتب ملاحظة إتمام المعاملة أولاً.";
     $("resolutionComment").focus();
     return;
   }
-
-  const b=$("updateStatusButton");
-  b.disabled=true;
+  const button=$("updateStatusButton");
+  button.disabled=true;
   $("statusMessage").textContent="جاري تحديث الحالة...";
-
   try{
-    await managerRequest({
-      action:"update_ticket",
-      ticket_id:currentTicketId,
-      status,
-      resolution_comment:comment
-    });
-
+    await managerRequest({action:"update_ticket",ticket_id:currentTicketId,status,resolution_comment:comment});
     await loadManagerTickets();
     await openTicket(currentTicketId);
     $("statusMessage").textContent="تم تحديث حالة المعاملة بنجاح.";
-
   }catch(err){
-    $("statusMessage").textContent=err.message;
+    displayError($("statusMessage"),err);
   }finally{
-    b.disabled=false;
+    button.disabled=false;
   }
 });
 
 /* إدارة الموظفين */
-
 async function loadEmployees(){
   $("employeesList").innerHTML='<div class="empty-state">جاري تحميل الموظفين...</div>';
-
   try{
     const result=await managerRequest({action:"list_employees"});
     currentEmployees=result.employees||[];
@@ -1954,26 +1635,20 @@ async function loadEmployees(){
     $("employeesList").innerHTML=`<div class="empty-state">${escapeHTML(err.message)}</div>`;
   }
 }
-
 function renderEmployees(){
   const term=$("employeeSearch").value.trim().toLowerCase();
-
   const filtered=currentEmployees.filter(emp=>
     String(emp.full_name||"").toLowerCase().includes(term)||
     String(emp.employee_number||"").toLowerCase().includes(term)||
     String(emp.phone_number||"").toLowerCase().includes(term)
   );
-
   $("employeesCount").textContent=`إجمالي الموظفين: ${currentEmployees.length} — نتائج البحث: ${filtered.length}`;
-
   if(!filtered.length){
     $("employeesList").innerHTML='<div class="empty-state">لا يوجد موظفون مطابقون للبحث.</div>';
     return;
   }
-
   $("employeesList").innerHTML=filtered.map(emp=>{
     const active=emp.is_active===true;
-
     return `<div class="employee-card">
       <div class="ticket-top">
         <h3>${escapeHTML(emp.full_name)}</h3>
@@ -1988,10 +1663,8 @@ function renderEmployees(){
     </div>`;
   }).join("");
 }
-
 $("employeeSearch").addEventListener("input",renderEmployees);
 $("refreshEmployees").addEventListener("click",loadEmployees);
-
 function resetEmployeeForm(){
   editingEmployeeId=null;
   $("employeeForm").reset();
@@ -2001,89 +1674,60 @@ function resetEmployeeForm(){
   $("employeeFormMessage").textContent="";
   $("employeeEditor").classList.add("hidden");
 }
-
 function openNewEmployeeForm(){
   resetEmployeeForm();
   $("employeeEditor").classList.remove("hidden");
   $("employeeEditorTitle").textContent="إضافة موظف جديد";
   $("newEmployeeNumber").focus();
 }
-
-function openEditEmployeeForm(employeeId){
-  const emp=currentEmployees.find(x=>String(x.id)===String(employeeId));
-
-  if(!emp){
-    alert("لم يتم العثور على بيانات الموظف.");
-    return;
-  }
-
+function openEditEmployeeForm(id){
+  const emp=currentEmployees.find(x=>String(x.id)===String(id));
+  if(!emp){alert("لم يتم العثور على بيانات الموظف.");return;}
   editingEmployeeId=emp.id;
   $("newEmployeeNumber").value=emp.employee_number||"";
   $("newEmployeeName").value=emp.full_name||"";
   $("newEmployeePhone").value=emp.phone_number||"";
   $("newEmployeeActive").checked=emp.is_active===true;
-
   $("employeeEditorTitle").textContent="تعديل بيانات الموظف";
   $("saveEmployeeButton").textContent="حفظ التعديلات";
   $("employeeFormMessage").textContent="";
-
   $("employeeEditor").classList.remove("hidden");
   $("employeeEditor").scrollIntoView({behavior:"smooth",block:"start"});
 }
-
 $("newEmployeeButton").addEventListener("click",openNewEmployeeForm);
 $("cancelEmployeeEdit").addEventListener("click",resetEmployeeForm);
-
 $("employeesList").addEventListener("click",async e=>{
   const editButton=e.target.closest("[data-edit-employee]");
   const toggleButton=e.target.closest("[data-toggle-employee]");
+  if(editButton){openEditEmployeeForm(editButton.dataset.editEmployee);return;}
+  if(!toggleButton)return;
 
-  if(editButton){
-    openEditEmployeeForm(editButton.dataset.editEmployee);
-    return;
-  }
+  const emp=currentEmployees.find(x=>String(x.id)===String(toggleButton.dataset.toggleEmployee));
+  if(!emp)return;
+  const nextState=emp.is_active!==true;
+  if(!confirm(nextState
+    ?`هل تريد إعادة تفعيل حساب الموظف ${emp.full_name}؟`
+    :`هل تريد إيقاف حساب الموظف ${emp.full_name}؟\n\nستبقى معاملاته السابقة محفوظة.`))return;
 
-  if(toggleButton){
-    const employeeId=toggleButton.dataset.toggleEmployee;
-    const emp=currentEmployees.find(x=>String(x.id)===String(employeeId));
-
-    if(!emp)return;
-
-    const nextState=emp.is_active!==true;
-
-    const confirmText=nextState
-      ?`هل تريد إعادة تفعيل حساب الموظف ${emp.full_name}؟`
-      :`هل تريد إيقاف حساب الموظف ${emp.full_name}؟\n\nسيُمنع من تسجيل الدخول، وستبقى معاملاته السابقة محفوظة.`;
-
-    if(!confirm(confirmText))return;
-
-    toggleButton.disabled=true;
-
-    try{
-      await managerRequest({
-        action:"update_employee",
-        employee_id:emp.id,
-        employee_number:emp.employee_number,
-        full_name:emp.full_name,
-        phone_number:emp.phone_number,
-        is_active:nextState
-      });
-
-      await loadEmployees();
-      alert(nextState?"تم تفعيل حساب الموظف.":"تم إيقاف حساب الموظف.");
-
-    }catch(err){
-      alert(err.message||"تعذر تحديث حالة الموظف.");
-      toggleButton.disabled=false;
-    }
+  toggleButton.disabled=true;
+  try{
+    await managerRequest({
+      action:"update_employee",
+      employee_id:emp.id,
+      employee_number:emp.employee_number,
+      full_name:emp.full_name,
+      phone_number:emp.phone_number,
+      is_active:nextState
+    });
+    await loadEmployees();
+    alert(nextState?"تم تفعيل حساب الموظف.":"تم إيقاف حساب الموظف.");
+  }catch(err){
+    alert(err.message||"تعذر تحديث حالة الموظف.");
+    toggleButton.disabled=false;
   }
 });
-
-/* إضافة وتعديل الموظف */
-
 $("employeeForm").addEventListener("submit",async e=>{
   e.preventDefault();
-
   const employee_number=$("newEmployeeNumber").value.trim();
   const full_name=$("newEmployeeName").value.trim();
   const phone_number=$("newEmployeePhone").value.trim();
@@ -2093,53 +1737,35 @@ $("employeeForm").addEventListener("submit",async e=>{
     $("employeeFormMessage").textContent="يرجى تعبئة جميع الحقول.";
     return;
   }
-
   const wasEditing=Boolean(editingEmployeeId);
   const button=$("saveEmployeeButton");
-
   button.disabled=true;
   $("employeeFormMessage").textContent="جاري حفظ البيانات...";
-
   try{
     if(editingEmployeeId){
       await managerRequest({
-        action:"update_employee",
-        employee_id:editingEmployeeId,
-        employee_number,
-        full_name,
-        phone_number,
-        is_active
+        action:"update_employee",employee_id:editingEmployeeId,
+        employee_number,full_name,phone_number,is_active
       });
     }else{
       await managerRequest({
-        action:"create_employee",
-        employee_number,
-        full_name,
-        phone_number,
-        is_active
+        action:"create_employee",employee_number,full_name,phone_number,is_active
       });
     }
-
     await loadEmployees();
     resetEmployeeForm();
-
     alert(wasEditing?"تم تحديث بيانات الموظف.":"تمت إضافة الموظف بنجاح.");
-
   }catch(err){
-    $("employeeFormMessage").textContent=err.message||"تعذر حفظ بيانات الموظف.";
+    displayError($("employeeFormMessage"),err);
   }finally{
     button.disabled=false;
   }
 });
-
-/* خروج المدير */
-
 $("managerLogout").addEventListener("click",()=>{
   managerSession=null;
   currentTicketId=null;
   currentTickets=[];
   currentEmployees=[];
-
   resetEmployeeForm();
   $("managerDashboard").classList.add("hidden");
   $("loginPage").classList.remove("hidden");
@@ -2147,47 +1773,29 @@ $("managerLogout").addEventListener("click",()=>{
 });
 
 /* خدمات الموظفين */
-
 function openService(card){
   selectedServiceType=card.dataset.type;
-
-  const titles={
-    complaint:"تقديم شكوى",
-    report:"تقديم بلاغ",
-    request:"تقديم طلب"
-  };
-
-  const fieldNames={
-    complaint:"الشكوى",
-    report:"البلاغ",
-    request:"الطلب"
-  };
-
-  const selectedName=fieldNames[selectedServiceType];
-
+  const titles={complaint:"تقديم شكوى",report:"تقديم بلاغ",request:"تقديم طلب"};
+  const names={complaint:"الشكوى",report:"البلاغ",request:"الطلب"};
+  const name=names[selectedServiceType];
   $("serviceTitle").textContent=titles[selectedServiceType];
-
-  $("subtypeLabel").firstChild.textContent=`تصنيف ${selectedName} `;
-  $("subjectLabel").firstChild.textContent=`عنوان ${selectedName} `;
-  $("detailsLabel").firstChild.textContent=`تفاصيل ${selectedName} `;
-
-  $("subject").placeholder=`اكتب عنوان ${selectedName}`;
-  $("details").placeholder=`اكتب تفاصيل ${selectedName} هنا`;
-
+  $("subtypeLabel").firstChild.textContent=`تصنيف ${name} `;
+  $("subjectLabel").firstChild.textContent=`عنوان ${name} `;
+  $("detailsLabel").firstChild.textContent=`تفاصيل ${name} `;
+  $("subject").placeholder=`اكتب عنوان ${name}`;
+  $("details").placeholder=`اكتب تفاصيل ${name} هنا`;
   $("ticketSubtype").innerHTML=subtypeOptions[selectedServiceType]
-    .map(x=>`<option value="${escapeHTML(x)}">${escapeHTML(x)}</option>`)
-    .join("");
-
+    .map(s=>`<option value="${escapeHTML(s)}">${escapeHTML(s)}</option>`).join("");
   $("subject").value="";
   $("details").value="";
   $("attachment").value="";
+  $("confirmInformation").checked=false;
+  $("confirmationBox").classList.remove("needs-attention");
   setFormProgress("");
-
   $("servicesList").classList.add("hidden");
   $("myTicketsView").classList.add("hidden");
   $("serviceForm").classList.remove("hidden");
 }
-
 document.querySelectorAll(".service").forEach(card=>{
   card.addEventListener("click",()=>openService(card));
   card.addEventListener("keydown",e=>{
@@ -2197,39 +1805,30 @@ document.querySelectorAll(".service").forEach(card=>{
     }
   });
 });
-
 $("backButton").addEventListener("click",()=>{
   $("serviceForm").classList.add("hidden");
   $("servicesList").classList.remove("hidden");
 });
-
 $("showMyTickets").addEventListener("click",showEmployeeTickets);
-
 function showEmployeeTickets(){
   $("serviceForm").classList.add("hidden");
   $("servicesList").classList.add("hidden");
   $("myTicketsView").classList.remove("hidden");
   $("employeeTicketDetails").classList.add("hidden");
-
   loadMyTickets();
 }
-
 $("backFromTickets").addEventListener("click",()=>{
   $("myTicketsView").classList.add("hidden");
   $("servicesList").classList.remove("hidden");
 });
-
 $("backToMyTickets").addEventListener("click",()=>{
   $("employeeTicketDetails").classList.add("hidden");
   $("myTicketsList").classList.remove("hidden");
 });
-
 $("refreshMyTickets").addEventListener("click",loadMyTickets);
 $("myTicketFilter").addEventListener("input",filterMyTickets);
-
 async function loadMyTickets(){
   $("myTicketsList").innerHTML='<div class="empty-state">جاري تحميل المعاملات...</div>';
-
   try{
     const result=await employeeRequest({action:"my_tickets"});
     employeeTickets=result.tickets||[];
@@ -2238,21 +1837,13 @@ async function loadMyTickets(){
     $("myTicketsList").innerHTML=`<div class="empty-state">${escapeHTML(err.message)}</div>`;
   }
 }
-
 function filterMyTickets(){
   const term=$("myTicketFilter").value.trim().toLowerCase();
-
   const filtered=employeeTickets.filter(t=>
     String(t.reference_number||"").toLowerCase().includes(term)
   );
-
-  if(!filtered.length){
-    $("myTicketsList").innerHTML='<div class="empty-state">لا توجد معاملات مطابقة.</div>';
-    return;
-  }
-
-  $("myTicketsList").innerHTML=filtered.map(t=>`
-    <div class="ticket-card">
+  $("myTicketsList").innerHTML=filtered.length
+    ?filtered.map(t=>`<div class="ticket-card">
       <div class="ticket-top">
         <h3>${escapeHTML(t.subject)}</h3>
         <span class="status">${escapeHTML(statusLabels[t.status]||t.status)}</span>
@@ -2260,123 +1851,84 @@ function filterMyTickets(){
       <p>النوع: ${escapeHTML(typeLabels[t.ticket_type]||t.ticket_type)}</p>
       <p>الرقم المرجعي: ${escapeHTML(t.reference_number||"غير متوفر")}</p>
       <p class="ticket-meta">${escapeHTML(formatDate(t.created_at))}</p>
-      <button class="ticket-open" type="button" data-employee-ticket="${escapeHTML(t.id)}">عرض التفاصيل والمتابعة</button>
-    </div>
-  `).join("");
+      <button type="button" class="ticket-open" data-employee-ticket="${escapeHTML(t.id)}">عرض التفاصيل والمتابعة</button>
+    </div>`).join("")
+    :'<div class="empty-state">لا توجد معاملات مطابقة.</div>';
 }
-
 function renderMyTickets(){
   $("myTicketFilter").value="";
   filterMyTickets();
 }
-
 $("myTicketsList").addEventListener("click",e=>{
-  const b=e.target.closest("[data-employee-ticket]");
-  if(b)openEmployeeTicket(b.dataset.employeeTicket);
+  const button=e.target.closest("[data-employee-ticket]");
+  if(button)openEmployeeTicket(button.dataset.employeeTicket);
 });
-
 async function openEmployeeTicket(id){
   try{
-    const result=await employeeRequest({
-      action:"ticket_details",
-      ticket_id:id
-    });
-
+    const result=await employeeRequest({action:"ticket_details",ticket_id:id});
     const t=result.ticket;
-
     $("employeeDetailSubject").textContent=t.subject||"بدون عنوان";
-
-    $("employeeDetailInfo").textContent=
-      `الرقم المرجعي: ${t.reference_number||"غير متوفر"} | الحالة: ${statusLabels[t.status]||t.status} | تاريخ الإرسال: ${formatDate(t.created_at)}`;
-
+    $("employeeDetailInfo").textContent=`الرقم المرجعي: ${t.reference_number||"غير متوفر"} | الحالة: ${statusLabels[t.status]||t.status} | تاريخ الإرسال: ${formatDate(t.created_at)}`;
     $("employeeDetailText").textContent=t.details||"";
     $("employeeResolution").textContent=t.resolution_comment||"لا توجد ملاحظة من الإدارة حتى الآن.";
-
     setAttachmentLink($("employeeAttachment"),t,result);
     renderEmployeeMessages(result.messages||[]);
-
     $("employeeReply").value="";
     $("employeeReplyMessage").textContent="";
-
     $("myTicketsList").classList.add("hidden");
     $("employeeTicketDetails").classList.remove("hidden");
-
     currentTicketId=id;
-
   }catch(err){
     alert(err.message);
   }
 }
-
 function renderEmployeeMessages(messages){
-  if(!messages.length){
-    $("employeeMessages").innerHTML='<div class="empty-state">لا توجد رسائل حتى الآن.</div>';
-    return;
-  }
-
-  $("employeeMessages").innerHTML=messages.map(m=>`
-    <div class="message-item ${m.sender_type==="admin"?"admin":""}">
+  $("employeeMessages").innerHTML=messages.length
+    ?messages.map(m=>`<div class="message-item ${m.sender_type==="admin"?"admin":""}">
       <strong>${m.sender_type==="admin"?"رد الإدارة":"رسالتك"}</strong>
       <p>${escapeHTML(m.message)}</p>
       <small>${escapeHTML(formatDate(m.created_at))}</small>
-    </div>
-  `).join("");
+    </div>`).join("")
+    :'<div class="empty-state">لا توجد رسائل حتى الآن.</div>';
 }
-
 $("sendEmployeeReply").addEventListener("click",async()=>{
   const message=$("employeeReply").value.trim();
-
   if(!message){
     $("employeeReplyMessage").textContent="اكتب رسالتك أولاً.";
     return;
   }
-
-  const b=$("sendEmployeeReply");
-  b.disabled=true;
+  const button=$("sendEmployeeReply");
+  button.disabled=true;
   $("employeeReplyMessage").textContent="جاري الإرسال...";
-
   try{
-    await employeeRequest({
-      action:"send_message",
-      ticket_id:currentTicketId,
-      message
-    });
-
+    await employeeRequest({action:"send_message",ticket_id:currentTicketId,message});
     await openEmployeeTicket(currentTicketId);
     $("employeeReplyMessage").textContent="تم إرسال الرسالة.";
-
   }catch(err){
-    $("employeeReplyMessage").textContent=err.message;
+    displayError($("employeeReplyMessage"),err);
   }finally{
-    b.disabled=false;
+    button.disabled=false;
   }
 });
 
-/* إرفاق الصور والملفات */
-
+/* رفع المرفقات والتحقق من الإقرار */
 $("attachment").addEventListener("change",()=>{
   const file=$("attachment").files[0];
-
-  if(!file){
-    setFormProgress("");
-    return;
-  }
-
+  if(!file){setFormProgress("");return;}
   try{
     validateAttachmentFile(file);
-    setFormProgress(
-      `الملف المختار: ${file.name} (${(file.size/1024/1024).toFixed(2)} ميجابايت).`,
-      "success"
-    );
+    setFormProgress(`الملف المختار: ${file.name} (${(file.size/1024/1024).toFixed(2)} ميجابايت).`,"success");
   }catch(err){
     setFormProgress(err.message,"error");
   }
 });
-
-/* إرسال المعاملة */
-
+$("confirmInformation").addEventListener("change",()=>{
+  if($("confirmInformation").checked){
+    $("confirmationBox").classList.remove("needs-attention");
+  }
+});
 $("submitTicket").addEventListener("click",async()=>{
-  const b=$("submitTicket");
+  const button=$("submitTicket");
   const subject=$("subject").value.trim();
   const details=$("details").value.trim();
   const file=$("attachment").files[0]||null;
@@ -2385,6 +1937,13 @@ $("submitTicket").addEventListener("click",async()=>{
     setFormProgress("أكمل تصنيف المعاملة والعنوان والتفاصيل المطلوبة.","error");
     return;
   }
+  if(!$("confirmInformation").checked){
+    $("confirmationBox").classList.add("needs-attention");
+    setFormProgress("يجب الموافقة على إقرار صحة البيانات وتحمل المسؤولية قبل إرسال المعاملة.","error");
+    $("confirmInformation").focus();
+    return;
+  }
+  $("confirmationBox").classList.remove("needs-attention");
 
   try{
     validateAttachmentFile(file);
@@ -2392,60 +1951,41 @@ $("submitTicket").addEventListener("click",async()=>{
     setFormProgress(err.message,"error");
     return;
   }
-
-  b.disabled=true;
-  let attachmentUploaded=false;
+  button.disabled=true;
+  let uploaded=false;
   setFormProgress("جاري تجهيز المعاملة...");
-
   try{
     let attachmentPath=null;
-
     if(file){
-      if(!supabaseClient){
-        throw new Error("تعذر تحميل مكتبة Supabase اللازمة لرفع الملفات.");
-      }
-
+      if(!supabaseClient)throw new Error("تعذر تحميل مكتبة Supabase لرفع الملفات.");
       const contentType=getAttachmentContentType(file);
 
       setFormProgress("جاري طلب رابط رفع آمن من Supabase...");
-
-      let signed;
-
-      try{
-        signed=await employeeRequest({
-          action:"create_upload_url",
-          file_name:file.name,
-          content_type:contentType,
-          file_size:file.size
-        });
-      }catch(err){
-        throw new Error(`فشل الحصول على رابط الرفع: ${err.message}`);
-      }
-
+      const signed=await employeeRequest({
+        action:"create_upload_url",
+        file_name:file.name,
+        content_type:contentType,
+        file_size:file.size
+      });
       const {path,token}=parseSignedUploadResponse(signed);
 
       setFormProgress("جاري رفع المرفق إلى التخزين...");
-
-      let result;
-
+      let upload;
       try{
-        result=await supabaseClient.storage
-          .from(BUCKET)
+        upload=await supabaseClient.storage.from(BUCKET)
           .uploadToSignedUrl(path,token,file,{contentType});
       }catch(err){
         throw new Error(uploadErrorMessage(err));
       }
-
-      if(result?.error){
-        throw new Error(uploadErrorMessage(result.error));
+      if(upload?.error)throw new Error(uploadErrorMessage(upload.error));
+      if(!upload||(!upload.data&&!upload.path)){
+        throw new Error("لم يؤكد التخزين اكتمال رفع المرفق.");
       }
-
-      attachmentUploaded=true;
+      uploaded=true;
       attachmentPath=path;
     }
 
     setFormProgress("جارٍ حفظ المعاملة...");
-
     const result=await employeeRequest({
       action:"create_ticket",
       ticket_type:selectedServiceType,
@@ -2459,47 +1999,34 @@ $("submitTicket").addEventListener("click",async()=>{
       `تم إرسال المعاملة بنجاح. الرقم المرجعي: ${result.ticket?.reference_number||result.reference_number||"تم التسجيل"}`,
       "success"
     );
-
     $("subject").value="";
     $("details").value="";
     $("attachment").value="";
-
+    $("confirmInformation").checked=false;
   }catch(err){
-    const explanation=err.message||"تعذر إرسال المعاملة.";
-
-    setFormProgress(
-      attachmentUploaded
-        ?`تم رفع الملف، لكن تعذر حفظ المعاملة. ${explanation}`
-        :explanation,
-      "error"
-    );
+    setFormProgress(uploaded
+      ?`تم رفع الملف لكن تعذر حفظ المعاملة. ${err.message}`
+      :(err.message||"تعذر إرسال المعاملة."),"error");
   }finally{
-    b.disabled=false;
+    button.disabled=false;
   }
 });
 
-/* تسجيل خروج الموظف */
-
+/* خروج الموظف */
 $("logoutButton").addEventListener("click",async()=>{
-  try{
-    if(employeeToken)await employeeRequest({action:"logout"});
-  }catch{}
-
+  try{if(employeeToken)await employeeRequest({action:"logout"});}catch{}
   employeeToken=null;
   currentEmployee=null;
   employeeTickets=[];
-
   $("servicesPage").classList.add("hidden");
   $("loginPage").classList.remove("hidden");
   $("servicesList").classList.remove("hidden");
   $("serviceForm").classList.add("hidden");
   $("myTicketsView").classList.add("hidden");
   $("employeeTicketDetails").classList.add("hidden");
-
   $("loginForm").reset();
   $("message").style.display="none";
 });
 </script>
-
 </body>
 </html>
