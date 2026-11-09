@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -1688,6 +1687,9 @@ const englishText=new Map(Object.entries({
   "لا توجد ردود سابقة على هذه المعاملة.":"No previous replies.",
   "لا توجد رسائل حتى الآن.":"No messages yet.",
   "لا يوجد موظفون مطابقون للبحث.":"No matching employees.",
+  "الشكاوى والبلاغات والطلبات":"Complaints, reports and requests",
+  "لا توجد معاملات لهذا الموظف.":"No submissions for this employee.",
+  "تعذر تحميل معاملات الموظف. اضغط تحديث للمحاولة مرة أخرى.":"Could not load employee submissions. Press Refresh to try again.",
   "فتح المعاملة والتفاصيل":"Open submission details",
   "عرض التفاصيل والمتابعة":"View details and follow up",
   "تعديل البيانات":"Edit details",
@@ -2522,16 +2524,78 @@ $("sendReplyButton").addEventListener("click",async()=>{
 });
 
 /* إدارة الموظفين */
+let employeeSearchTickets={loading:false,tickets:[],error:""};
+
 async function loadEmployees() {
   $("employeesList").innerHTML='<div class="empty-state">جاري تحميل الموظفين...</div>';
+  const searchState={loading:true,tickets:[],error:""};
+  employeeSearchTickets=searchState;
 
   try {
-    const result=await managerRequest({action:"list_employees"});
-    currentEmployees=result.employees||[];
+    const [employeesResult,ticketsResult]=await Promise.allSettled([
+      managerRequest({action:"list_employees"}),
+      managerRequest({action:"list_tickets"})
+    ]);
+
+    if(employeeSearchTickets!==searchState)return;
+    searchState.loading=false;
+
+    if(ticketsResult.status==="fulfilled"&&Array.isArray(ticketsResult.value.tickets)) {
+      searchState.tickets=ticketsResult.value.tickets.filter(ticket=>ticket&&typeof ticket==="object");
+    }else {
+      searchState.error="تعذر تحميل معاملات الموظف. اضغط تحديث للمحاولة مرة أخرى.";
+    }
+
+    if(employeesResult.status==="rejected")throw employeesResult.reason;
+    currentEmployees=employeesResult.value.employees||[];
     renderEmployees();
   }catch(error) {
     $("employeesList").innerHTML=`<div class="empty-state">${escapeHTML(error.message)}</div>`;
   }
+}
+
+function renderEmployeeSearchTickets(employee) {
+  const heading='<h4 class="section-heading">الشكاوى والبلاغات والطلبات</h4>';
+
+  if(employeeSearchTickets.loading) {
+    return heading+'<div class="empty-state">جاري تحميل المعاملات...</div>';
+  }
+
+  if(employeeSearchTickets.error) {
+    return heading+`<div class="empty-state">${escapeHTML(employeeSearchTickets.error)}</div>`;
+  }
+
+  const tickets=employeeSearchTickets.tickets.filter(ticket=>{
+    const owner=ticket.employees||{};
+    const ownerId=ticket.employee_id??owner.id;
+
+    if(ownerId!=null&&employee.id!=null) {
+      return String(ownerId)===String(employee.id);
+    }
+
+    return owner.employee_number!=null&&employee.employee_number!=null
+      &&String(owner.employee_number)!==""
+      &&String(owner.employee_number)===String(employee.employee_number);
+  });
+
+  if(!tickets.length) {
+    return heading+'<div class="empty-state">لا توجد معاملات لهذا الموظف.</div>';
+  }
+
+  return heading+tickets.map(ticket=>`
+    <div class="ticket-card">
+      <div class="ticket-top">
+        <h3>${escapeHTML(ticket.subject||"بدون عنوان")}</h3>
+        <span class="status" data-state="${escapeHTML(ticketStatusKey(ticket.status))}">
+          ${escapeHTML(ticketStatusText(ticket.status))}
+        </span>
+      </div>
+      <p>النوع: ${escapeHTML(typeLabels[ticket.ticket_type]||ticket.ticket_type||"غير محدد")}${ticket.ticket_subtype?" — "+escapeHTML(ticket.ticket_subtype):""}</p>
+      <p>الرقم المرجعي: ${escapeHTML(ticket.reference_number||"غير متوفر")}</p>
+      <p class="ticket-meta">تاريخ الإرسال: ${escapeHTML(formatDate(ticket.created_at))}</p>
+      <button type="button" class="ticket-open" data-employee-search-ticket="${escapeHTML(ticket.id)}">فتح المعاملة والتفاصيل</button>
+    </div>
+  `).join("");
 }
 
 function renderEmployees() {
@@ -2569,12 +2633,18 @@ function renderEmployees() {
           ${active?"إيقاف الحساب":"إعادة تفعيل الحساب"}
         </button>
       </div>
+      ${term?renderEmployeeSearchTickets(employee):""}
     </div>`;
   }).join("");
 }
 
 $("employeeSearch").addEventListener("input",renderEmployees);
 $("refreshEmployees").addEventListener("click",loadEmployees);
+
+$("employeesList").addEventListener("click",event=>{
+  const button=event.target.closest("[data-employee-search-ticket]");
+  if(button)openTicket(button.dataset.employeeSearchTicket);
+});
 
 function resetEmployeeForm() {
   editingEmployeeId=null;
@@ -2721,6 +2791,7 @@ $("managerLogout").addEventListener("click",()=>{
   currentTicketId=null;
   currentTickets=[];
   currentEmployees=[];
+  employeeSearchTickets={loading:false,tickets:[],error:""};
 
   resetEmployeeForm();
 
