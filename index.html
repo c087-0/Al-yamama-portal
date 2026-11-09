@@ -451,6 +451,16 @@ a:focus-visible,
 .employee-card .action-row {
   margin-top:18px;
 }
+.manager-employee-counts {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:16px 0;
+}
+.manager-search-ticket-text {
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
 #formMessage {
   white-space:pre-line;
   line-height:1.9;
@@ -911,6 +921,71 @@ html[dir="ltr"] .header .description {
     animation:none!important;
   }
 }
+
+/* قسم سجل معاملات الموظفين - إضافة مستقلة للإدارة */
+#employeeRecordsView .records-search-row {
+  display:flex;
+  align-items:stretch;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+#employeeRecordsView .records-search-row input {
+  flex:1 1 240px;
+  margin:0;
+}
+#employeeRecordsView .records-search-row button {
+  min-width:140px;
+}
+#employeeRecordsView .records-profile {
+  margin:20px 0;
+  padding:20px;
+  border:1px solid var(--edge);
+  border-radius:15px;
+  background:var(--soft);
+}
+#employeeRecordsView .records-profile h3 {
+  margin:0 0 7px;
+}
+#employeeRecordsView .records-stats {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin:20px 0 28px;
+}
+#employeeRecordsView .records-stat {
+  padding:18px 10px;
+  text-align:center;
+  border:1px solid var(--edge);
+  border-radius:14px;
+  background:var(--soft);
+}
+#employeeRecordsView .records-stat strong {
+  display:block;
+  color:var(--teal-deep);
+  font-size:28px;
+  line-height:1.4;
+}
+#employeeRecordsView .records-stat span {
+  color:var(--muted);
+  font-size:13px;
+}
+#employeeRecordsView .records-text {
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  line-height:1.95;
+}
+#employeeRecordsView .records-state {
+  margin:16px 0;
+}
+@media (max-width:600px) {
+  #employeeRecordsView .records-stats {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  #employeeRecordsView .records-search-row button {
+    width:100%;
+  }
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -1156,6 +1231,7 @@ html[dir="ltr"] .header .description {
   <div class="action-row">
     <button type="button" id="showManagerTickets">إدارة المعاملات</button>
     <button type="button" class="secondary" id="showEmployeeManagement">إدارة الموظفين</button>
+    <button type="button" class="secondary" id="showEmployeeRecords">🔎 سجل معاملات الموظفين</button>
   </div>
 
   <div id="managerListView">
@@ -1166,6 +1242,10 @@ html[dir="ltr"] .header .description {
       </div>
 
       <p class="small-note">تظهر هنا جميع الشكاوى والبلاغات والطلبات لجميع الموظفين.</p>
+
+      <label for="managerEmployeeSearch">البحث عن موظف ومعاملاته</label>
+      <input id="managerEmployeeSearch" type="search" placeholder="ابحث بالاسم أو الرقم الوظيفي" aria-describedby="managerEmployeeSearchHint">
+      <p id="managerEmployeeSearchHint" class="small-note">ابحث بالاسم أو الرقم الوظيفي لعرض أعداد الشكاوى والطلبات والبلاغات ونصوصها كاملة.</p>
 
       <label for="ticketFilter">تصفية حسب نوع المعاملة</label>
       <select id="ticketFilter">
@@ -1272,6 +1352,28 @@ html[dir="ltr"] .header .description {
 
         <div id="employeeFormMessage" class="small-note"></div>
       </form>
+    </div>
+  </div>
+
+  <!-- سجل معاملات الموظفين: قسم منفصل لا يظهر إلا داخل لوحة الإدارة -->
+  <div id="employeeRecordsView" class="hidden">
+    <button type="button" class="back" id="backFromEmployeeRecords">← العودة للوحة الإدارة</button>
+    <div class="manager-card">
+      <div class="ticket-top">
+        <h2>🔎 سجل معاملات الموظفين</h2>
+      </div>
+      <p class="small-note">ابحث بالرقم الوظيفي لعرض الشكاوى والبلاغات والطلبات التي قدّمها الموظف، مع نصوصها وإمكانية فتح تفاصيلها والردود عليها. هذا القسم مخصص للإدارة.</p>
+
+      <form id="employeeRecordsForm">
+        <label for="employeeRecordsNumber">الرقم الوظيفي للموظف</label>
+        <div class="records-search-row">
+          <input id="employeeRecordsNumber" type="search" placeholder="أدخل الرقم الوظيفي كاملًا" maxlength="50" autocomplete="off" required>
+          <button type="submit" id="employeeRecordsSearchButton">بحث عن الموظف</button>
+        </div>
+      </form>
+
+      <div id="employeeRecordsMessage" class="small-note records-state" role="status" aria-live="polite"></div>
+      <div id="employeeRecordsResults" class="hidden"></div>
     </div>
   </div>
 </section>
@@ -1616,6 +1718,17 @@ const englishText=new Map(Object.entries({
   "تحديث ↻":"Refresh ↻",
   "إضافة الموظفين وتعديل بياناتهم وإيقاف حساباتهم أو إعادة تفعيلها.":"Add employees, edit details, disable or reactivate accounts.",
   "البحث عن موظف":"Search employees",
+  "البحث عن موظف ومعاملاته":"Search an employee and their submissions",
+  "ابحث بالاسم أو الرقم الوظيفي لعرض أعداد الشكاوى والطلبات والبلاغات ونصوصها كاملة.":"Search by name or employee ID to see complaint, request and report counts and their full text.",
+  "إجمالي المعاملات":"Total submissions",
+  "نتائج الموظفين":"Matching employees",
+  "المعاملات المعروضة":"Displayed submissions",
+  "الأعداد تشمل جميع معاملات الموظف.":"Counts include all of this employee's submissions.",
+  "نص المعاملة":"Submission text",
+  "لا توجد معاملات مطابقة لهذا البحث.":"No submissions match this search.",
+  "جاري تحميل نص المعاملة...":"Loading submission text...",
+  "لم تُكتب تفاصيل لهذه المعاملة.":"No details were provided for this submission.",
+  "تعذر تحميل نص المعاملة. افتح التفاصيل أو حدّث القائمة للمحاولة مرة أخرى.":"Could not load the submission text. Open the details or refresh the list to try again.",
   "＋ إضافة موظف جديد":"＋ Add new employee",
   "جاري تحميل الموظفين...":"Loading employees...",
   "إضافة موظف جديد":"Add new employee",
@@ -1752,7 +1865,7 @@ function translatePage() {
       const parent=node.parentElement;
 
       if(!parent||parent.closest(
-        "script,style,textarea,#detailText,#employeeDetailText,#employeeResolution,#employeeDetailSubject,#detailSubject,.ticket-card h3,.employee-card h3,.message-item p"
+        "script,style,textarea,#detailText,#employeeDetailText,#employeeResolution,#employeeDetailSubject,#detailSubject,.ticket-card h3,.employee-card h3,.message-item p,[data-manager-ticket-content]"
       ))continue;
 
       const previous=originalTexts.get(node);
@@ -2300,20 +2413,43 @@ $("showEmployeeManagement").addEventListener("click",showEmployeeManagementPage)
 $("backToManagerTickets").addEventListener("click",showManagerList);
 
 /* معاملات الإدارة */
+let managerEmployeeSearchVersion=0;
+let managerEmployeeSearchTimer=null;
+let managerTicketsLoading=false;
+let managerTicketLoadVersion=0;
+
 async function loadManagerTickets() {
+  const loadVersion=++managerTicketLoadVersion;
+  const session=managerSession;
+  managerEmployeeSearchVersion++;
+  clearTimeout(managerEmployeeSearchTimer);
+  managerTicketsLoading=true;
   $("ticketsList").innerHTML='<div class="empty-state">جاري تحميل المعاملات...</div>';
 
   try {
     const result=await managerRequest({action:"list_tickets"});
+    if(loadVersion!==managerTicketLoadVersion||session!==managerSession)return;
     currentTickets=result.tickets||[];
+    managerTicketsLoading=false;
     renderTickets();
   }catch(error) {
+    if(loadVersion!==managerTicketLoadVersion||session!==managerSession)return;
+    managerTicketsLoading=false;
     $("ticketsList").innerHTML=`<div class="empty-state">${escapeHTML(error.message)}</div>`;
   }
 }
 
 function renderTickets() {
+  const version=++managerEmployeeSearchVersion;
+  if(managerTicketsLoading)return;
+
   const filter=$("ticketFilter").value;
+  const term=$("managerEmployeeSearch").value.trim().toLowerCase();
+
+  if(term) {
+    renderManagerEmployeeSearch(term,filter,version);
+    return;
+  }
 
   const filtered=currentTickets.filter(ticket=>
     filter==="all"||ticket.ticket_type===filter
@@ -2343,6 +2479,135 @@ function renderTickets() {
     </div>`;
   }).join("");
 }
+
+function renderManagerEmployeeSearch(term,filter,version) {
+  const numberById=new Map();
+  const groups=new Map();
+
+  for(const ticket of currentTickets) {
+    const employee=ticket.employees||{};
+    const id=ticket.employee_id??employee.id;
+    const number=String(employee.employee_number??"").trim();
+    if(id!=null&&number)numberById.set(String(id),number);
+  }
+
+  currentTickets.forEach((ticket,index)=>{
+    const employee=ticket.employees||{};
+    const id=ticket.employee_id??employee.id;
+    const number=String(employee.employee_number??numberById.get(String(id))??"").trim();
+    const key=number?`number:${number}`:id!=null?`id:${id}`:`ticket:${index}`;
+
+    if(!groups.has(key)) {
+      groups.set(key,{name:"",number,tickets:[],names:[]});
+    }
+
+    const group=groups.get(key);
+    const name=String(employee.full_name||"");
+    if(!group.name&&name)group.name=name;
+    group.names.push(name.toLowerCase());
+    group.tickets.push(ticket);
+  });
+
+  const matching=[...groups.values()].filter(group=>
+    group.number.toLowerCase().includes(term)||group.names.some(name=>name.includes(term))
+  );
+
+  const visible=matching.map(group=>({
+    ...group,
+    shown:group.tickets.filter(ticket=>filter==="all"||ticket.ticket_type===filter)
+  })).filter(group=>group.shown.length);
+
+  const shownCount=visible.reduce((total,group)=>total+group.shown.length,0);
+  $("ticketsCount").innerHTML=`<span>نتائج الموظفين</span>: ${visible.length} — <span>المعاملات المعروضة</span>: ${shownCount}`;
+
+  if(!visible.length) {
+    $("ticketsList").innerHTML='<div class="empty-state">لا توجد معاملات مطابقة لهذا البحث.</div>';
+    return;
+  }
+
+  const pending=[];
+  let bodyIndex=0;
+
+  $("ticketsList").innerHTML=visible.map(group=>{
+    const counts={complaint:0,request:0,report:0};
+    for(const ticket of group.tickets) {
+      if(Object.prototype.hasOwnProperty.call(counts,ticket.ticket_type)) {
+        counts[ticket.ticket_type]++;
+      }
+    }
+
+    const cards=group.shown.map(ticket=>{
+      const bodyId=`manager-search-body-${version}-${bodyIndex++}`;
+      const hasText=typeof ticket.details==="string";
+      if(!hasText)pending.push({ticket,bodyId});
+
+      return `<div class="ticket-card">
+        <div class="ticket-top">
+          <h3>${escapeHTML(ticket.subject||"بدون عنوان")}</h3>
+          <span class="status" data-state="${escapeHTML(ticketStatusKey(ticket.status))}">${escapeHTML(ticketStatusText(ticket.status))}</span>
+        </div>
+        <p>النوع: ${escapeHTML(typeLabels[ticket.ticket_type]||ticket.ticket_type||"غير محدد")}${ticket.ticket_subtype?" — "+escapeHTML(ticket.ticket_subtype):""}</p>
+        <p>الرقم المرجعي: ${escapeHTML(ticket.reference_number||"غير متوفر")}</p>
+        <p class="ticket-meta">تاريخ الإرسال: ${escapeHTML(formatDate(ticket.created_at))}</p>
+        <h4 class="section-heading">نص المعاملة</h4>
+        <p id="${bodyId}" class="manager-search-ticket-text"${hasText&&ticket.details?' data-manager-ticket-content=""':""}>${escapeHTML(hasText?(ticket.details||"لم تُكتب تفاصيل لهذه المعاملة."):"جاري تحميل نص المعاملة...")}</p>
+        <button type="button" class="ticket-open" data-ticket-id="${escapeHTML(ticket.id)}">فتح المعاملة والتفاصيل</button>
+      </div>`;
+    }).join("");
+
+    return `<div class="employee-card">
+      <h3>${escapeHTML(group.name||"غير متوفر")}</h3>
+      <p>الرقم الوظيفي: ${escapeHTML(group.number||"غير متوفر")}</p>
+      <div class="manager-employee-counts">
+        <span class="status"><span>الشكاوى</span>: <strong>${counts.complaint}</strong></span>
+        <span class="status"><span>الطلبات</span>: <strong>${counts.request}</strong></span>
+        <span class="status"><span>البلاغات</span>: <strong>${counts.report}</strong></span>
+        <span class="status"><span>إجمالي المعاملات</span>: <strong>${group.tickets.length}</strong></span>
+      </div>
+      <p class="small-note">الأعداد تشمل جميع معاملات الموظف.</p>
+      ${cards}
+    </div>`;
+  }).join("");
+
+  loadManagerSearchTexts(pending,version,managerSession);
+}
+
+async function loadManagerSearchTexts(pending,version,session) {
+  let next=0;
+
+  await Promise.all(Array.from({length:Math.min(4,pending.length)},async()=>{
+    while(next<pending.length&&version===managerEmployeeSearchVersion&&session===managerSession) {
+      const {ticket,bodyId}=pending[next++];
+
+      try {
+        const result=await managerRequest({action:"ticket_details",ticket_id:ticket.id});
+        if(version!==managerEmployeeSearchVersion||session!==managerSession)return;
+
+        const details=result.ticket?.details;
+        if(typeof details!=="string"&&details!==null)throw new Error("Missing submission text");
+        if(result.ticket?.id!=null&&String(result.ticket.id)!==String(ticket.id)) {
+          throw new Error("Submission mismatch");
+        }
+
+        ticket.details=details||"";
+        const body=$(bodyId);
+        if(!body)continue;
+        if(ticket.details)body.setAttribute("data-manager-ticket-content","");
+        body.textContent=ticket.details||"لم تُكتب تفاصيل لهذه المعاملة.";
+      }catch(error) {
+        if(version!==managerEmployeeSearchVersion||session!==managerSession)return;
+        const body=$(bodyId);
+        if(body)body.textContent="تعذر تحميل نص المعاملة. افتح التفاصيل أو حدّث القائمة للمحاولة مرة أخرى.";
+      }
+    }
+  }));
+}
+
+$("managerEmployeeSearch").addEventListener("input",()=>{
+  managerEmployeeSearchVersion++;
+  clearTimeout(managerEmployeeSearchTimer);
+  managerEmployeeSearchTimer=setTimeout(renderTickets,200);
+});
 
 async function openTicket(id) {
   currentTicketId=id;
@@ -2786,6 +3051,11 @@ $("employeeForm").addEventListener("submit",async event=>{
 
 /* خروج المدير */
 $("managerLogout").addEventListener("click",()=>{
+  managerEmployeeSearchVersion++;
+  managerTicketLoadVersion++;
+  clearTimeout(managerEmployeeSearchTimer);
+  managerTicketsLoading=false;
+  $("managerEmployeeSearch").value="";
   managerSession=null;
   currentTicketId=null;
   currentTickets=[];
@@ -3227,6 +3497,195 @@ $("logoutButton").addEventListener("click",async()=>{
   $("loginForm").reset();
   $("message").style.display="none";
 });
+</script>
+
+<!-- سجل معاملات الموظفين: سكربت مستقل لا يغيّر الدوال الموجودة -->
+<script>
+(function () {
+  "use strict";
+
+  const recordsView = document.getElementById("employeeRecordsView");
+  const recordsResults = document.getElementById("employeeRecordsResults");
+  const recordsMessage = document.getElementById("employeeRecordsMessage");
+  const recordsForm = document.getElementById("employeeRecordsForm");
+  const recordsNumber = document.getElementById("employeeRecordsNumber");
+  const recordsButton = document.getElementById("employeeRecordsSearchButton");
+  const dashboard = document.getElementById("managerDashboard");
+  let recordsVersion = 0;
+
+  // لا تُجلب أي بيانات إلا بطلب الإدارة الموثق مسبقًا.
+  function hasManagerAccess() {
+    return !!managerSession?.access_token && !dashboard.classList.contains("hidden");
+  }
+
+  function clearRecords() {
+    ++recordsVersion;
+    recordsForm.reset();
+    recordsResults.innerHTML = "";
+    recordsResults.classList.add("hidden");
+    recordsMessage.textContent = "";
+    recordsButton.disabled = false;
+  }
+
+  function hideRecords() {
+    ++recordsVersion;
+    recordsView.classList.add("hidden");
+    recordsButton.disabled = false;
+  }
+
+  function openRecords() {
+    if (!hasManagerAccess()) return;
+    document.getElementById("managerListView").classList.add("hidden");
+    document.getElementById("managerDetailsView").classList.add("hidden");
+    document.getElementById("employeeManagementView").classList.add("hidden");
+    recordsView.classList.remove("hidden");
+    recordsNumber.focus();
+  }
+
+  document.getElementById("showEmployeeRecords").addEventListener("click", openRecords);
+  document.getElementById("backFromEmployeeRecords").addEventListener("click", () => {
+    hideRecords();
+    showManagerList();
+  });
+
+  for (const id of ["showManagerTickets", "showEmployeeManagement", "backToTickets", "backToManagerTickets"]) {
+    document.getElementById(id).addEventListener("click", hideRecords);
+  }
+
+  document.getElementById("managerLogout").addEventListener("click", () => {
+    hideRecords();
+    clearRecords();
+  });
+
+  document.getElementById("managerLoginForm").addEventListener("submit", () => {
+    hideRecords();
+    clearRecords();
+  });
+
+  recordsResults.addEventListener("click", event => {
+    const ticketButton = event.target.closest("[data-records-ticket]");
+    if (!ticketButton || !hasManagerAccess()) return;
+    const ticketId = ticketButton.getAttribute("data-records-ticket");
+    hideRecords();
+    openTicket(ticketId);
+  });
+
+  recordsForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!hasManagerAccess()) {
+      recordsMessage.textContent = "يرجى تسجيل دخول الإدارة أولًا.";
+      return;
+    }
+
+    const number = recordsNumber.value.trim();
+    if (!number) return;
+
+    const version = ++recordsVersion;
+    const session = managerSession;
+    recordsButton.disabled = true;
+    recordsResults.classList.add("hidden");
+    recordsResults.innerHTML = "";
+    recordsMessage.textContent = "جاري البحث عن الموظف ومعاملاته...";
+
+    try {
+      const [employeesResponse, ticketsResponse] = await Promise.all([
+        managerRequest({action:"list_employees"}),
+        managerRequest({action:"list_tickets"})
+      ]);
+
+      if (version !== recordsVersion || managerSession !== session || !hasManagerAccess()) return;
+      const employees = Array.isArray(employeesResponse.employees) ? employeesResponse.employees : [];
+      const allTickets = Array.isArray(ticketsResponse.tickets) ? ticketsResponse.tickets : [];
+      const employee = employees.find(person => String(person.employee_number ?? "").trim() === number);
+
+      const tickets = allTickets.filter(ticket => {
+        if (!ticket || typeof ticket !== "object") return false;
+        const owner = ticket.employees || {};
+        const ticketOwnerId = ticket.employee_id ?? owner.id;
+        if (employee?.id != null && ticketOwnerId != null) {
+          return String(ticketOwnerId) === String(employee.id);
+        }
+        const ticketOwnerNumber = String(owner.employee_number ?? "").trim();
+        return ticketOwnerNumber !== "" && ticketOwnerNumber === number;
+      }).sort((a,b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+
+      if (!employee && tickets.length === 0) {
+        recordsMessage.textContent = "لم يتم العثور على موظف بهذا الرقم الوظيفي.";
+        return;
+      }
+
+      const displayName = employee?.full_name || tickets[0]?.employees?.full_name || "غير متوفر";
+      const counts = {complaint:0, report:0, request:0};
+      tickets.forEach(ticket => {
+        if (Object.prototype.hasOwnProperty.call(counts, ticket.ticket_type)) counts[ticket.ticket_type]++;
+      });
+
+      const stat = (label,value) => `<div class="records-stat"><strong>${value}</strong><span>${label}</span></div>`;
+      const cards = tickets.map((ticket,index) => {
+        const hasText = typeof ticket.details === "string";
+        return `<article class="ticket-card">
+          <div class="ticket-top">
+            <h3>${escapeHTML(ticket.subject || "بدون عنوان")}</h3>
+            <span class="status" data-state="${escapeHTML(ticketStatusKey(ticket.status))}">${escapeHTML(ticketStatusText(ticket.status))}</span>
+          </div>
+          <p>نوع المعاملة: ${escapeHTML(typeLabels[ticket.ticket_type] || ticket.ticket_type || "غير محدد")}${ticket.ticket_subtype ? " — " + escapeHTML(ticket.ticket_subtype) : ""}</p>
+          <p>الرقم المرجعي: ${escapeHTML(ticket.reference_number || "غير متوفر")}</p>
+          <p class="ticket-meta">تاريخ الإرسال: ${escapeHTML(formatDate(ticket.created_at))}</p>
+          <h4 class="section-heading">محتوى المعاملة</h4>
+          <p class="records-text" id="recordsText${version}_${index}">${escapeHTML(hasText ? (ticket.details || "لم يُكتب نص لهذه المعاملة.") : "جاري تحميل محتوى المعاملة...")}</p>
+          <button type="button" class="ticket-open" data-records-ticket="${escapeHTML(ticket.id)}">عرض تفاصيل المعاملة والمحادثات والردود</button>
+        </article>`;
+      }).join("");
+
+      recordsResults.innerHTML = `
+        <div class="records-profile">
+          <h3>${escapeHTML(displayName)}</h3>
+          <div class="small-note">الرقم الوظيفي: ${escapeHTML(number)}</div>
+        </div>
+        <div class="records-stats">
+          ${stat("إجمالي المعاملات",tickets.length)}
+          ${stat("الشكاوى",counts.complaint)}
+          ${stat("البلاغات",counts.report)}
+          ${stat("الطلبات",counts.request)}
+        </div>
+        <h3 class="section-heading">معاملات الموظف</h3>
+        ${cards || '<div class="empty-state">لا توجد شكاوى أو بلاغات أو طلبات مسجلة لهذا الموظف.</div>'}
+      `;
+      recordsResults.classList.remove("hidden");
+      recordsMessage.textContent = `تم العثور على ${tickets.length} معاملة لهذا الموظف.`;
+
+      const missing = tickets.map((ticket,index) => ({ticket,index}))
+        .filter(({ticket}) => typeof ticket.details !== "string" && ticket.id != null);
+      let next = 0;
+      await Promise.all(Array.from({length:Math.min(3,missing.length)},async () => {
+        while (next < missing.length && version === recordsVersion && session === managerSession) {
+          const {ticket,index} = missing[next++];
+          const textElement = document.getElementById(`recordsText${version}_${index}`);
+          if (!textElement) continue;
+          try {
+            const detail = await managerRequest({action:"ticket_details",ticket_id:ticket.id});
+            if (version !== recordsVersion || session !== managerSession || !hasManagerAccess()) return;
+            if (detail.ticket?.id != null && String(detail.ticket.id) !== String(ticket.id)) {
+              throw new Error("المعاملة لا تطابق الطلب.");
+            }
+            textElement.textContent = typeof detail.ticket?.details === "string"
+              ? (detail.ticket.details || "لم يُكتب نص لهذه المعاملة.")
+              : "محتوى المعاملة غير متوفر. افتح تفاصيل المعاملة للاطلاع عليها.";
+          } catch (error) {
+            if (version !== recordsVersion || session !== managerSession || !hasManagerAccess()) return;
+            textElement.textContent = "تعذر تحميل المحتوى. يمكن فتح تفاصيل المعاملة للمحاولة مرة أخرى.";
+          }
+        }
+      }));
+    } catch (error) {
+      if (version !== recordsVersion || managerSession !== session || !hasManagerAccess()) return;
+      recordsMessage.textContent = error.message || "تعذر تحميل سجل الموظف. حاول مرة أخرى.";
+    } finally {
+      if (version === recordsVersion && session === managerSession) recordsButton.disabled = false;
+    }
+  });
+})();
 </script>
 </body>
 </html>
