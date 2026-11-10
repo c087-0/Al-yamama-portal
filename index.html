@@ -3784,27 +3784,22 @@ $("logoutButton").addEventListener("click",async()=>{
     }
   });
 })();
-</script>
- <script>
+<script/>
+<script>
 (function () {
   "use strict";
 
   const loginPage = document.getElementById("loginPage");
   const loginForm = document.getElementById("loginForm");
-
-  if (!loginPage || !loginForm ||
-      document.getElementById("usageGuideButton")) return;
+  if (!loginPage || !loginForm || document.getElementById("usageGuideButton")) return;
 
   const guideButton = document.createElement("button");
   guideButton.type = "button";
   guideButton.id = "usageGuideButton";
   guideButton.className = "secondary";
-  guideButton.style.cssText =
-    "display:block;width:100%;margin:0 0 18px";
-
+  guideButton.style.cssText = "display:block;width:100%;margin:0 0 18px";
   guideButton.setAttribute("aria-haspopup", "dialog");
   guideButton.setAttribute("aria-controls", "usageGuideDialog");
-
   loginPage.insertBefore(guideButton, loginForm);
 
   const dialog = document.createElement("div");
@@ -3816,31 +3811,43 @@ $("logoutButton").addEventListener("click",async()=>{
 
   dialog.innerHTML = `
     <section class="about-panel"
-      style="width:min(100%,850px);max-height:90vh">
-      <h2 id="usageGuideTitle">دليل الاستخدام</h2>
+      style="width:min(100%,850px);max-height:90vh;overflow:auto">
 
-      <iframe
+      <h2 id="usageGuideTitle" style="margin-bottom:14px">
+        دليل المستخدم
+      </h2>
+
+      <video
         id="usageGuideVideo"
-        title="دليل استخدام بوابة الموظفين"
+        controls
+        playsinline
+        preload="metadata"
+        title="دليل المستخدم"
+        aria-label="دليل المستخدم"
         style="display:block;width:100%;aspect-ratio:16/9;
-          border:0;border-radius:12px;background:#091923"
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowfullscreen
-        referrerpolicy="strict-origin-when-cross-origin">
-      </iframe>
+        object-fit:contain;background:#091923;border-radius:12px">
 
-      <button type="button"
+        <source src="./employee-guide.mp4" type="video/mp4">
+        متصفحك لا يدعم تشغيل هذا الفيديو.
+      </video>
+
+      <p style="margin:10px 0 0;text-align:right;
+        font-size:13px;color:var(--muted)" dir="ltr">
+        By Salem
+      </p>
+
+      <button
+        type="button"
         class="secondary about-close"
-        id="usageGuideClose">إغلاق</button>
+        id="usageGuideClose">
+        إغلاق
+      </button>
     </section>`;
 
   document.body.appendChild(dialog);
 
   const video = document.getElementById("usageGuideVideo");
   const closeButton = document.getElementById("usageGuideClose");
-
-  const videoUrl =
-    "https://share.descript.com/embed/uzFpekRRgEP";
 
   function updateText() {
     const english = document.documentElement.lang === "en";
@@ -3850,11 +3857,10 @@ $("logoutButton").addEventListener("click",async()=>{
       : "🎬 دليل الاستخدام — شاهد الفيديو التعريفي";
 
     document.getElementById("usageGuideTitle").textContent =
-      english ? "Employee portal user guide" : "دليل الاستخدام";
+      english ? "User guide" : "دليل المستخدم";
 
-    video.title = english
-      ? "Employee portal user guide video"
-      : "فيديو دليل استخدام بوابة الموظفين";
+    video.title = english ? "User guide" : "دليل المستخدم";
+    video.setAttribute("aria-label", video.title);
 
     closeButton.textContent = english ? "Close" : "إغلاق";
     dialog.dir = english ? "ltr" : "rtl";
@@ -3862,13 +3868,14 @@ $("logoutButton").addEventListener("click",async()=>{
 
   function openGuide() {
     updateText();
-    video.src = videoUrl;
+    video.muted = false;
+    video.volume = 1;
     dialog.classList.remove("hidden");
     closeButton.focus();
   }
 
   function closeGuide() {
-    video.removeAttribute("src");
+    video.pause();
     dialog.classList.add("hidden");
     guideButton.focus();
   }
@@ -3893,6 +3900,5 @@ $("logoutButton").addEventListener("click",async()=>{
   updateText();
 })();
 </script>
-
 </body>
 </html>
