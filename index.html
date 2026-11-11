@@ -1229,7 +1229,8 @@ html[dir="ltr"] .header .description {
   </div>
  
   <div class="action-row">
-    <button type="button" id="showManagerTickets">إدارة المعاملات</button>
+    <button type="button" id="showManagerTickets" aria-controls="managerListView" aria-pressed="true">إدارة المعاملات</button>
+    <button type="button" class="secondary" id="showManagerArchive" aria-controls="managerListView" aria-pressed="false">أرشيف الطلبات المنتهية</button>
     <button type="button" class="secondary" id="showEmployeeManagement">إدارة الموظفين</button>
     <button type="button" class="secondary" id="showEmployeeRecords">🔎 سجل معاملات الموظفين</button>
   </div>
@@ -1237,11 +1238,11 @@ html[dir="ltr"] .header .description {
   <div id="managerListView">
     <div class="manager-card">
       <div class="ticket-top">
-        <h2>جميع المعاملات</h2>
+        <h2 id="managerListTitle">المعاملات الحالية</h2>
         <button type="button" id="refreshTickets">تحديث القائمة ↻</button>
       </div>
  
-      <p class="small-note">تظهر هنا جميع الشكاوى والبلاغات والطلبات لجميع الموظفين.</p>
+      <p id="managerListDescription" class="small-note">تظهر هنا الشكاوى والبلاغات والطلبات الجديدة وقيد المراجعة.</p>
  
       <label for="managerEmployeeSearch">البحث عن موظف ومعاملاته</label>
       <input id="managerEmployeeSearch" type="search" placeholder="ابحث بالاسم أو الرقم الوظيفي" aria-describedby="managerEmployeeSearchHint">
@@ -1255,8 +1256,13 @@ html[dir="ltr"] .header .description {
         <option value="request">الطلبات</option>
       </select>
  
-      <div id="ticketsCount" class="small-note"></div>
+      <div id="ticketsCount" class="small-note" role="status" aria-live="polite"></div>
       <div id="ticketsList"><div class="empty-state">جاري تحميل المعاملات...</div></div>
+      <nav id="managerTicketPagination" class="action-row hidden" aria-label="صفحات المعاملات" style="align-items:center;justify-content:space-between">
+        <button type="button" id="managerPreviousPage" class="secondary">السابق</button>
+        <span id="managerPageInfo" class="small-note" role="status" aria-live="polite"></span>
+        <button type="button" id="managerNextPage" class="secondary">التالي</button>
+      </nav>
     </div>
   </div>
  
@@ -1398,7 +1404,7 @@ html[dir="ltr"] .header .description {
     <h2 id="aboutTitle">مزيد من المعلومات</h2>
  
     <h3>عن الموقع</h3>
-    <p>الهدف من الموقع معرفة الشكاوى المتعلقة بالعمل وبيئة العمل وسهولة وصول شكاوى الموظفين والوصول الى حلها بأفضل الطرق الممكنة.</p>
+    <p>انطلاقًا من حرصنا على تطوير بيئة العمل والارتقاء بمستوى الخدمات الإدارية، جاءت بوابة موظفين مشروع المنطقة الوسطى لتعزيز التواصل بين الموظفين والإدارة، وتسهيل تقديم الشكاوى والبلاغات والطلبات ومتابعتها، بما يسهم في سرعة الاستجابة وتحسين بيئة العمل.</p>
  
     <h3>مصممو الموقع</h3>
     <p>
@@ -1708,6 +1714,20 @@ const englishText=new Map(Object.entries({
   "إدارة المعاملات":"Manage submissions",
   "إدارة الموظفين":"Manage employees",
   "جميع المعاملات":"All submissions",
+  "المعاملات الحالية":"Current submissions",
+  "أرشيف الطلبات المنتهية":"Closed submissions archive",
+  "تظهر هنا الشكاوى والبلاغات والطلبات الجديدة وقيد المراجعة.":"New submissions and submissions under review appear here.",
+  "تظهر هنا المعاملات المكتملة والمرفوضة مع تفاصيلها وردودها ومرفقاتها.":"Completed and rejected submissions appear here with their details, replies and attachments.",
+  "صفحات المعاملات":"Submission pages",
+  "السابق":"Previous",
+  "التالي":"Next",
+  "الصفحة":"Page",
+  "من":"of",
+  "عرض":"Showing",
+  "معاملة":"submissions",
+  "لا توجد طلبات منتهية في الأرشيف حالياً.":"There are no closed submissions in the archive.",
+  "← العودة للمعاملات الحالية":"← Back to current submissions",
+  "← العودة لأرشيف الطلبات المنتهية":"← Back to closed submissions",
   "تحديث القائمة ↻":"Refresh list ↻",
   "تظهر هنا جميع الشكاوى والبلاغات والطلبات لجميع الموظفين.":"All employee submissions appear here.",
   "تصفية حسب نوع المعاملة":"Filter by submission type",
@@ -1749,7 +1769,7 @@ const englishText=new Map(Object.entries({
   "تم تصميم وتطوير هذا الموقع بواسطة":"This website was designed and developed by",
   "و":"and",
   "إغلاق":"Close",
-  "الهدف من الموقع معرفة الشكاوى المتعلقة بالعمل وبيئة العمل وسهولة وصول شكاوى الموظفين والوصول الى حلها بأفضل الطرق الممكنة.":"The website aims to make workplace complaints easier to submit and resolve through the best possible solutions.",
+  "انطلاقًا من حرصنا على تطوير بيئة العمل والارتقاء بمستوى الخدمات الإدارية، جاءت بوابة موظفين مشروع المنطقة الوسطى لتعزيز التواصل بين الموظفين والإدارة، وتسهيل تقديم الشكاوى والبلاغات والطلبات ومتابعتها، بما يسهم في سرعة الاستجابة وتحسين بيئة العمل.":"The website aims to make workplace complaints easier to submit and resolve through the best possible solutions.",
   "أدخل الرقم الوظيفي":"Enter employee ID",
   "أدخل اسم المستخدم":"Enter username",
   "أدخل كلمة المرور":"Enter password",
@@ -2414,7 +2434,8 @@ function showEmployeeManagementPage() {
   loadEmployees();
 }
  
-$("showManagerTickets").addEventListener("click",showManagerList);
+$("showManagerTickets").addEventListener("click",()=>setManagerTicketScope("active"));
+$("showManagerArchive").addEventListener("click",()=>setManagerTicketScope("archive"));
 $("showEmployeeManagement").addEventListener("click",showEmployeeManagementPage);
 $("backToManagerTickets").addEventListener("click",showManagerList);
  
@@ -2423,6 +2444,67 @@ let managerEmployeeSearchVersion=0;
 let managerEmployeeSearchTimer=null;
 let managerTicketsLoading=false;
 let managerTicketLoadVersion=0;
+
+// الأرشفة عرض حسب الحالة فقط؛ لا ننقل أو نحذف أي سجل.
+const MANAGER_PAGE_SIZE=25;
+let managerTicketScope="active";
+let managerTicketPage=1;
+let managerTicketPaging=null;
+let managerTicketLoadFailed=false;
+
+function isArchivedManagerTicket(ticket) {
+  return ticket.status==="completed"||ticket.status==="rejected";
+}
+
+function managerTicketMatchesScope(ticket) {
+  return managerTicketScope==="archive"
+    ?isArchivedManagerTicket(ticket)
+    :!isArchivedManagerTicket(ticket);
+}
+
+function updateManagerScopeLabels() {
+  const archive=managerTicketScope==="archive";
+  $("managerListTitle").textContent=archive?"أرشيف الطلبات المنتهية":"المعاملات الحالية";
+  $("managerListDescription").textContent=archive
+    ?"تظهر هنا المعاملات المكتملة والمرفوضة مع تفاصيلها وردودها ومرفقاتها."
+    :"تظهر هنا الشكاوى والبلاغات والطلبات الجديدة وقيد المراجعة.";
+  $("backToTickets").textContent=archive?"← العودة لأرشيف الطلبات المنتهية":"← العودة للمعاملات الحالية";
+  $("showManagerTickets").classList.toggle("secondary",archive);
+  $("showManagerArchive").classList.toggle("secondary",!archive);
+  $("showManagerTickets").setAttribute("aria-pressed",String(!archive));
+  $("showManagerArchive").setAttribute("aria-pressed",String(archive));
+}
+
+function setManagerTicketScope(scope) {
+  if(!managerSession?.access_token)return;
+  managerTicketScope=scope==="archive"?"archive":"active";
+  managerTicketPage=1;
+  updateManagerScopeLabels();
+  showManagerList();
+  loadManagerTickets();
+}
+
+function renderManagerPagination(total) {
+  const pages=Math.max(1,Math.ceil(total/MANAGER_PAGE_SIZE));
+  managerTicketPage=Math.min(managerTicketPage,pages);
+  const start=total?(managerTicketPage-1)*MANAGER_PAGE_SIZE+1:0;
+  const end=Math.min(managerTicketPage*MANAGER_PAGE_SIZE,total);
+  $("managerTicketPagination").classList.toggle("hidden",total===0);
+  $("managerPreviousPage").disabled=managerTicketPage<=1;
+  $("managerNextPage").disabled=managerTicketPage>=pages;
+  $("managerPageInfo").innerHTML=`<span>الصفحة</span> ${managerTicketPage} <span>من</span> ${pages} — <span>عرض</span> ${start}–${end} <span>من</span> ${total} <span>معاملة</span>`;
+}
+
+function changeManagerTicketPage(delta) {
+  if(managerTicketsLoading||managerTicketLoadFailed)return;
+  managerTicketPage=Math.max(1,managerTicketPage+delta);
+  if(managerTicketPaging)loadManagerTickets();
+  else renderTickets();
+  $("managerListTitle").scrollIntoView({block:"start",behavior:"smooth"});
+}
+
+$("managerPreviousPage").addEventListener("click",()=>changeManagerTicketPage(-1));
+$("managerNextPage").addEventListener("click",()=>changeManagerTicketPage(1));
  
 async function loadManagerTickets() {
   const loadVersion=++managerTicketLoadVersion;
@@ -2430,24 +2512,44 @@ async function loadManagerTickets() {
   managerEmployeeSearchVersion++;
   clearTimeout(managerEmployeeSearchTimer);
   managerTicketsLoading=true;
+  managerTicketLoadFailed=false;
+  managerTicketPaging=null;
+  updateManagerScopeLabels();
+  $("ticketsCount").textContent="";
+  $("managerTicketPagination").classList.add("hidden");
   $("ticketsList").innerHTML='<div class="empty-state">جاري تحميل المعاملات...</div>';
  
   try {
-    const result=await managerRequest({action:"list_tickets"});
+    // يبقى البحث الشامل عن الموظف متوافقًا مع الخدمة الحالية وأعداده الأصلية.
+    const searching=!!$("managerEmployeeSearch").value.trim();
+    const payload=searching?{action:"list_tickets"}:{
+      action:"list_tickets",scope:managerTicketScope,
+      page:managerTicketPage,page_size:MANAGER_PAGE_SIZE,
+      ticket_type:$("ticketFilter").value
+    };
+    const result=await managerRequest(payload);
     if(loadVersion!==managerTicketLoadVersion||session!==managerSession)return;
-    currentTickets=result.tickets||[];
+    currentTickets=Array.isArray(result.tickets)?result.tickets:[];
+    if(!searching&&result.pagination?.page_size===MANAGER_PAGE_SIZE&&
+       result.pagination.scope===managerTicketScope&&
+       Number.isSafeInteger(result.pagination.total)&&result.pagination.total>=0&&
+       Number.isSafeInteger(result.pagination.page)&&result.pagination.page>=1) {
+      managerTicketPaging=result.pagination;
+      managerTicketPage=result.pagination.page;
+    }
     managerTicketsLoading=false;
     renderTickets();
   }catch(error) {
     if(loadVersion!==managerTicketLoadVersion||session!==managerSession)return;
     managerTicketsLoading=false;
+    managerTicketLoadFailed=true;
     $("ticketsList").innerHTML=`<div class="empty-state">${escapeHTML(error.message)}</div>`;
   }
 }
  
 function renderTickets() {
   const version=++managerEmployeeSearchVersion;
-  if(managerTicketsLoading)return;
+  if(managerTicketsLoading||managerTicketLoadFailed)return;
  
   const filter=$("ticketFilter").value;
   const term=$("managerEmployeeSearch").value.trim().toLowerCase();
@@ -2458,17 +2560,23 @@ function renderTickets() {
   }
  
   const filtered=currentTickets.filter(ticket=>
-    filter==="all"||ticket.ticket_type===filter
+    managerTicketMatchesScope(ticket)&&(filter==="all"||ticket.ticket_type===filter)
   );
- 
-  $("ticketsCount").textContent=`عدد المعاملات المعروضة: ${filtered.length}`;
+  const total=managerTicketPaging?managerTicketPaging.total:filtered.length;
+  renderManagerPagination(total);
+  const pageTickets=managerTicketPaging?filtered:filtered.slice(
+    (managerTicketPage-1)*MANAGER_PAGE_SIZE,managerTicketPage*MANAGER_PAGE_SIZE
+  );
+  $("ticketsCount").innerHTML=`<span>عرض</span> ${pageTickets.length} <span>من</span> ${total} <span>معاملة</span>`;
  
   if(!filtered.length) {
-    $("ticketsList").innerHTML='<div class="empty-state">لا توجد معاملات في هذا القسم حالياً.</div>';
+    $("ticketsList").innerHTML=managerTicketScope==="archive"
+      ?'<div class="empty-state">لا توجد طلبات منتهية في الأرشيف حالياً.</div>'
+      :'<div class="empty-state">لا توجد معاملات في هذا القسم حالياً.</div>';
     return;
   }
  
-  $("ticketsList").innerHTML=filtered.map(ticket=>{
+  $("ticketsList").innerHTML=pageTickets.map(ticket=>{
     const employee=ticket.employees||{};
  
     return `<div class="ticket-card">
@@ -2520,10 +2628,11 @@ function renderManagerEmployeeSearch(term,filter,version) {
  
   const visible=matching.map(group=>({
     ...group,
-    shown:group.tickets.filter(ticket=>filter==="all"||ticket.ticket_type===filter)
+    shown:group.tickets.filter(ticket=>managerTicketMatchesScope(ticket)&&(filter==="all"||ticket.ticket_type===filter))
   })).filter(group=>group.shown.length);
  
   const shownCount=visible.reduce((total,group)=>total+group.shown.length,0);
+  renderManagerPagination(shownCount);
   $("ticketsCount").innerHTML=`<span>نتائج الموظفين</span>: ${visible.length} — <span>المعاملات المعروضة</span>: ${shownCount}`;
  
   if(!visible.length) {
@@ -2534,7 +2643,18 @@ function renderManagerEmployeeSearch(term,filter,version) {
   const pending=[];
   let bodyIndex=0;
  
-  $("ticketsList").innerHTML=visible.map(group=>{
+  // نعرض 25 معاملة فقط، مع إبقاء أعداد الموظف شاملة لكل معاملاته.
+  let skip=(managerTicketPage-1)*MANAGER_PAGE_SIZE;
+  let remaining=MANAGER_PAGE_SIZE;
+  const pageGroups=visible.map(group=>{
+    const start=Math.min(skip,group.shown.length);
+    skip-=start;
+    const shown=group.shown.slice(start,start+remaining);
+    remaining-=shown.length;
+    return {...group,shown};
+  }).filter(group=>group.shown.length);
+
+  $("ticketsList").innerHTML=pageGroups.map(group=>{
     const counts={complaint:0,request:0,report:0};
     for(const ticket of group.tickets) {
       if(Object.prototype.hasOwnProperty.call(counts,ticket.ticket_type)) {
@@ -2612,7 +2732,11 @@ async function loadManagerSearchTexts(pending,version,session) {
 $("managerEmployeeSearch").addEventListener("input",()=>{
   managerEmployeeSearchVersion++;
   clearTimeout(managerEmployeeSearchTimer);
-  managerEmployeeSearchTimer=setTimeout(renderTickets,200);
+  managerTicketLoadVersion++;
+  managerTicketPage=1;
+  managerTicketsLoading=true;
+  $("managerTicketPagination").classList.add("hidden");
+  managerEmployeeSearchTimer=setTimeout(loadManagerTickets,250);
 });
  
 async function openTicket(id) {
@@ -2693,7 +2817,10 @@ $("ticketsList").addEventListener("click",event=>{
   if(button)openTicket(button.dataset.ticketId);
 });
  
-$("ticketFilter").addEventListener("change",renderTickets);
+$("ticketFilter").addEventListener("change",()=>{
+  managerTicketPage=1;
+  loadManagerTickets();
+});
 $("refreshTickets").addEventListener("click",loadManagerTickets);
 $("backToTickets").addEventListener("click",showManagerList);
  
@@ -3156,6 +3283,14 @@ $("managerLogout").addEventListener("click",()=>{
   $("managerReplyAttachment").value="";
   $("managerProofWrap").classList.add("hidden");
   currentTickets=[];
+  managerTicketScope="active";
+  managerTicketPage=1;
+  managerTicketPaging=null;
+  managerTicketLoadFailed=false;
+  updateManagerScopeLabels();
+  $("ticketsList").innerHTML="";
+  $("ticketsCount").textContent="";
+  $("managerTicketPagination").classList.add("hidden");
   currentEmployees=[];
   employeeSearchTickets={loading:false,tickets:[],error:""};
  
@@ -3646,7 +3781,7 @@ $("logoutButton").addEventListener("click",async()=>{
     showManagerList();
   });
  
-  for (const id of ["showManagerTickets", "showEmployeeManagement", "backToTickets", "backToManagerTickets"]) {
+  for (const id of ["showManagerTickets", "showManagerArchive", "showEmployeeManagement", "backToTickets", "backToManagerTickets"]) {
     document.getElementById(id).addEventListener("click", hideRecords);
   }
  
@@ -3814,7 +3949,7 @@ $("logoutButton").addEventListener("click",async()=>{
       style="width:min(100%,850px);max-height:90vh;overflow:auto">
 
       <h2 id="usageGuideTitle" style="margin-bottom:14px">
-        دليل المستخدم
+        دليل الاستخدام
       </h2>
 
       <video
@@ -3822,12 +3957,12 @@ $("logoutButton").addEventListener("click",async()=>{
         controls
         playsinline
         preload="metadata"
-        title="دليل المستخدم"
-        aria-label="دليل المستخدم"
+        title="دليل الاستخدام"
+        aria-label="دليل الاستخدام"
         style="display:block;width:100%;aspect-ratio:16/9;
         object-fit:contain;background:#091923;border-radius:12px">
 
-        <source src="./employee-guide.mp4" type="video/mp4">
+        <source src="./employee-guide..mp4" type="video/mp4">
         متصفحك لا يدعم تشغيل هذا الفيديو.
       </video>
 
@@ -3857,9 +3992,9 @@ $("logoutButton").addEventListener("click",async()=>{
       : "🎬 دليل الاستخدام — شاهد الفيديو التعريفي";
 
     document.getElementById("usageGuideTitle").textContent =
-      english ? "User guide" : "دليل المستخدم";
+      english ? "User guide" : "دليل الاستخدام";
 
-    video.title = english ? "User guide" : "دليل المستخدم";
+    video.title = english ? "User guide" : "دليل الاستخدام";
     video.setAttribute("aria-label", video.title);
 
     closeButton.textContent = english ? "Close" : "إغلاق";
